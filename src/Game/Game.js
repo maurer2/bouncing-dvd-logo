@@ -8,14 +8,44 @@ class Game extends Component {
 
     this.state = {
       frames: 0,
+      isRunning: false,
     };
 
     this.updateCounter = this.updateCounter.bind(this);
+    this.togglePlayState = this.togglePlayState.bind(this);
+    this.startGameLoop = this.startGameLoop.bind(this);
+    this.stopGameLoop = this.stopGameLoop.bind(this);
+  }
+
+  componentDidMount() {
+    this.startGameLoop();
+  }
+
+  componentWillUnmount() {
+    this.stopGameLoop();
+  }
+
+  startGameLoop() {
+    const gameLoop = setInterval(() => this.updateCounter(), Math.floor(1000/60));
+
+    this.setState({
+      isRunning: true,
+      gameLoop,
+    });
+  }
+
+  stopGameLoop() {
+    clearInterval(this.state.gameLoop);
+
+    this.setState({
+      gameLoop: null,
+      isRunning: false,
+    });
   }
 
   updateCounter() {
     const currentFrame = this.state.frames;
-    const isNewFrame = (currentFrame !== 0 && currentFrame % 30 === 0);
+    const isNewFrame = (currentFrame !== 0 && currentFrame % 60 === 0);
 
     if (isNewFrame) {
       this.setState(previousState => ({
@@ -26,29 +56,21 @@ class Game extends Component {
         frames: previousState.frames + 1,
       }));
     }
-
-    console.log(this.state.frames);
   }
 
-  componentDidMount() {
-    const gameLoop = setInterval(() => this.updateCounter(), Math.floor(1000/60));
-
-    this.setState({
-      gameLoop
-    });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.gameLoop);
-
-    this.setState({
-      gameLoop: null,
-    });
+  togglePlayState(event) {
+    if (this.state.isRunning) {
+      this.stopGameLoop();
+    } else {
+      this.startGameLoop();
+    }
   }
 
   render() {
     return (
-      <Playfield updateField={ this.state.frames === 0 } />
+      <div className="game" onClick={ this.togglePlayState }>
+        <Playfield isRunning={ this.state.isRunning } frames={ this.state.frames } />
+      </div>
     );
   }
 }
