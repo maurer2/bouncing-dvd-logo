@@ -68,8 +68,8 @@ class Game extends Component {
 
   render() {
     return (
-      <div className="game" onClick={ this.togglePlayState }>
-        <Playfield isRunning={ this.state.isRunning } frames={ this.state.frames } />
+      <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : '' }`} onClick={ this.togglePlayState }>
+        <Playfield frames={ this.state.frames } />
       </div>
     );
   }

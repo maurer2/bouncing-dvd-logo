@@ -1,4 +1,10 @@
 .game {
   width: 100vw;
   height: 100vh;
+  filter: opacity(1);
+  transition: filter 0.25s;
+}
+
+.game--is-paused {
+  filter: opacity(0.25);
 }
