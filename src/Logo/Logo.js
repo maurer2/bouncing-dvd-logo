@@ -10,10 +10,10 @@ class Logo extends Component {
   }
 
   getStyle() {
+
     return {
-      transform: `
-        translateX(calc(-50% + ${this.props.positionX}vw))
-        translateY(calc(-50% + ${this.props.positionY}vh))`,
+      // transform: `translate(calc(-50% + ${this.props.positionX}vw), calc(-50% + ${this.props.positionY}vw))`,
+      transform: `translate(${this.props.positionX}px, ${this.props.positionY}px)`,
       width: `${this.props.width}px`
     };
   }

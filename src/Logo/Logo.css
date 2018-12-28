@@ -4,7 +4,7 @@
   height: auto;
   top: 0;
   left: 0;
-  transform: translateX(0%) translateY(0%);
-  transition: transform 0.5s;
+  /* transform: translateX(0%) translateY(0%); */
+  /* transition: transform 0.5s; */
   background: red;
 }

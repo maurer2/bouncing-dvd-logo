@@ -7,40 +7,65 @@ class Playfield extends Component {
     super(props);
 
     this.state = {
-      positionX: 0,
-      positionY: 0,
+      positionX: 500,
+      positionY: 50,
       width: 50,
+      changeDelta: 50,
     };
 
-    this.calculateX = this.calculateX.bind(this);
+    this.updatePosition = this.updatePosition.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    const isNextFrame = (nextProps.frames !== 0 && nextProps.frames % 5 === 0);
+    const isNewFrame = (nextProps.frames === 60);
 
-    if (isNextFrame) {
-      this.setState(previousState => ({
-        positionX: previousState.positionX + 1,
-        positionY: previousState.positionY + 1,
-      }));
+    if (isNewFrame) {
+      this.updatePosition();
     }
   }
 
-  calculateX() {
-    const isNextFrame = (this.props.frames !== 0 && this.props.frames % 60 === 0);
+  componentDidMount() {
+    const { width, height } = this.playfield.getBoundingClientRect();
 
-    if (isNextFrame) {
-      this.setState(previousState => ({
-        positionX: 50,
-      }));
+    this.setState({
+      playfieldWidth: width,
+      playfielHeight: height,
+    });
+  }
+
+  isPastRightBoundary() {
+    const { positionX, width, playfieldWidth } = this.state;
+
+    return positionX >= (playfieldWidth - width);
+  }
+
+  isPastLeftBoundary() {
+    const { positionX } = this.state;
+
+    return positionX <= 0;
+  }
+
+  updatePosition() {
+    const { positionX, positionY, changeDelta } = this.state;
+
+    let newChangeDelta = changeDelta;
+    let newPosionX = positionX + newChangeDelta;
+
+    if (this.isPastRightBoundary()) {
+      newChangeDelta = changeDelta * -1;
+
+      newPosionX = positionX + newChangeDelta;
     }
 
-    return this.state.positionX;
+    this.setState(previousState => ({
+      positionX: newPosionX,
+      changeDelta: newChangeDelta,
+    }));
   }
 
   render() {
     return (
-      <div className="playfield">
+      <div className="playfield" ref= {element => this.playfield = element }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY } width={ this.state.width } />
       </div>
     );

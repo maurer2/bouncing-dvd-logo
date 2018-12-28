@@ -51,11 +51,12 @@ class Game extends Component {
       this.setState(previousState => ({
         frames: 0,
       }));
-    } else {
-      this.setState(previousState => ({
-        frames: previousState.frames + 1,
-      }));
+      return;
     }
+
+    this.setState(previousState => ({
+      frames: previousState.frames + 1,
+    }));
   }
 
   togglePlayState(event) {
