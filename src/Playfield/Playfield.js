@@ -10,8 +10,9 @@ class Playfield extends Component {
       positionX: 50,
       positionY: 50,
       width: 50,
+      height: 50,
       changeDeltaX: 50,
-      changeDeltaY: 5,
+      changeDeltaY: 50,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -30,7 +31,7 @@ class Playfield extends Component {
 
     this.setState({
       playfieldWidth: width,
-      playfielHeight: height,
+      playfieldHeight: height,
     });
   }
 
