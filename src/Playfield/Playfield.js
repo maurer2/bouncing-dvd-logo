@@ -7,10 +7,11 @@ class Playfield extends Component {
     super(props);
 
     this.state = {
-      positionX: 500,
+      positionX: 50,
       positionY: 50,
       width: 50,
-      changeDelta: 50,
+      changeDeltaX: 50,
+      changeDeltaY: 5,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -33,33 +34,62 @@ class Playfield extends Component {
     });
   }
 
-  isPastRightBoundary() {
-    const { positionX, width, playfieldWidth } = this.state;
-
-    return positionX >= (playfieldWidth - width);
-  }
-
   isPastLeftBoundary() {
     const { positionX } = this.state;
 
     return positionX <= 0;
   }
 
-  updatePosition() {
-    const { positionX, positionY, changeDelta } = this.state;
+  isPastRightBoundary() {
+    const { positionX, width, playfieldWidth } = this.state;
 
-    let newChangeDelta = changeDelta;
-    let newPosionX = positionX + newChangeDelta;
+    return positionX >= (playfieldWidth - width);
+  }
+
+  isPastTopBoundary() {
+    const { positionY } = this.state;
+
+    return positionY <= 0;
+  }
+
+  isPastBottomBoundary() {
+    const { positionY, height, playfieldHeight } = this.state;
+
+    return positionY >= (playfieldHeight - height);
+  }
+
+  updatePosition() {
+    const { positionX, positionY, changeDeltaX, changeDeltaY } = this.state;
+
+    let newChangeDeltaX = changeDeltaX;
+    let newChangeDeltaY = changeDeltaY;
+
+    if (this.isPastLeftBoundary()) {
+      newChangeDeltaX = Math.abs(changeDeltaX);
+    }
 
     if (this.isPastRightBoundary()) {
-      newChangeDelta = changeDelta * -1;
-
-      newPosionX = positionX + newChangeDelta;
+      newChangeDeltaX = changeDeltaX * -1;
     }
+
+    if (this.isPastTopBoundary()) {
+      newChangeDeltaY = Math.abs(changeDeltaY);
+    }
+
+    if (this.isPastBottomBoundary()) {
+      newChangeDeltaY = changeDeltaY * -1;
+    }
+
+
+
+    const newPosionX = positionX + newChangeDeltaX;
+    const newPosionY = positionY + newChangeDeltaY;
 
     this.setState(previousState => ({
       positionX: newPosionX,
-      changeDelta: newChangeDelta,
+      positionY: newPosionY,
+      changeDeltaX: newChangeDeltaX,
+      changeDeltaY: newChangeDeltaY,
     }));
   }
 
