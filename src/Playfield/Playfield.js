@@ -8,11 +8,9 @@ class Playfield extends Component {
     super(props);
 
     this.state = {
-      positionX: 720,
-      positionY: 50,
       width: 50,
       height: 50,
-      changeDeltaX: 2,
+      changeDeltaX: -2,
       changeDeltaY: 2,
     };
 
@@ -27,13 +25,31 @@ class Playfield extends Component {
   }
 
   componentDidMount() {
-    const { width, height } = this.playfield.getBoundingClientRect();
+    const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
+    const {
+      width, height, changeDeltaX, changeDeltaY,
+    } = this.state;
+
+    const randomPositionX = Math.floor(Math.random() * (widthBB - width + 1));
+    const randomPositionY = Math.floor(Math.random() * (heightBB - height + 1));
+
+    const randomChangeDeltaX = Math.round(Math.random()) === 0
+      ? -1 * changeDeltaX
+      : +1 * changeDeltaX;
+    const randomChangeDeltaY = Math.round(Math.random()) === 0
+      ? -1 * changeDeltaY
+      : +1 * changeDeltaY;
 
     this.setState({
-      playfieldWidth: width,
-      playfieldHeight: height,
+      playfieldWidth: widthBB,
+      playfieldHeight: heightBB,
+      positionX: randomPositionX,
+      positionY: randomPositionY,
+      changeDeltaX: randomChangeDeltaX,
+      changeDeltaY: randomChangeDeltaY,
     });
   }
+
 
   isPastLeftBoundary() {
     const { positionX } = this.state;
