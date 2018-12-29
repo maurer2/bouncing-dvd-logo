@@ -6,5 +6,9 @@
   ],
   "rules": {
     "react/jsx-uses-react": "error"
+  },
+  "globals": {
+    "document": true,
+    "window": true
   }
 }
