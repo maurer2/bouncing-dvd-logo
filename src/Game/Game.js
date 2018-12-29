@@ -26,7 +26,7 @@ class Game extends Component {
   }
 
   startGameLoop() {
-    const gameLoop = setInterval(() => this.updateCounter(), Math.floor(1000/60));
+    const gameLoop = setInterval(() => this.updateCounter(), Math.floor(1000 / 60));
 
     this.setState({
       isRunning: true,
@@ -48,9 +48,9 @@ class Game extends Component {
     const isNewFrame = (currentFrame !== 0 && currentFrame % 60 === 0);
 
     if (isNewFrame) {
-      this.setState(previousState => ({
+      this.setState({
         frames: 0,
-      }));
+      });
       return;
     }
 
@@ -59,7 +59,7 @@ class Game extends Component {
     }));
   }
 
-  togglePlayState(event) {
+  togglePlayState() {
     if (this.state.isRunning) {
       this.stopGameLoop();
     } else {
@@ -69,7 +69,7 @@ class Game extends Component {
 
   render() {
     return (
-      <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : '' }`} onClick={ this.togglePlayState }>
+      <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : ''}`} onClick={ this.togglePlayState }>
         <Playfield frames={ this.state.frames } />
       </div>
     );

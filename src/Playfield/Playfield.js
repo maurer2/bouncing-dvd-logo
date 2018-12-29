@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './Playfield.css';
 import Logo from '../Logo/Logo';
 
@@ -18,7 +19,8 @@ class Playfield extends Component {
     this.updatePosition = this.updatePosition.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
+  /* eslint-disable camelcase */
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const isNewFrame = (nextProps.frames === 60);
 
     if (isNewFrame) {
@@ -60,7 +62,9 @@ class Playfield extends Component {
   }
 
   updatePosition() {
-    const { positionX, positionY, changeDeltaX, changeDeltaY } = this.state;
+    const {
+      positionX, positionY, changeDeltaX, changeDeltaY,
+    } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
@@ -81,26 +85,29 @@ class Playfield extends Component {
       newChangeDeltaY = changeDeltaY * -1;
     }
 
-
-
     const newPosionX = positionX + newChangeDeltaX;
     const newPosionY = positionY + newChangeDeltaY;
 
-    this.setState(previousState => ({
+    this.setState({
       positionX: newPosionX,
       positionY: newPosionY,
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
-    }));
+    });
   }
 
   render() {
     return (
-      <div className="playfield" ref= {element => this.playfield = element }>
-        <Logo positionX={ this.state.positionX } positionY={ this.state.positionY } width={ this.state.width } />
+      <div className="playfield" ref={ (element) => { this.playfield = element; } }>
+        <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
+          width={ this.state.width } />
       </div>
     );
   }
 }
+
+Playfield.propTypes = {
+  frames: PropTypes.number,
+};
 
 export default Playfield;

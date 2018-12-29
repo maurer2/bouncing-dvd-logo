@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './Logo.css';
 import { ReactComponent as CatSVG } from './cat.svg';
 
@@ -10,11 +11,10 @@ class Logo extends Component {
   }
 
   getStyle() {
-
     return {
-      // transform: `translate(calc(-50% + ${this.props.positionX}vw), calc(-50% + ${this.props.positionY}vw))`,
+      // transform: `translate(calc(-50% + ${this.props.positionX}vw), 0)`,
       transform: `translate(${this.props.positionX}px, ${this.props.positionY}px)`,
-      width: `${this.props.width}px`
+      width: `${this.props.width}px`,
     };
   }
 
@@ -24,5 +24,11 @@ class Logo extends Component {
     );
   }
 }
+
+Logo.propTypes = {
+  positionX: PropTypes.number,
+  positionY: PropTypes.number,
+  width: PropTypes.number,
+};
 
 export default Logo;
