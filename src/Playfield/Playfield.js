@@ -8,12 +8,12 @@ class Playfield extends Component {
     super(props);
 
     this.state = {
-      positionX: 50,
+      positionX: 720,
       positionY: 50,
       width: 50,
       height: 50,
-      changeDeltaX: 50,
-      changeDeltaY: 50,
+      changeDeltaX: 2,
+      changeDeltaY: 2,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -21,9 +21,7 @@ class Playfield extends Component {
 
   /* eslint-disable camelcase */
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const isNewFrame = (nextProps.frames === 60);
-
-    if (isNewFrame) {
+    if (nextProps.frames !== this.props.frames) {
       this.updatePosition();
     }
   }
@@ -74,7 +72,7 @@ class Playfield extends Component {
     }
 
     if (this.isPastRightBoundary()) {
-      newChangeDeltaX = changeDeltaX * -1;
+      newChangeDeltaX = Math.abs(changeDeltaX) * -1;
     }
 
     if (this.isPastTopBoundary()) {
@@ -82,7 +80,7 @@ class Playfield extends Component {
     }
 
     if (this.isPastBottomBoundary()) {
-      newChangeDeltaY = changeDeltaY * -1;
+      newChangeDeltaY = Math.abs(changeDeltaY) * -1;
     }
 
     const newPosionX = positionX + newChangeDeltaX;
