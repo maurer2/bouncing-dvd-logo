@@ -8,8 +8,8 @@ class Playfield extends Component {
     super(props);
 
     this.state = {
-      width: 50,
-      height: 50,
+      width: 150,
+      height: 150,
       changeDeltaX: -2,
       changeDeltaY: 2,
     };
