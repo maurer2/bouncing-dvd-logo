@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './Playfield.css';
+import random from 'lodash.random';
 import Logo from '../Logo/Logo';
 
 class Playfield extends Component {
@@ -10,7 +11,7 @@ class Playfield extends Component {
     this.state = {
       width: 150,
       height: 150,
-      changeDeltaX: -2,
+      changeDeltaX: 2,
       changeDeltaY: 2,
       colors: ['white', 'red', 'green', 'blue', 'yellow'],
       fillColor: 'white',
@@ -33,15 +34,10 @@ class Playfield extends Component {
       width, height, changeDeltaX, changeDeltaY,
     } = this.state;
 
-    const randomPositionX = Math.floor(Math.random() * (widthBB - width + 1));
-    const randomPositionY = Math.floor(Math.random() * (heightBB - height + 1));
-
-    const randomChangeDeltaX = Math.round(Math.random()) === 0
-      ? -1 * changeDeltaX
-      : +1 * changeDeltaX;
-    const randomChangeDeltaY = Math.round(Math.random()) === 0
-      ? -1 * changeDeltaY
-      : +1 * changeDeltaY;
+    const randomPositionX = random(widthBB - width);
+    const randomPositionY = random(heightBB - height);
+    const randomChangeDeltaX = random(1) === 0 ? -1 * changeDeltaX : +1 * changeDeltaX;
+    const randomChangeDeltaY = random(1) === 0 ? -1 * changeDeltaY : +1 * changeDeltaY;
 
     this.setState({
       playfieldWidth: widthBB,
@@ -106,7 +102,7 @@ class Playfield extends Component {
 
     const newPosionX = positionX + newChangeDeltaX;
     const newPosionY = positionY + newChangeDeltaY;
-    const newFillColor = (hasBoundaryContact === true) ? this.getColor() : this.state.fillColor;
+    const newFillColor = hasBoundaryContact ? this.getColor() : this.state.fillColor;
 
     this.setState({
       positionX: newPosionX,
@@ -119,7 +115,7 @@ class Playfield extends Component {
 
   getColor() {
     const newColors = this.state.colors.filter(color => color !== this.state.fillColor);
-    const randomColorIndex = Math.floor(Math.random() * (newColors.length));
+    const randomColorIndex = random(newColors.length);
 
     return newColors[randomColorIndex];
   }
