@@ -12,9 +12,9 @@ class Logo extends Component {
 
   getStyle() {
     return {
-      // transform: `translate(calc(-50% + ${this.props.positionX}vw), 0)`,
       transform: `translate(${this.props.positionX}px, ${this.props.positionY}px)`,
       width: `${this.props.width}px`,
+      color: `${this.props.color}`,
     };
   }
 
@@ -29,6 +29,7 @@ Logo.propTypes = {
   positionX: PropTypes.number,
   positionY: PropTypes.number,
   width: PropTypes.number,
+  color: PropTypes.string,
 };
 
 export default Logo;

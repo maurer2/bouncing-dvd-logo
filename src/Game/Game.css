@@ -2,9 +2,9 @@
   width: 100vw;
   height: 100vh;
   filter: opacity(1);
-  transition: filter 0.25s;
+  transition: filter 0.1s ease-in-out;
 }
 
 .game--is-paused {
-  filter: opacity(0.25);
+  filter: opacity(0.1);
 }

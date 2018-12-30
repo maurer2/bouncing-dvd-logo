@@ -12,9 +12,12 @@ class Playfield extends Component {
       height: 150,
       changeDeltaX: -2,
       changeDeltaY: 2,
+      colors: ['white', 'red', 'green', 'blue', 'yellow'],
+      fillColor: 'white',
     };
 
     this.updatePosition = this.updatePosition.bind(this);
+    this.getColor = this.getColor.bind(this);
   }
 
   /* eslint-disable camelcase */
@@ -49,7 +52,6 @@ class Playfield extends Component {
       changeDeltaY: randomChangeDeltaY,
     });
   }
-
 
   isPastLeftBoundary() {
     const { positionX } = this.state;
@@ -99,22 +101,34 @@ class Playfield extends Component {
       newChangeDeltaY = Math.abs(changeDeltaY) * -1;
     }
 
+    const hasBoundaryContact = this.isPastLeftBoundary() || this.isPastRightBoundary()
+                                || this.isPastTopBoundary() || this.isPastBottomBoundary();
+
     const newPosionX = positionX + newChangeDeltaX;
     const newPosionY = positionY + newChangeDeltaY;
+    const newFillColor = (hasBoundaryContact === true) ? this.getColor() : this.state.fillColor;
 
     this.setState({
       positionX: newPosionX,
       positionY: newPosionY,
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
+      fillColor: newFillColor,
     });
+  }
+
+  getColor() {
+    const newColors = this.state.colors.filter(color => color !== this.state.fillColor);
+    const randomColorIndex = Math.floor(Math.random() * (newColors.length));
+
+    return newColors[randomColorIndex];
   }
 
   render() {
     return (
       <div className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
-          width={ this.state.width } />
+          width={ this.state.width } color={ this.state.fillColor } />
       </div>
     );
   }
