@@ -143,9 +143,7 @@ class Playfield extends Component {
       <div className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
           width={ this.state.width } color={ this.state.fillColor } />
-        {
-          this.state.soundIsPlaying && <Sound />
-        }
+        <Sound playState={ this.state.soundIsPlaying } />
       </div>
     );
   }
