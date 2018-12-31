@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './Playfield.css';
 import random from 'lodash.random';
 import Logo from '../Logo/Logo';
+import Sound from '../Sound/Sound';
 
 class Playfield extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class Playfield extends Component {
       changeDeltaY: 2,
       colors: ['white', 'red', 'green', 'blue', 'yellow'],
       fillColor: 'white',
+      soundIsPlaying: false,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -104,6 +106,10 @@ class Playfield extends Component {
     const newPosionY = positionY + newChangeDeltaY;
     const newFillColor = hasBoundaryContact ? this.getColor() : this.state.fillColor;
 
+    if (this.state.soundIsPlaying === false && hasBoundaryContact) {
+      this.enableSound();
+    }
+
     this.setState({
       positionX: newPosionX,
       positionY: newPosionY,
@@ -120,11 +126,26 @@ class Playfield extends Component {
     return newColors[randomColorIndex];
   }
 
+  enableSound() {
+    this.setState({
+      soundIsPlaying: true,
+    });
+
+    window.setTimeout(() => {
+      this.setState({
+        soundIsPlaying: false,
+      });
+    }, 1000);
+  }
+
   render() {
     return (
       <div className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
           width={ this.state.width } color={ this.state.fillColor } />
+        {
+          this.state.soundIsPlaying && <Sound />
+        }
       </div>
     );
   }
