@@ -5,7 +5,10 @@
     "react"
   ],
   "rules": {
-    "react/jsx-uses-react": "error"
+    "react/jsx-uses-react": "error",
+    "object-curly-newline": ["error", {
+      "ObjectPattern": "never"
+    }]
   },
   "globals": {
     "document": true,

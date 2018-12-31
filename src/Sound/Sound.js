@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import soundFile from './soundFile.wav';
 
-const Sound = (props) => {
-  if (!props.playState) {
+const Sound = ({ playState }) => {
+  if (!playState) {
     return null;
   }
 
