@@ -121,7 +121,7 @@ class Playfield extends Component {
 
   getColor() {
     const newColors = this.state.colors.filter(color => color !== this.state.fillColor);
-    const randomColorIndex = random(newColors.length);
+    const randomColorIndex = random(newColors.length - 1);
 
     return newColors[randomColorIndex];
   }
