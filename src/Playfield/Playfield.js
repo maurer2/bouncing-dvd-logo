@@ -16,7 +16,7 @@ class Playfield extends Component {
       changeDeltaY: 2,
       colors: ['white', 'red', 'green', 'blue', 'yellow'],
       fillColor: 'white',
-      soundIsPlaying: false,
+      playSound: false,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -32,9 +32,7 @@ class Playfield extends Component {
 
   componentDidMount() {
     const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
-    const {
-      width, height, changeDeltaX, changeDeltaY,
-    } = this.state;
+    const { width, height, changeDeltaX, changeDeltaY } = this.state;
 
     const randomPositionX = random(widthBB - width);
     const randomPositionY = random(heightBB - height);
@@ -76,9 +74,7 @@ class Playfield extends Component {
   }
 
   updatePosition() {
-    const {
-      positionX, positionY, changeDeltaX, changeDeltaY,
-    } = this.state;
+    const { positionX, positionY, changeDeltaX, changeDeltaY } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
@@ -106,16 +102,13 @@ class Playfield extends Component {
     const newPosionY = positionY + newChangeDeltaY;
     const newFillColor = hasBoundaryContact ? this.getColor() : this.state.fillColor;
 
-    if (this.state.soundIsPlaying === false && hasBoundaryContact) {
-      this.enableSound();
-    }
-
     this.setState({
       positionX: newPosionX,
       positionY: newPosionY,
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
       fillColor: newFillColor,
+      playSound: hasBoundaryContact,
     });
   }
 
@@ -126,24 +119,12 @@ class Playfield extends Component {
     return newColors[randomColorIndex];
   }
 
-  enableSound() {
-    this.setState({
-      soundIsPlaying: true,
-    });
-
-    window.setTimeout(() => {
-      this.setState({
-        soundIsPlaying: false,
-      });
-    }, 1000);
-  }
-
   render() {
     return (
       <div className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
           width={ this.state.width } color={ this.state.fillColor } />
-        <Sound playState={ this.state.soundIsPlaying } />
+        <Sound playSound={ this.state.playSound } />
       </div>
     );
   }
