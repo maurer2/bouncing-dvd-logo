@@ -1,25 +1,52 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import random from 'lodash.random';
 import './Logo.css';
 import { ReactComponent as CatSVG } from './cat.svg';
 
-const Logo = ({ positionX, positionY, width, color }) => {
-  const getStyle = () => ({
-    transform: `translate(${positionX}px, ${positionY}px)`,
-    width: `${width}px`,
-    color: `${color}`,
-  });
+class Logo extends Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <CatSVG className="logo" style= { getStyle() } />
-  );
-};
+    this.state = {
+      color: this.props.colors[0],
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.changeColors && !prevProps.changeColors) {
+      this.cycleColor();
+    }
+  }
+
+  getStyle() {
+    return {
+      transform: `translate(${this.props.positionX}px, ${this.props.positionY}px)`,
+      width: `${this.props.width}px`,
+      color: `${this.state.color}`,
+    };
+  }
+
+  cycleColor() {
+    const newColors = this.props.colors.filter(color => color !== this.state.color);
+    const randomColorIndex = random(newColors.length - 1);
+
+    this.setState({ color: newColors[randomColorIndex] });
+  }
+
+  render() {
+    return (
+      <CatSVG className="logo" style={ this.getStyle() } />
+    );
+  }
+}
 
 Logo.propTypes = {
   positionX: PropTypes.number,
   positionY: PropTypes.number,
   width: PropTypes.number,
-  color: PropTypes.string,
+  colors: PropTypes.arrayOf(PropTypes.string),
+  changeColors: PropTypes.bool,
 };
 
 export default Logo;

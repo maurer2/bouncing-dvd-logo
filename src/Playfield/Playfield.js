@@ -15,12 +15,10 @@ class Playfield extends Component {
       changeDeltaX: 2,
       changeDeltaY: 2,
       colors: ['white', 'red', 'green', 'blue', 'yellow'],
-      fillColor: 'white',
-      playSound: false,
+      soundIsDisabled: true,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
-    this.getColor = this.getColor.bind(this);
   }
 
   /* eslint-disable camelcase */
@@ -36,8 +34,8 @@ class Playfield extends Component {
 
     const randomPositionX = random(widthBB - width);
     const randomPositionY = random(heightBB - height);
-    const randomChangeDeltaX = random(1) === 0 ? -1 * changeDeltaX : +1 * changeDeltaX;
-    const randomChangeDeltaY = random(1) === 0 ? -1 * changeDeltaY : +1 * changeDeltaY;
+    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
+    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
 
     this.setState({
       playfieldWidth: widthBB,
@@ -73,8 +71,13 @@ class Playfield extends Component {
     return positionY >= (playfieldHeight - height);
   }
 
+  isCollidingWithBoundaries() {
+    return this.isPastLeftBoundary() || this.isPastRightBoundary()
+           || this.isPastTopBoundary() || this.isPastBottomBoundary();
+  }
+
   updatePosition() {
-    const { positionX, positionY, changeDeltaX, changeDeltaY } = this.state;
+    const { changeDeltaX, changeDeltaY } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
@@ -95,36 +98,21 @@ class Playfield extends Component {
       newChangeDeltaY = Math.abs(changeDeltaY) * -1;
     }
 
-    const hasBoundaryContact = this.isPastLeftBoundary() || this.isPastRightBoundary()
-                                || this.isPastTopBoundary() || this.isPastBottomBoundary();
-
-    const newPosionX = positionX + newChangeDeltaX;
-    const newPosionY = positionY + newChangeDeltaY;
-    const newFillColor = hasBoundaryContact ? this.getColor() : this.state.fillColor;
-
-    this.setState({
-      positionX: newPosionX,
-      positionY: newPosionY,
+    this.setState(previousState => ({
+      positionX: previousState.positionX + newChangeDeltaX,
+      positionY: previousState.positionY + newChangeDeltaY,
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
-      fillColor: newFillColor,
-      playSound: hasBoundaryContact,
-    });
-  }
-
-  getColor() {
-    const newColors = this.state.colors.filter(color => color !== this.state.fillColor);
-    const randomColorIndex = random(newColors.length - 1);
-
-    return newColors[randomColorIndex];
+    }));
   }
 
   render() {
     return (
       <div className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
-          width={ this.state.width } color={ this.state.fillColor } />
-        <Sound playSound={ this.state.playSound } />
+          width={ this.state.width } colors={ this.state.colors }
+          changeColors={ this.isCollidingWithBoundaries() } />
+        <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
       </div>
     );
   }
