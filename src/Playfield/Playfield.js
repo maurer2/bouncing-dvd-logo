@@ -14,37 +14,34 @@ class Playfield extends Component {
       height: 150,
       changeDeltaX: 2,
       changeDeltaY: 2,
-      colors: ['white', 'red', 'green', 'blue', 'yellow'],
+      colors: ['white', 'red', 'green', 'blue', 'yellow', 'purple', 'gray'],
       soundIsDisabled: true,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
   }
 
-  /* eslint-disable camelcase */
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.frames !== this.props.frames) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.frames !== this.props.frames) {
       this.updatePosition();
     }
   }
 
   componentDidMount() {
     const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
-    const { width, height, changeDeltaX, changeDeltaY } = this.state;
+    const { changeDeltaX, changeDeltaY } = this.state;
 
-    const randomPositionX = random(widthBB - width);
-    const randomPositionY = random(heightBB - height);
     const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
     const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
 
-    this.setState({
+    this.setState(previousState => ({
       playfieldWidth: widthBB,
       playfieldHeight: heightBB,
-      positionX: randomPositionX,
-      positionY: randomPositionY,
+      positionX: random(widthBB - previousState.width),
+      positionY: random(heightBB - previousState.height),
       changeDeltaX: randomChangeDeltaX,
       changeDeltaY: randomChangeDeltaY,
-    });
+    }));
   }
 
   isPastLeftBoundary() {

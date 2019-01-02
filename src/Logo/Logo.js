@@ -21,7 +21,7 @@ class Logo extends Component {
 
   getStyle() {
     return {
-      transform: `translate(${this.props.positionX}px, ${this.props.positionY}px)`,
+      transform: `translateZ(0) translate(${this.props.positionX}px, ${this.props.positionY}px)`,
       width: `${this.props.width}px`,
       color: `${this.state.color}`,
     };

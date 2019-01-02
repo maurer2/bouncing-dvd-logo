@@ -6,5 +6,5 @@
 }
 
 .game--is-paused {
-  filter: opacity(0.1);
+  filter: opacity(0.25);
 }
