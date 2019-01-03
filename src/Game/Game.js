@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Game.css';
 import uid from 'uid';
+import debounce from 'lodash.debounce';
 import Playfield from '../Playfield/Playfield';
 
 class Game extends Component {
@@ -12,10 +13,16 @@ class Game extends Component {
       isRunning: false,
       framerate: 60,
       key: uid(6), // needed for reinitializing
+      isFirstLoad: true,
     };
 
     this.stopGameLoop = this.stopGameLoop.bind(this);
     this.reset = this.reset.bind(this);
+    this.handleResize = debounce(this.handleResize.bind(this), 500);
+  }
+
+  handleResize() {
+    this.reset();
   }
 
   componentDidMount() {
@@ -29,8 +36,14 @@ class Game extends Component {
     const gameResizeObserver = new window.ResizeObserver((entries) => {
       const gameHasResized = entries.some(entry => entry.target === this.wapper);
 
+      if (this.state.isFirstLoad) {
+        this.setState({ isFirstLoad: false });
+
+        return;
+      }
+
       if (gameHasResized) {
-        this.reset();
+        this.handleResize();
       }
     });
 
@@ -89,7 +102,7 @@ class Game extends Component {
   render() {
     return (
       <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : ''}`}
-        ref={ (element) => { this.wapper = element; }} onClick={ this.reset } >
+        ref={ (element) => { this.wapper = element; }} onClick={ this.debounceTest } >
         <Playfield frames={ this.state.frames } key={ this.state.key } />
       </div>
     );
