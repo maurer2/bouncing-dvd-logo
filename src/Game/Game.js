@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Game.css';
-import Playfield from '../Playfield/Playfield';
 import uid from 'uid';
+import Playfield from '../Playfield/Playfield';
 
 class Game extends Component {
   constructor(props) {
@@ -15,11 +15,26 @@ class Game extends Component {
     };
 
     this.stopGameLoop = this.stopGameLoop.bind(this);
-    this.resetPlayfield = this.resetPlayfield.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
     this.startGameLoop();
+
+    if (window.ResizeObserver === undefined) {
+      return;
+    }
+
+    // Register observer
+    const gameResizeObserver = new window.ResizeObserver((entries) => {
+      const gameHasResized = entries.some(entry => entry.target === this.wapper);
+
+      if (gameHasResized) {
+        this.reset();
+      }
+    });
+
+    gameResizeObserver.observe(this.wapper);
   }
 
   componentWillUnmount() {
@@ -67,13 +82,14 @@ class Game extends Component {
     this.startGameLoop();
   }
 
-  resetPlayfield() {
+  reset() {
     this.setState({ key: uid(6) });
   }
 
   render() {
     return (
-      <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : ''}`} onClick={ this.resetPlayfield }>
+      <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : ''}`}
+        ref={ (element) => { this.wapper = element; }} onClick={ this.reset } >
         <Playfield frames={ this.state.frames } key={ this.state.key } />
       </div>
     );
