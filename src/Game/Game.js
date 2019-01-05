@@ -18,6 +18,7 @@ class Game extends Component {
 
     this.stopGameLoop = this.stopGameLoop.bind(this);
     this.reset = this.reset.bind(this);
+    this.togglePlayState = this.togglePlayState.bind(this);
     this.handleResize = debounce(this.handleResize.bind(this), 500);
   }
 
@@ -102,7 +103,7 @@ class Game extends Component {
   render() {
     return (
       <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : ''}`}
-        ref={ (element) => { this.wapper = element; }} onClick={ this.debounceTest } >
+        ref={ (element) => { this.wapper = element; }} onClick={ this.togglePlayState } >
         <Playfield frames={ this.state.frames } key={ this.state.key } />
       </div>
     );
