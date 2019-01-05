@@ -12,19 +12,15 @@ class Game extends Component {
       frames: 1,
       isRunning: false,
       framerate: 60,
-      key: uid(6), // needed for reinitializing
+      key: uid(4), // needed for reinitializing
       isFirstLoad: true,
-      gameLoop: -1,
+      gameLoopID: -1,
     };
 
     this.stopGameLoop = this.stopGameLoop.bind(this);
     this.reset = this.reset.bind(this);
     this.togglePlayState = this.togglePlayState.bind(this);
     this.handleResize = debounce(this.handleResize.bind(this), 500);
-  }
-
-  handleResize() {
-    this.reset();
   }
 
   componentDidMount() {
@@ -57,20 +53,20 @@ class Game extends Component {
   }
 
   startGameLoop() {
-    const gameLoop = setInterval(() => this.updateCounter(),
+    const gameLoopID = setInterval(() => this.updateCounter(),
       Math.floor(1000 / this.state.framerate));
 
     this.setState({
       isRunning: true,
-      gameLoop,
+      gameLoopID,
     });
   }
 
   stopGameLoop() {
-    clearInterval(this.state.gameLoop);
+    clearInterval(this.state.gameLoopID);
 
     this.setState({
-      gameLoop: null,
+      gameLoopID: -1,
       isRunning: false,
     });
   }
@@ -97,7 +93,11 @@ class Game extends Component {
   }
 
   reset() {
-    this.setState({ key: uid(6) });
+    this.setState({ key: uid(4) });
+  }
+
+  handleResize() {
+    this.reset();
   }
 
   render() {

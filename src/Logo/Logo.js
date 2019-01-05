@@ -21,7 +21,7 @@ class Logo extends Component {
 
   getStyle() {
     return {
-      transform: `translate3d(${Math.round(this.props.positionX)}px, ${Math.round(this.props.positionY)}px, 0)`,
+      transform: `translate(${Math.round(this.props.positionX)}px, ${Math.round(this.props.positionY)}px)`,
       width: `${this.props.width}px`,
       height: `${this.props.height}px`,
       color: `${this.state.color}`,
