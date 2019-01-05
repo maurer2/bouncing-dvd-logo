@@ -21,8 +21,9 @@ class Logo extends Component {
 
   getStyle() {
     return {
-      transform: `translateZ(0) translate(${this.props.positionX}px, ${this.props.positionY}px)`,
+      transform: `translate3d(${Math.round(this.props.positionX)}px, ${Math.round(this.props.positionY)}px, 0)`,
       width: `${this.props.width}px`,
+      height: `${this.props.height}px`,
       color: `${this.state.color}`,
     };
   }
@@ -45,6 +46,7 @@ Logo.propTypes = {
   positionX: PropTypes.number,
   positionY: PropTypes.number,
   width: PropTypes.number,
+  height: PropTypes.number,
   colors: PropTypes.arrayOf(PropTypes.string),
   changeColors: PropTypes.bool,
 };

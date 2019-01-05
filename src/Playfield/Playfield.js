@@ -11,10 +11,10 @@ class Playfield extends Component {
 
     this.state = {
       width: 150,
-      height: 150,
-      changeDeltaX: 2,
-      changeDeltaY: 2,
-      colors: ['white', 'red', 'green', 'blue', 'yellow', 'purple', 'gray'],
+      height: 138, // AR 0,92
+      changeDeltaX: 1,
+      changeDeltaY: 1,
+      colors: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: true,
     };
 
@@ -107,7 +107,7 @@ class Playfield extends Component {
     return (
       <div className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
-          width={ this.state.width } colors={ this.state.colors }
+          width={ this.state.width } height={ this.state.height } colors={ this.state.colors }
           changeColors={ this.isCollidingWithBoundaries() } />
         <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
       </div>

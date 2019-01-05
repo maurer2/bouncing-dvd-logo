@@ -9,11 +9,12 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      frames: 0,
+      frames: 1,
       isRunning: false,
       framerate: 60,
       key: uid(6), // needed for reinitializing
       isFirstLoad: true,
+      gameLoop: -1,
     };
 
     this.stopGameLoop = this.stopGameLoop.bind(this);
@@ -75,11 +76,10 @@ class Game extends Component {
   }
 
   updateCounter() {
-    const currentFrame = this.state.frames;
-    const isNewFrame = (currentFrame !== 0 && (currentFrame % 60 === 0));
+    const isNewFrame = this.state.frames % this.state.framerate === 0;
 
     if (isNewFrame) {
-      this.setState({ frames: 0 });
+      this.setState({ frames: 1 });
       return;
     }
 
