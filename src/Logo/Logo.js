@@ -8,9 +8,9 @@ import styled from 'styled-components';
 
 import { ReactComponent as CatLogo } from './cat.svg';
 
-const LogoElement = styled(CatLogo).attrs({
+const LogoElement = styled.div.attrs({
   style: props => ({
-    transform: `translate(${Math.round(props.positionx)}px, ${Math.round(props.positiony)}px)`,
+    transform: `translate(${Math.round(props.positionX)}px, ${Math.round(props.positionY)}px)`,
   }),
 })`
   position: absolute;
@@ -52,8 +52,9 @@ class Logo extends Component {
 
   render() {
     return (
-      <LogoElement positionx={ this.props.positionX } positiony={ this.props.positionY }
+      <LogoElement positionX={ this.props.positionX } positionY={ this.props.positionY }
         width={ this.props.width } height={ this.props.height } color= { this.state.color }>
+          <CatLogo />
       </LogoElement>
     );
   }
