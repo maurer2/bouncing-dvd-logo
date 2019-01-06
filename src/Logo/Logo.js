@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
-import './Logo.css';
-import { ReactComponent as CatSVG } from './cat.svg';
+import styled from 'styled-components';
+
+// import './Logo.css';
+
+import { ReactComponent as CatLogo } from './cat.svg';
+
+const LogoELement = styled(CatLogo)`
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 0;
+  left: 0;
+  color: #ffffff;
+  will-change: transform;
+`;
 
 class Logo extends Component {
   constructor(props) {
@@ -37,7 +51,7 @@ class Logo extends Component {
 
   render() {
     return (
-      <CatSVG className="logo" style={ this.getStyle() } />
+      <LogoELement className="logo" style={ this.getStyle() } />
     );
   }
 }

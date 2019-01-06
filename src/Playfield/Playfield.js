@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './Playfield.css';
+
 import random from 'lodash.random';
+import styled from 'styled-components';
+
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
+
+// import './Playfield.css';
+
+const PlayfieldWrapper = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+`;
 
 class Playfield extends Component {
   constructor(props) {
@@ -105,12 +116,12 @@ class Playfield extends Component {
 
   render() {
     return (
-      <div className="playfield" ref={ (element) => { this.playfield = element; } }>
+      <PlayfieldWrapper className="playfield" ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
           width={ this.state.width } height={ this.state.height } colors={ this.state.colors }
           changeColors={ this.isCollidingWithBoundaries() } />
         <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
-      </div>
+      </PlayfieldWrapper>
     );
   }
 }

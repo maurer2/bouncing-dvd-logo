@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-import './Game.css';
+
 import uid from 'uid';
 import debounce from 'lodash.debounce';
+import styled from 'styled-components';
+
 import Playfield from '../Playfield/Playfield';
+
+// import './Game.css';
+
+const GameWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  transition: filter 0.25s ease-in-out;
+
+  ${props => (props.isPaused ? 'filter: opacity(0.1)' : 'filter: opacity(1);')};
+`;
 
 class Game extends Component {
   constructor(props) {
@@ -102,10 +114,10 @@ class Game extends Component {
 
   render() {
     return (
-      <div className={ `game ${!this.state.isRunning ? 'game--is-paused' : ''}`}
-        ref={ (element) => { this.wapper = element; }} onClick={ this.togglePlayState } >
+      <GameWrapper isPaused={ !this.state.isRunning } ref={ (element) => { this.wapper = element; }}
+        onClick={ this.togglePlayState } >
         <Playfield frames={ this.state.frames } key={ this.state.key } />
-      </div>
+      </GameWrapper>
     );
   }
 }
