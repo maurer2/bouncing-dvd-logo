@@ -116,7 +116,7 @@ class Playfield extends Component {
 
   render() {
     return (
-      <PlayfieldWrapper className="playfield" ref={ (element) => { this.playfield = element; } }>
+      <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
           width={ this.state.width } height={ this.state.height } colors={ this.state.colors }
           changeColors={ this.isCollidingWithBoundaries() } />
