@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import uid from 'uid';
 import debounce from 'lodash.debounce';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 import Playfield from '../Playfield/Playfield';
 
