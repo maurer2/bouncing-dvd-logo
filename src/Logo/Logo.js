@@ -17,9 +17,9 @@ const LogoElement = styled.div.attrs({
   top: 0;
   left: 0;
   will-change: transform;
-  width: ${props => `${props.width}px`};
-  height: ${props => `${props.height}px`};
-  color: ${props => `${props.color}`};
+  width: ${props => `${props.widthValue}px`};
+  height: ${props => `${props.heightValue}px`};
+  color: ${props => `${props.colorValue}`};
 `;
 
 class Logo extends Component {
@@ -37,12 +37,6 @@ class Logo extends Component {
     }
   }
 
-  getStyle() {
-    return {
-      transform: `translate(${Math.round(this.props.positionX)}px, ${Math.round(this.props.positionY)}px)`,
-    };
-  }
-
   cycleColor() {
     const newColors = this.props.colors.filter(color => color !== this.state.color);
     const randomColorIndex = random(newColors.length - 1);
@@ -53,7 +47,8 @@ class Logo extends Component {
   render() {
     return (
       <LogoElement positionX={ this.props.positionX } positionY={ this.props.positionY }
-        width={ this.props.width } height={ this.props.height } color= { this.state.color }>
+        widthValue={ this.props.width } heightValue={ this.props.height }
+        colorValue= { this.state.color }>
           <CatLogo />
       </LogoElement>
     );
