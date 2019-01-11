@@ -7,8 +7,6 @@ import styled from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 
-// import './Playfield.css';
-
 const PlayfieldWrapper = styled.div`
   position: relative;
   height: 100%;
@@ -131,7 +129,8 @@ class Playfield extends Component {
       <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
         <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
           width={ this.state.width } height={ this.state.height } colors={ this.state.colors }
-          changeColors={ this.isCollidingWithBoundaries() } />
+          changeColors={ this.isCollidingWithBoundaries() }
+        />
         <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
       </PlayfieldWrapper>
     );

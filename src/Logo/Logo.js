@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import random from 'lodash.random';
 import styled from 'styled-components/macro';
 
-// import './Logo.css';
-
 import { ReactComponent as CatLogo } from './cat.svg';
 
 const LogoElement = styled.div.attrs({

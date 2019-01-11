@@ -5,8 +5,6 @@ import { createGlobalStyle } from 'styled-components';
 
 import Game from './Game/Game';
 
-// import './index.css';
-
 const GlobalStyles = createGlobalStyle`
   *,
   *:before,
@@ -34,10 +32,10 @@ const GlobalStyles = createGlobalStyle`
 class App extends Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <GlobalStyles />
         <Game />
-      </React.Fragment>
+      </>
     );
   }
 }

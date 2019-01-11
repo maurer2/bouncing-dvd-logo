@@ -7,14 +7,12 @@ import { Loop } from 'react-game-kit';
 
 import Playfield from '../Playfield/Playfield';
 
-// import './Game.css';
-
 const GameWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   transition: filter 0.25s ease-in-out;
 
-  ${props => (props.isPaused ? 'filter: opacity(0.1)' : 'filter: opacity(1)')};
+  ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
 
 class Game extends Component {
@@ -27,7 +25,6 @@ class Game extends Component {
       isFirstLoad: true,
     };
 
-    this.stopGameLoop = this.stopGameLoop.bind(this);
     this.reset = this.reset.bind(this);
     this.togglePlayState = this.togglePlayState.bind(this);
     this.handleResize = debounce(this.handleResize.bind(this), 500);
@@ -56,22 +53,8 @@ class Game extends Component {
     gameResizeObserver.observe(this.wapper);
   }
 
-  startGameLoop() {
-    this.setState({ isRunning: true });
-  }
-
-  stopGameLoop() {
-    this.setState({ isRunning: false });
-  }
-
   togglePlayState() {
-    if (this.state.isRunning) {
-      this.stopGameLoop();
-
-      return;
-    }
-
-    this.startGameLoop();
+    this.setState(previousState => ({ isRunning: !previousState.isRunning }));
   }
 
   reset() {
@@ -85,8 +68,8 @@ class Game extends Component {
   render() {
     return (
       <Loop>
-        <GameWrapper isPaused={ !this.state.isRunning }
-          ref={ (element) => { this.wapper = element; }} onClick={ this.togglePlayState }
+        <GameWrapper isPaused={ !this.state.isRunning } onClick={ this.togglePlayState }
+          ref={ (element) => { this.wapper = element; }}
         >
           <Playfield isPaused={ !this.state.isRunning } key={ this.state.key } />
         </GameWrapper>
