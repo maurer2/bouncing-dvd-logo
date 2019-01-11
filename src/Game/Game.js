@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import uid from 'uid';
 import debounce from 'lodash.debounce';
 import styled from 'styled-components/macro';
+import { Loop } from 'react-game-kit';
 
 import Playfield from '../Playfield/Playfield';
 
@@ -13,7 +14,7 @@ const GameWrapper = styled.div`
   height: 100vh;
   transition: filter 0.25s ease-in-out;
 
-  ${props => (props.isPaused ? 'filter: opacity(0.1)' : 'filter: opacity(1);')};
+  ${props => (props.isPaused ? 'filter: opacity(0.1)' : 'filter: opacity(1)')};
 `;
 
 class Game extends Component {
@@ -21,12 +22,9 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      frames: 1,
-      isRunning: false,
-      framerate: 60,
+      isRunning: true,
       key: uid(4), // needed for reinitializing
       isFirstLoad: true,
-      gameLoopID: -1,
     };
 
     this.stopGameLoop = this.stopGameLoop.bind(this);
@@ -36,8 +34,6 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    this.startGameLoop();
-
     if (window.ResizeObserver === undefined) {
       return;
     }
@@ -60,38 +56,12 @@ class Game extends Component {
     gameResizeObserver.observe(this.wapper);
   }
 
-  componentWillUnmount() {
-    this.stopGameLoop();
-  }
-
   startGameLoop() {
-    const gameLoopID = setInterval(() => this.updateCounter(),
-      Math.floor(1000 / this.state.framerate));
-
-    this.setState({
-      isRunning: true,
-      gameLoopID,
-    });
+    this.setState({ isRunning: true });
   }
 
   stopGameLoop() {
-    clearInterval(this.state.gameLoopID);
-
-    this.setState({
-      gameLoopID: -1,
-      isRunning: false,
-    });
-  }
-
-  updateCounter() {
-    const isNewFrame = this.state.frames % this.state.framerate === 0;
-
-    if (isNewFrame) {
-      this.setState({ frames: 1 });
-      return;
-    }
-
-    this.setState(previousState => ({ frames: previousState.frames + 1 }));
+    this.setState({ isRunning: false });
   }
 
   togglePlayState() {
@@ -114,10 +84,13 @@ class Game extends Component {
 
   render() {
     return (
-      <GameWrapper isPaused={ !this.state.isRunning } ref={ (element) => { this.wapper = element; }}
-        onClick={ this.togglePlayState } >
-        <Playfield frames={ this.state.frames } key={ this.state.key } />
-      </GameWrapper>
+      <Loop>
+        <GameWrapper isPaused={ !this.state.isRunning }
+          ref={ (element) => { this.wapper = element; }} onClick={ this.togglePlayState }
+        >
+          <Playfield isPaused={ !this.state.isRunning } key={ this.state.key } />
+        </GameWrapper>
+      </Loop>
     );
   }
 }

@@ -1389,7 +1389,6 @@ babel-plugin-macros@2.4.2:
 babel-plugin-macros@^2.4.4:
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/babel-plugin-macros/-/babel-plugin-macros-2.4.4.tgz#d7bb55ba6473094ac0e1087fbceb062ebfd2337f"
-  integrity sha512-PODLcF8vhB2eC0zZ5s67sBQPLlT0YdINd4/2erTgtyVG5q5cLfsxtSmP8wleeFDH8SZpeLXAStqqFOyfIqccqg==
   dependencies:
     cosmiconfig "^5.0.5"
     resolve "^1.8.1"
@@ -5310,6 +5309,10 @@ math-random@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/math-random/-/math-random-1.0.1.tgz#8b3aac588b8a66e4975e3cdea67f7bb329601fac"
 
+matter-js@^0.14.0:
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/matter-js/-/matter-js-0.14.2.tgz#8169af9e06fdc356ba9e72b49624eb329839883b"
+
 md5.js@^1.3.4:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/md5.js/-/md5.js-1.3.5.tgz#b5d07b8e3216e3e27cd728d72f70d1e6a342005f"
@@ -7028,6 +7031,12 @@ react-dom@^16.7.0:
 react-error-overlay@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.1.tgz#56f0439f001ff3588da0f479a86482ccb1e708cb"
+
+react-game-kit@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/react-game-kit/-/react-game-kit-1.0.6.tgz#fa12c847fe00982000a496b726fd6fdaca95d3ec"
+  dependencies:
+    matter-js "^0.14.0"
 
 react-is@^16.6.0:
   version "16.7.0"

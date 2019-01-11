@@ -17,14 +17,18 @@ const PlayfieldWrapper = styled.div`
 `;
 
 class Playfield extends Component {
+  static contextTypes = {
+    loop: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
       width: 150,
       height: 138, // AR 0,92
-      changeDeltaX: 1,
-      changeDeltaY: 1,
+      changeDeltaX: 1.5,
+      changeDeltaY: 1.5,
       colors: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: true,
     };
@@ -32,13 +36,17 @@ class Playfield extends Component {
     this.updatePosition = this.updatePosition.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.frames !== this.props.frames) {
-      this.updatePosition();
-    }
+  componentDidMount() {
+    this.setPosition();
+
+    this.context.loop.subscribe(this.updatePosition);
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    this.context.loop.unsubscribe(this.updatePosition);
+  }
+
+  setPosition() {
     const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
     const { changeDeltaX, changeDeltaY } = this.state;
 
@@ -85,6 +93,10 @@ class Playfield extends Component {
   }
 
   updatePosition() {
+    if (this.props.isPaused) {
+      return;
+    }
+
     const { changeDeltaX, changeDeltaY } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
@@ -127,7 +139,7 @@ class Playfield extends Component {
 }
 
 Playfield.propTypes = {
-  frames: PropTypes.number,
+  isPaused: PropTypes.bool,
 };
 
 export default Playfield;
