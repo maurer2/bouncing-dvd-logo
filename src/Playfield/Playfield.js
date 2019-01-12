@@ -29,6 +29,7 @@ class Playfield extends Component {
       changeDeltaY: 1.5,
       colors: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: true,
+      maxRandomness: 4,
     };
 
     this.updatePosition = this.updatePosition.bind(this);
@@ -42,23 +43,6 @@ class Playfield extends Component {
 
   componentWillUnmount() {
     this.context.loop.unsubscribe(this.updatePosition);
-  }
-
-  setPosition() {
-    const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
-    const { changeDeltaX, changeDeltaY } = this.state;
-
-    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
-    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
-
-    this.setState(previousState => ({
-      playfieldWidth: widthBB,
-      playfieldHeight: heightBB,
-      positionX: random(widthBB - previousState.width),
-      positionY: random(heightBB - previousState.height),
-      changeDeltaX: randomChangeDeltaX,
-      changeDeltaY: randomChangeDeltaY,
-    }));
   }
 
   isPastLeftBoundary() {
@@ -90,12 +74,29 @@ class Playfield extends Component {
            || this.isPastTopBoundary() || this.isPastBottomBoundary();
   }
 
+  setPosition() {
+    const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
+    const { changeDeltaX, changeDeltaY } = this.state;
+
+    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
+    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
+
+    this.setState(previousState => ({
+      playfieldWidth: widthBB,
+      playfieldHeight: heightBB,
+      positionX: random(widthBB - previousState.width),
+      positionY: random(heightBB - previousState.height),
+      changeDeltaX: randomChangeDeltaX,
+      changeDeltaY: randomChangeDeltaY,
+    }));
+  }
+
   updatePosition() {
     if (this.props.isPaused) {
       return;
     }
 
-    const { changeDeltaX, changeDeltaY } = this.state;
+    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
@@ -114,6 +115,14 @@ class Playfield extends Component {
 
     if (this.isPastBottomBoundary()) {
       newChangeDeltaY = Math.abs(changeDeltaY) * -1;
+    }
+
+    if (this.isCollidingWithBoundaries()) {
+      const upperRandomBound = 1.0 + (maxRandomness / 2 / 100);
+      const lowerRandomBound = 1.0 - (maxRandomness / 2 / 100);
+
+      newChangeDeltaX *= random(lowerRandomBound, upperRandomBound, true);
+      newChangeDeltaY *= random(lowerRandomBound, upperRandomBound, true);
     }
 
     this.setState(previousState => ({
