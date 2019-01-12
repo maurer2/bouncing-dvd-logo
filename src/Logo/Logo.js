@@ -6,11 +6,9 @@ import styled from 'styled-components/macro';
 
 import { ReactComponent as CatLogo } from './cat.svg';
 
-const LogoElement = styled.div.attrs({
-  style: props => ({
-    transform: `translate(${Math.round(props.positionX)}px, ${Math.round(props.positionY)}px)`,
-  }),
-})`
+const LogoElement = styled.div.attrs(props => ({
+  style: { transform: `translate(${Math.round(props.positionX)}px, ${Math.round(props.positionY)}px)` },
+}))`
   position: absolute;
   top: 0;
   left: 0;
