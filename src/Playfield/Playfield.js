@@ -38,15 +38,11 @@ class Playfield extends Component {
   componentDidMount() {
     this.setPosition();
 
-    if (this.context !== undefined && this.context.loop !== undefined) {
-      this.context.loop.subscribe(this.updatePosition);
-    }
+    this.context.loop.subscribe(this.updatePosition);
   }
 
   componentWillUnmount() {
-    if (this.context !== undefined && this.context.loop !== undefined) {
-      this.context.loop.unsubscribe(this.updatePosition);
-    }
+    this.context.loop.unsubscribe(this.updatePosition);
   }
 
   isPastLeftBoundary() {

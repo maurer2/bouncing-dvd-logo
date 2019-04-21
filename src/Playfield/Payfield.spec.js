@@ -10,13 +10,30 @@ import Playfield from './Playfield';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Playfield', () => {
-  global.context = describe;
+  const subscribeMock = jest.fn();
+  const unsubscribeMock = jest.fn();
 
-  const wrapper = shallow(<Playfield isPaused={ false } />);
+  const context = {
+    loop: {
+      subscribe: subscribeMock,
+      unsubscribe: unsubscribeMock,
+    }
+  };
+
+  const wrapper = shallow(<Playfield isPaused={ false } />, { context });
 
   wrapper.update();
 
   test('should match snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  test('should call loop.subscribe', () => {
+    expect(subscribeMock).toBeCalled();
+  });
+
+  test('should call loop.unsubscribe', () => {
+    wrapper.unmount();
+    expect(unsubscribeMock).toBeCalled();
   });
 });
