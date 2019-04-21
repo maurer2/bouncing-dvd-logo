@@ -14,5 +14,7 @@ describe('Sound', () => {
 
   test('should match snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
+    wrapper.setProps({ playSound: true });
+    expect(toJson(wrapper)).toMatchSnapshot();
   });
 });

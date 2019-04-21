@@ -1,3 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Sound should match snapshot 1`] = `""`;
+
+exports[`Sound should match snapshot 2`] = `
+<audio
+  autoPlay={true}
+>
+  <source
+    src="soundFile.wav"
+    type="audio/wav"
+  />
+</audio>
+`;
