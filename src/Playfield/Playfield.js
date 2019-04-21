@@ -38,11 +38,15 @@ class Playfield extends Component {
   componentDidMount() {
     this.setPosition();
 
-    this.context.loop.subscribe(this.updatePosition);
+    if (this.context !== undefined && this.context.loop !== undefined) {
+      this.context.loop.subscribe(this.updatePosition);
+    }
   }
 
   componentWillUnmount() {
-    this.context.loop.unsubscribe(this.updatePosition);
+    if (this.context !== undefined && this.context.loop !== undefined) {
+      this.context.loop.unsubscribe(this.updatePosition);
+    }
   }
 
   isPastLeftBoundary() {
@@ -71,10 +75,14 @@ class Playfield extends Component {
 
   isCollidingWithBoundaries() {
     return this.isPastLeftBoundary() || this.isPastRightBoundary()
-           || this.isPastTopBoundary() || this.isPastBottomBoundary();
+      || this.isPastTopBoundary() || this.isPastBottomBoundary();
   }
 
   setPosition() {
+    if (this.playfield === undefined) {
+      return;
+    }
+
     const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
     const { changeDeltaX, changeDeltaY } = this.state;
 
@@ -135,9 +143,13 @@ class Playfield extends Component {
 
   render() {
     return (
-      <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
-        <Logo positionX={ this.state.positionX } positionY={ this.state.positionY }
-          width={ this.state.width } height={ this.state.height } colors={ this.state.colors }
+      <PlayfieldWrapper ref={ element => { this.playfield = element; } }>
+        <Logo
+          positionX={ this.state.positionX }
+          positionY={ this.state.positionY }
+          width={ this.state.width }
+          height={ this.state.height }
+          colors={ this.state.colors }
           changeColors={ this.isCollidingWithBoundaries() }
         />
         <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />

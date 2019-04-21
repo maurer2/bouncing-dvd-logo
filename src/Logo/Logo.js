@@ -41,11 +41,18 @@ class Logo extends Component {
   }
 
   render() {
+    const { positionX, positionY, width , height } = this.props;
+    const { color } = this.state;
+
     return (
-      <LogoElement positionX={ this.props.positionX } positionY={ this.props.positionY }
-        widthValue={ this.props.width } heightValue={ this.props.height }
-        colorValue= { this.state.color }>
-          <CatLogo />
+      <LogoElement
+        positionX={ positionX }
+        positionY={ positionY }
+        widthValue={ width }
+        heightValue={ height }
+        colorValue= { color }
+      >
+        <CatLogo />
       </LogoElement>
     );
   }

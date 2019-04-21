@@ -10,7 +10,8 @@ import Playfield from '../Playfield/Playfield';
 const GameWrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  transition: filter 0.25s ease-in-out;
+  transition: filter 0.15s ease-in-out;
+  cursor: pointer;
 
   ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
@@ -68,7 +69,9 @@ class Game extends Component {
   render() {
     return (
       <Loop>
-        <GameWrapper isPaused={ !this.state.isRunning } onClick={ this.togglePlayState }
+        <GameWrapper
+          isPaused={ !this.state.isRunning }
+          onClick={ this.togglePlayState }
           ref={ (element) => { this.wapper = element; }}
         >
           <Playfield isPaused={ !this.state.isRunning } key={ this.state.key } />
