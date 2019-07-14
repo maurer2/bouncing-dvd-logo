@@ -2,7 +2,14 @@
   "name": "bouncing-dvd-logo",
   "version": "0.1.0",
   "private": true,
+  "author": "Martin",
+  "repository": "https://github.com/maurer2/bouncing-dvd-logo",
   "dependencies": {
+    "@babel/core": "^7.5.4",
+    "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
+    "@babel/plugin-syntax-typescript": "^7.3.3",
+    "@babel/preset-env": "^7.5.4",
+    "@babel/preset-react": "^7.0.0",
     "babel-plugin-macros": "^2.4.4",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
@@ -11,7 +18,7 @@
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-react-app": "^3.0.5",
-    "eslint-plugin-flowtype": "^3.2.0",
+    "eslint-plugin-flowtype": "2.x",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.12.0",
@@ -26,6 +33,7 @@
     "react-scripts": "2.1.8",
     "react-test-renderer": "^16.8.6",
     "styled-components": "^4.1.3",
+    "typescript": "^3.5.3",
     "uid": "^0.0.2"
   },
   "scripts": {
@@ -33,8 +41,9 @@
     "start:dev": "BROWSER=false react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "lint": "node_modules/.bin/eslint ./src/**/*.js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js",
+    "fix": "eslint --fix src/**/*.js"
   },
   "browserslist": [
     ">0.2%",
