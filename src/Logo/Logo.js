@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState, useRef } from 'react';
 
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
@@ -12,51 +12,43 @@ const LogoElement = styled.div.attrs(props => ({
   position: absolute;
   top: 0;
   left: 0;
-  will-change: transform;
   width: ${props => `${props.widthValue}px`};
   height: ${props => `${props.heightValue}px`};
+  will-change: transform;
   color: ${props => `${props.colorValue}`};
 `;
 
-class Logo extends Component {
-  constructor(props) {
-    super(props);
+const Logo = ({ positionX, positionY, width, height, colors, changeColors }) => {
+  const [color, setColor] = useState(colors[0]);
 
-    this.state = {
-      color: this.props.colors[0],
-    };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.changeColors && !prevProps.changeColors) {
-      this.cycleColor();
+  useEffect(() => {
+    if (!changeColors) {
+      return;
     }
-  }
 
-  cycleColor() {
-    const newColors = this.props.colors.filter(color => color !== this.state.color);
+    cycleColor();
+  }, [changeColors]);
+
+  function cycleColor() {
+    const newColors = colors.filter(colorEntry => colorEntry !== color);
     const randomColorIndex = random(newColors.length - 1);
+    const newColor = newColors[randomColorIndex];
 
-    this.setState({ color: newColors[randomColorIndex] });
+    setColor(newColor);
   }
 
-  render() {
-    const { positionX, positionY, width, height } = this.props;
-    const { color } = this.state;
-
-    return (
-      <LogoElement
-        positionX={ positionX }
-        positionY={ positionY }
-        widthValue={ width }
-        heightValue={ height }
-        colorValue= { color }
-      >
-        <CatLogo />
-      </LogoElement>
-    );
-  }
-}
+  return (
+    <LogoElement
+      positionX={ positionX }
+      positionY={ positionY }
+      widthValue={ width }
+      heightValue={ height }
+      colorValue= { color }
+    >
+      <CatLogo />
+    </LogoElement>
+  );
+};
 
 Logo.propTypes = {
   positionX: PropTypes.number,
