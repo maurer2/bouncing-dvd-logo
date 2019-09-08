@@ -23,4 +23,3 @@ describe('Logo', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });
-

@@ -139,7 +139,7 @@ class Playfield extends Component {
 
   render() {
     return (
-      <PlayfieldWrapper ref={ element => { this.playfield = element; } }>
+      <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
         <Logo
           positionX={ this.state.positionX }
           positionY={ this.state.positionY }

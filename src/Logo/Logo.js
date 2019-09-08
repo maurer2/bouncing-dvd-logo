@@ -41,7 +41,7 @@ class Logo extends Component {
   }
 
   render() {
-    const { positionX, positionY, width , height } = this.props;
+    const { positionX, positionY, width, height } = this.props;
     const { color } = this.state;
 
     return (

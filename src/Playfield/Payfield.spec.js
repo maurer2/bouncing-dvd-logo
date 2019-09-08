@@ -17,7 +17,7 @@ describe('Playfield', () => {
     loop: {
       subscribe: subscribeMock,
       unsubscribe: unsubscribeMock,
-    }
+    },
   };
 
   const wrapper = shallow(<Playfield isPaused={ false } />, { context });
