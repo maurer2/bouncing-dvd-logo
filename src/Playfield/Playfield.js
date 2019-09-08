@@ -27,7 +27,7 @@ class Playfield extends Component {
       height: 138, // AR 0,92
       changeDeltaX: 1.5,
       changeDeltaY: 1.5,
-      colors: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
+      colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: true,
       maxRandomness: 4,
     };
@@ -145,8 +145,8 @@ class Playfield extends Component {
           positionY={ this.state.positionY }
           width={ this.state.width }
           height={ this.state.height }
-          colors={ this.state.colors }
-          changeColors={ this.isCollidingWithBoundaries() }
+          colours={ this.state.colours }
+          changeColours={ this.isCollidingWithBoundaries() }
         />
         <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
       </PlayfieldWrapper>

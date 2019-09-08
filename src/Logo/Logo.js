@@ -15,26 +15,26 @@ const LogoElement = styled.div.attrs(props => ({
   width: ${props => `${props.widthValue}px`};
   height: ${props => `${props.heightValue}px`};
   will-change: transform;
-  color: ${props => `${props.colorValue}`};
+  color: ${props => `${props.colourValue}`};
 `;
 
-const Logo = ({ positionX, positionY, width, height, colors, changeColors }) => {
-  const [color, setColor] = useState(colors[0]);
+const Logo = ({ positionX, positionY, width, height, colours, changeColours }) => {
+  const [colour, setColour] = useState(colours[0]);
 
   useEffect(() => {
-    if (!changeColors) {
+    if (!changeColours) {
       return;
     }
 
-    cycleColor();
-  }, [changeColors]);
+    cycleColour();
+  }, [changeColours]);
 
-  function cycleColor() {
-    const newColors = colors.filter(colorEntry => colorEntry !== color);
-    const randomColorIndex = random(newColors.length - 1);
-    const newColor = newColors[randomColorIndex];
+  function cycleColour() {
+    const newColours = colours.filter(colourEntry => colourEntry !== colour);
+    const randomColourIndex = random(newColours.length - 1);
+    const newColour = newColours[randomColourIndex];
 
-    setColor(newColor);
+    setColour(newColour);
   }
 
   return (
@@ -43,7 +43,7 @@ const Logo = ({ positionX, positionY, width, height, colors, changeColors }) => 
       positionY={ positionY }
       widthValue={ width }
       heightValue={ height }
-      colorValue= { color }
+      colourValue= { colour }
     >
       <CatLogo />
     </LogoElement>
@@ -55,8 +55,8 @@ Logo.propTypes = {
   positionY: PropTypes.number,
   width: PropTypes.number,
   height: PropTypes.number,
-  colors: PropTypes.arrayOf(PropTypes.string),
-  changeColors: PropTypes.bool,
+  colours: PropTypes.arrayOf(PropTypes.string),
+  changeColours: PropTypes.bool,
 };
 
 export default Logo;

@@ -15,8 +15,8 @@ describe('Logo', () => {
     positionY={ 0 }
     width={ 100 }
     height={ 100 }
-    colors={ ['red', 'green', 'blue'] }
-    changeColors={ true }
+    colours={ ['red', 'green', 'blue'] }
+    changeColours={ true }
   />);
 
   test('should match snapshot', () => {

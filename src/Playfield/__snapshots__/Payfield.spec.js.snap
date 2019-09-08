@@ -3,8 +3,8 @@
 exports[`Playfield should match snapshot 1`] = `
 <PlayfieldWrapper>
   <Logo
-    changeColors={false}
-    colors={
+    changeColours={false}
+    colours={
       Array [
         "white",
         "red",

@@ -2,7 +2,7 @@
 
 exports[`Logo should match snapshot 1`] = `
 <LogoElement
-  colorValue="red"
+  colourValue="red"
   heightValue={100}
   positionX={0}
   positionY={0}
