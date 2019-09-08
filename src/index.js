@@ -29,15 +29,11 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-class App extends Component {
-  render() {
-    return (
-      <>
-        <GlobalStyles />
-        <Game />
-      </>
-    );
-  }
-}
+const App = () => (
+  <>
+    <GlobalStyles />
+    <Game />
+  </>
+);
 
 ReactDOM.render(<App />, document.getElementById('root'));

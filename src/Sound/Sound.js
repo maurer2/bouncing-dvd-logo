@@ -1,46 +1,47 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import soundFile from './soundFile.wav';
 
-class Sound extends Component {
-  constructor(props) {
-    super(props);
+const Sound = ({ playSound }) => {
+  const [soundIsPlaying, setSoundIsPlaying] = useState(false);
+  const oldPlaySound = useRef(false);
 
-    this.state = ({
-      soundIsPlaying: false,
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.playSound !== this.props.playSound) {
-      this.playSound();
-    }
-  }
-
-  playSound() {
-    if (this.state.soundIsPlaying) {
+  useEffect(() => {
+    if (playSound === oldPlaySound.current) {
       return;
     }
 
-    this.setState({ soundIsPlaying: true });
+    activateSound();
+    oldPlaySound.current = playSound;
+  }, [playSound]);
+
+  function activateSound() {
+    if (soundIsPlaying) {
+      return;
+    }
+
+    setSoundIsPlaying(true);
 
     window.setTimeout(() => {
-      this.setState({ soundIsPlaying: false });
+      setSoundIsPlaying(false);
     }, 1000);
   }
 
-  render() {
-    if (!this.state.soundIsPlaying) {
-      return null;
-    }
-
-    return (
-      <audio autoPlay>
-        <source src={ soundFile } type="audio/wav" />
-      </audio>
-    );
+  if (!soundIsPlaying) {
+    return null;
   }
-}
+
+  return (
+    <>
+      { soundIsPlaying && (
+        <audio autoPlay>
+          <source src={ soundFile } type="audio/wav" />
+        </audio>
+      )};
+    </>
+  );
+};
+
 
 Sound.propTypes = {
   playSound: PropTypes.bool,
