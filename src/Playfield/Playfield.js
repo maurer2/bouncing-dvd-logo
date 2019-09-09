@@ -29,7 +29,7 @@ class Playfield extends Component {
       changeDeltaY: 1.5,
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: true,
-      maxRandomness: 4,
+      maxRandomness: 5,
     };
 
     this.updatePosition = this.updatePosition.bind(this);

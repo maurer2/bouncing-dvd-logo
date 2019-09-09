@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
@@ -21,6 +21,14 @@ const LogoElement = styled.div.attrs(props => ({
 const Logo = ({ positionX, positionY, width, height, colours, changeColours }) => {
   const [colour, setColour] = useState(colours[0]);
 
+  const cycleColour = () => {
+    const newColours = colours.filter(colourEntry => colourEntry !== colour);
+    const randomColourIndex = random(newColours.length - 1);
+    const newColour = newColours[randomColourIndex];
+
+    setColour(newColour);
+  };
+
   useEffect(() => {
     if (!changeColours) {
       return;
@@ -28,14 +36,6 @@ const Logo = ({ positionX, positionY, width, height, colours, changeColours }) =
 
     cycleColour();
   }, [changeColours]);
-
-  function cycleColour() {
-    const newColours = colours.filter(colourEntry => colourEntry !== colour);
-    const randomColourIndex = random(newColours.length - 1);
-    const newColour = newColours[randomColourIndex];
-
-    setColour(newColour);
-  }
 
   return (
     <LogoElement

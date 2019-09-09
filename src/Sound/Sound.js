@@ -1,21 +1,12 @@
-import React, { Component, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import soundFile from './soundFile.wav';
 
 const Sound = ({ playSound }) => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
-  const oldPlaySound = useRef(false);
+  const playSoundPrev = useRef(false);
 
-  useEffect(() => {
-    if (playSound === oldPlaySound.current) {
-      return;
-    }
-
-    activateSound();
-    oldPlaySound.current = playSound;
-  }, [playSound]);
-
-  function activateSound() {
+  const activateSound = () => {
     if (soundIsPlaying) {
       return;
     }
@@ -25,7 +16,18 @@ const Sound = ({ playSound }) => {
     window.setTimeout(() => {
       setSoundIsPlaying(false);
     }, 1000);
-  }
+  };
+
+  useEffect(() => {
+    let { current: oldplaySoundValue } = playSoundPrev;
+
+    if (playSound === oldplaySoundValue) {
+      return;
+    }
+
+    activateSound();
+    oldplaySoundValue = playSound;
+  }, [playSound]);
 
   if (!soundIsPlaying) {
     return null;
