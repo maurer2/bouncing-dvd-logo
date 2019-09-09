@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import uid from 'uid';
-import debounce from 'lodash.debounce';
 import styled from 'styled-components/macro';
 import { Loop } from 'react-game-kit';
+// import debounce from 'lodash.debounce';
 
 import Playfield from '../Playfield/Playfield';
 
@@ -16,69 +16,54 @@ const GameWrapper = styled.div`
   ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
 
-class Game extends Component {
-  constructor(props) {
-    super(props);
+const Game = () => {
+  const [isRunning, setIsRunning] = useState(true);
+  const [keyValue, setKeyValue] = useState(() => uid(4));
+  const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
+  const gameResizeObserver = useRef({});
+  const wrapperDomElement = useRef(null);
 
-    this.state = {
-      isRunning: true,
-      key: uid(4), // needed for reinitializing
-      isFirstLoad: true,
-    };
+  const togglePlayState = () => setIsRunning(!isRunning);
 
-    this.reset = this.reset.bind(this);
-    this.togglePlayState = this.togglePlayState.bind(this);
-    this.handleResize = debounce(this.handleResize.bind(this), 500);
-  }
+  const reset = () => {
+    setKeyValue(() => uid(4));
+  };
 
-  componentDidMount() {
-    if (window.ResizeObserver === undefined) {
+  const handleResize = () => reset();
+
+  useEffect(() => {
+    if (!resizeObserverIsSupported.current) {
       return;
     }
 
-    // Register observer
-    const gameResizeObserver = new window.ResizeObserver((entries) => {
-      const gameHasResized = entries.some(entry => entry.target === this.wapper);
-
-      if (this.state.isFirstLoad) {
-        this.setState({ isFirstLoad: false });
-
-        return;
-      }
+    gameResizeObserver.current = new window.ResizeObserver((entries) => {
+      const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
 
       if (gameHasResized) {
-        this.handleResize();
+        handleResize();
       }
     });
 
-    gameResizeObserver.observe(this.wapper);
-  }
+    gameResizeObserver.current.observe(wrapperDomElement.current);
 
-  togglePlayState() {
-    this.setState(previousState => ({ isRunning: !previousState.isRunning }));
-  }
+    function cleanup() {
+      if (resizeObserverIsSupported.current) {
+        gameResizeObserver.current.unobserve(wrapperDomElement.current);
+      }
+    }
+  }, []);
 
-  reset() {
-    this.setState({ key: uid(4) });
-  }
-
-  handleResize() {
-    this.reset();
-  }
-
-  render() {
-    return (
-      <Loop>
-        <GameWrapper
-          isPaused={ !this.state.isRunning }
-          onClick={ this.togglePlayState }
-          ref={ (element) => { this.wapper = element; }}
-        >
-          <Playfield isPaused={ !this.state.isRunning } key={ this.state.key } />
-        </GameWrapper>
-      </Loop>
-    );
-  }
-}
+  return (
+    <Loop>
+      <GameWrapper
+        isPaused={ !isRunning }
+        onClick={ togglePlayState }
+        ref={ (element) => { wrapperDomElement.current = element; }}
+      >
+        <Playfield isPaused={ !isRunning } key={ keyValue } />
+      </GameWrapper>
+    </Loop>
+  );
+};
 
 export default Game;
