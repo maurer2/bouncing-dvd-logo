@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import uid from 'uid';
 import styled from 'styled-components/macro';
 import { Loop } from 'react-game-kit';
-// import debounce from 'lodash.debounce';
+import throttle from 'lodash.throttle';
 
 import Playfield from '../Playfield/Playfield';
 
@@ -19,9 +19,12 @@ const GameWrapper = styled.div`
 const Game = () => {
   const [isRunning, setIsRunning] = useState(true);
   const [keyValue, setKeyValue] = useState(() => uid(4));
-  const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
-  const gameResizeObserver = useRef({});
+  // const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
+  // const gameResizeObserver = useRef({});
   const wrapperDomElement = useRef(null);
+
+  // required for removing
+  const resizeHandler = useRef(null);
 
   const togglePlayState = () => setIsRunning(!isRunning);
 
@@ -29,28 +32,51 @@ const Game = () => {
     setKeyValue(() => uid(4));
   };
 
-  const handleResize = () => reset();
+  const handleResize = () => {
+    setIsRunning(false);
+    reset();
+  };
 
+  // const handleResize = () => reset()
+
+  // setup intersection observer
+  /*
   useEffect(() => {
     if (!resizeObserverIsSupported.current) {
       return;
     }
 
     gameResizeObserver.current = new window.ResizeObserver((entries) => {
+      // ignore resize observers from other observed entries
       const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
 
       if (gameHasResized) {
-        handleResize();
+        // handleResize();
       }
     });
 
-    gameResizeObserver.current.observe(wrapperDomElement.current);
+    // gameResizeObserver.current.observe(wrapperDomElement.current);
 
-    function cleanup() {
+    // eslint-disable-next-line
+    return () => {
       if (resizeObserverIsSupported.current) {
         gameResizeObserver.current.unobserve(wrapperDomElement.current);
       }
-    }
+    };
+  }, []);
+  */
+
+  // setup throttled resize handler
+  useEffect(() => {
+    const throttledResizeHandler = throttle(handleResize, 3000, { trailing: false });
+
+    window.addEventListener('resize', throttledResizeHandler);
+
+    resizeHandler.current = throttledResizeHandler;
+
+    return () => {
+      window.removeEventListener('resize', throttledResizeHandler);
+    };
   }, []);
 
   return (
@@ -58,7 +84,7 @@ const Game = () => {
       <GameWrapper
         isPaused={ !isRunning }
         onClick={ togglePlayState }
-        ref={ (element) => { wrapperDomElement.current = element; }}
+        ref={ (element) => { wrapperDomElement.current = element; } }
       >
         <Playfield isPaused={ !isRunning } key={ keyValue } />
       </GameWrapper>
