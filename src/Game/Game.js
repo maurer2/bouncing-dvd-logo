@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import uid from 'uid';
 import styled from 'styled-components/macro';
 import { Loop } from 'react-game-kit';
-import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 
 import Playfield from '../Playfield/Playfield';
 
@@ -33,7 +33,6 @@ const Game = () => {
   };
 
   const handleResize = () => {
-    setIsRunning(false);
     reset();
   };
 
@@ -68,7 +67,7 @@ const Game = () => {
 
   // setup throttled resize handler
   useEffect(() => {
-    const throttledResizeHandler = throttle(handleResize, 3000, { trailing: false });
+    const throttledResizeHandler = debounce(handleResize, 300);
 
     window.addEventListener('resize', throttledResizeHandler);
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
@@ -25,8 +25,8 @@ class Playfield extends Component {
     this.state = {
       width: 150,
       height: 138, // AR 0,92
-      changeDeltaX: 1.5,
-      changeDeltaY: 1.5,
+      changeDeltaX: 2,
+      changeDeltaY: 2,
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: true,
       maxRandomness: 5,
@@ -84,6 +84,8 @@ class Playfield extends Component {
 
     const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
     const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
+
+    console.log(widthBB);
 
     this.setState(previousState => ({
       playfieldWidth: widthBB,
