@@ -19,10 +19,9 @@ const GameWrapper = styled.div`
 const Game = () => {
   const [isRunning, setIsRunning] = useState(true);
   const [keyValue, setKeyValue] = useState(() => uid(4));
-  // const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
-  // const gameResizeObserver = useRef({});
+  const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
+  const gameResizeObserver = useRef({});
   const wrapperDomElement = useRef(null);
-
   // required for removing
   const resizeHandler = useRef(null);
 
@@ -32,29 +31,35 @@ const Game = () => {
     setKeyValue(() => uid(4));
   };
 
-  const handleResize = () => {
-    reset();
-  };
-
-  // const handleResize = () => reset()
+  const handleResize = () => reset();
 
   // setup intersection observer
-  /*
   useEffect(() => {
+    let debouncedResizeHandler;
+    let isFirstTime = true;
+
     if (!resizeObserverIsSupported.current) {
       return;
     }
+
+    debouncedResizeHandler = debounce(handleResize, 300);
+    resizeHandler.current = debouncedResizeHandler;
 
     gameResizeObserver.current = new window.ResizeObserver((entries) => {
       // ignore resize observers from other observed entries
       const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
 
+      if (isFirstTime) {
+        isFirstTime = false;
+        return;
+      }
+
       if (gameHasResized) {
-        // handleResize();
+        debouncedResizeHandler();
       }
     });
 
-    // gameResizeObserver.current.observe(wrapperDomElement.current);
+    gameResizeObserver.current.observe(wrapperDomElement.current);
 
     // eslint-disable-next-line
     return () => {
@@ -63,20 +68,20 @@ const Game = () => {
       }
     };
   }, []);
-  */
 
+  /*
   // setup throttled resize handler
   useEffect(() => {
-    const throttledResizeHandler = debounce(handleResize, 300);
-
-    window.addEventListener('resize', throttledResizeHandler);
+    const throttledResizeHandler = debounce(handleResize, 300)
 
     resizeHandler.current = throttledResizeHandler;
+    window.addEventListener('resize', throttledResizeHandler);
 
     return () => {
       window.removeEventListener('resize', throttledResizeHandler);
     };
   }, []);
+  */
 
   return (
     <Loop>

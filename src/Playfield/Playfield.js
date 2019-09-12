@@ -85,8 +85,6 @@ class Playfield extends Component {
     const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
     const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
 
-    console.log(widthBB);
-
     this.setState(previousState => ({
       playfieldWidth: widthBB,
       playfieldHeight: heightBB,
