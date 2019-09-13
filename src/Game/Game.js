@@ -19,7 +19,6 @@ const GameWrapper = styled.div`
 const Game = () => {
   const [isRunning, setIsRunning] = useState(true);
   const [keyValue, setKeyValue] = useState(() => uid(4));
-  const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
   const gameResizeObserver = useRef({});
   const wrapperDomElement = useRef(null);
   // required for removing
@@ -27,61 +26,46 @@ const Game = () => {
 
   const togglePlayState = () => setIsRunning(!isRunning);
 
-  const reset = () => {
-    setKeyValue(() => uid(4));
-  };
+  const reset = () => setKeyValue(() => uid(4));
 
   const handleResize = () => reset();
 
-  // setup intersection observer
+  // setup resize/intersection observer
   useEffect(() => {
-    let debouncedResizeHandler;
-    let isFirstTime = true;
+    const debouncedResizeHandler = debounce(handleResize, 300);
+    const resizeObserverIsSupported = !(window.ResizeObserver === undefined);
 
-    if (!resizeObserverIsSupported.current) {
-      return;
-    }
-
-    debouncedResizeHandler = debounce(handleResize, 300);
     resizeHandler.current = debouncedResizeHandler;
 
-    gameResizeObserver.current = new window.ResizeObserver((entries) => {
-      // ignore resize observers from other observed entries
-      const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
+    if (resizeObserverIsSupported) {
+      let isFirstTime = true; // ignore inital call on page load
 
-      if (isFirstTime) {
-        isFirstTime = false;
-        return;
-      }
+      gameResizeObserver.current = new window.ResizeObserver((entries) => {
+        const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
 
-      if (gameHasResized) {
-        debouncedResizeHandler();
-      }
-    });
+        if (isFirstTime) {
+          isFirstTime = false;
+          return;
+        }
 
-    gameResizeObserver.current.observe(wrapperDomElement.current);
+        if (gameHasResized) {
+          debouncedResizeHandler();
+        }
+      });
+      gameResizeObserver.current.observe(wrapperDomElement.current);
+    } else {
+      window.addEventListener('resize', debouncedResizeHandler);
+    }
 
-    // eslint-disable-next-line
     return () => {
-      if (resizeObserverIsSupported.current) {
+      if (resizeObserverIsSupported) {
         gameResizeObserver.current.unobserve(wrapperDomElement.current);
+      } else {
+        window.removeEventListener('resize', debouncedResizeHandler);
       }
     };
   }, []);
 
-  /*
-  // setup throttled resize handler
-  useEffect(() => {
-    const throttledResizeHandler = debounce(handleResize, 300)
-
-    resizeHandler.current = throttledResizeHandler;
-    window.addEventListener('resize', throttledResizeHandler);
-
-    return () => {
-      window.removeEventListener('resize', throttledResizeHandler);
-    };
-  }, []);
-  */
 
   return (
     <Loop>

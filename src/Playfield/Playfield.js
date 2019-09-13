@@ -28,7 +28,7 @@ class Playfield extends Component {
       changeDeltaX: 2,
       changeDeltaY: 2,
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
-      soundIsDisabled: true,
+      soundIsDisabled: false,
       maxRandomness: 5,
     };
 
