@@ -15,7 +15,7 @@ const Sound = ({ playSound }) => {
 
     window.setTimeout(() => {
       setSoundIsPlaying(false);
-    }, 1000);
+    }, 800);
   };
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Sound = ({ playSound }) => {
 
     activateSound();
     oldplaySoundValue = playSound;
-  }, [playSound]);
+  }, [playSound, soundIsPlaying]);
 
   if (!soundIsPlaying) {
     return null;

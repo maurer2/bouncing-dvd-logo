@@ -21,8 +21,6 @@ const Game = () => {
   const [keyValue, setKeyValue] = useState(() => uid(4));
   const gameResizeObserver = useRef({});
   const wrapperDomElement = useRef(null);
-  // required for removing
-  const resizeHandler = useRef(null);
 
   const togglePlayState = () => setIsRunning(!isRunning);
 
@@ -34,8 +32,6 @@ const Game = () => {
   useEffect(() => {
     const debouncedResizeHandler = debounce(handleResize, 300);
     const resizeObserverIsSupported = !(window.ResizeObserver === undefined);
-
-    resizeHandler.current = debouncedResizeHandler;
 
     if (resizeObserverIsSupported) {
       let isFirstTime = true; // ignore inital call on page load

@@ -1,4 +1,4 @@
-import React, { Component, useState, useContext, useRef } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';

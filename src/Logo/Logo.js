@@ -21,12 +21,12 @@ const LogoElement = styled.div.attrs(props => ({
 const Logo = ({ positionX, positionY, width, height, colours, changeColours }) => {
   const [colour, setColour] = useState(colours[0]);
 
-  const cycleColour = () => {
-    const newColours = colours.filter(colourEntry => colourEntry !== colour);
+  const getRandomColor = (prevColour) => {
+    const newColours = colours.filter(colourEntry => colourEntry !== prevColour);
     const randomColourIndex = random(newColours.length - 1);
     const newColour = newColours[randomColourIndex];
 
-    setColour(newColour);
+    return newColour;
   };
 
   useEffect(() => {
@@ -34,8 +34,8 @@ const Logo = ({ positionX, positionY, width, height, colours, changeColours }) =
       return;
     }
 
-    cycleColour();
-  }, [changeColours]);
+    setColour(getRandomColor);
+  }, [changeColours, getRandomColor]);
 
   return (
     <LogoElement
