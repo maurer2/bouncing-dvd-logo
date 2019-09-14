@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "55f2cd603d55993507f71800de36ecb1",
+    "revision": "29c60efa220f0cdaddcb9194099dcfea",
     "url": "/bouncing-dvd-logo/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/bouncing-dvd-logo/static/js/2.969a69d3.chunk.js"
   },
   {
-    "revision": "04a735810e5fcf932886",
-    "url": "/bouncing-dvd-logo/static/js/main.c905979d.chunk.js"
+    "revision": "fbc4621f42fe0e16a83a",
+    "url": "/bouncing-dvd-logo/static/js/main.c9aead14.chunk.js"
   },
   {
     "revision": "eadf6a80db433b9640e2",
