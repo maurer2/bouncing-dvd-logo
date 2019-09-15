@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
@@ -14,114 +14,82 @@ const PlayfieldWrapper = styled.div`
   pointer-events: none;
 `;
 
-class Playfield extends Component {
-  static contextTypes = {
-    loop: PropTypes.object,
+const Playfield = ({ isPaused }) => {
+  const [positionX, setPositionX] = useState(50);
+  const [positionY, setPositionY] = useState(50);
+  const [playfieldWidth, setPlayfieldWidth] = useState(0);
+  const [playfieldHeight, setPlayfieldHeight] = useState(0);
+  const [changeDeltaX, setChangeDeltaX] = useState(0);
+  const [changeDeltaY, setChangeDeltaY] = useState(0);
+  const playFieldDomElement = useRef(null); // dom element
+
+  const width = 150;
+  const height = 138; // AR 0,92
+  const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'];
+  const soundIsDisabled = true;
+  const maxRandomness = 5;
+
+  const isPastLeftBoundary = () => (positionX <= 0);
+
+  const isPastRightBoundary = () => {
+    return positionX >= (playfieldWidth - width);
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      width: 150,
-      height: 138, // AR 0,92
-      changeDeltaX: 2,
-      changeDeltaY: 2,
-      colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
-      soundIsDisabled: false,
-      maxRandomness: 5,
-    };
-
-    this.updatePosition = this.updatePosition.bind(this);
-  }
-
-  componentDidMount() {
-    this.setPosition();
-
-    this.context.loop.subscribe(this.updatePosition);
-  }
-
-  componentWillUnmount() {
-    this.context.loop.unsubscribe(this.updatePosition);
-  }
-
-  isPastLeftBoundary() {
-    const { positionX } = this.state;
-
-    return positionX <= 0;
-  }
-
-  isPastRightBoundary() {
-    const { positionX, width, playfieldWidth } = this.state;
-
-    return positionX >= (playfieldWidth - width);
-  }
-
-  isPastTopBoundary() {
-    const { positionY } = this.state;
-
+  const isPastTopBoundary = () => {
     return positionY <= 0;
-  }
+  };
 
-  isPastBottomBoundary() {
-    const { positionY, height, playfieldHeight } = this.state;
-
+  const isPastBottomBoundary = () => {
     return positionY >= (playfieldHeight - height);
-  }
+  };
 
-  isCollidingWithBoundaries() {
-    return this.isPastLeftBoundary() || this.isPastRightBoundary()
-      || this.isPastTopBoundary() || this.isPastBottomBoundary();
-  }
+  const isCollidingWithBoundaries = () => {
+    return isPastLeftBoundary() || isPastRightBoundary() || isPastTopBoundary() || isPastBottomBoundary();
+  };
 
-  setPosition() {
-    if (this.playfield === undefined) {
+  const setPosition = () => {
+    if (playFieldDomElement.current === null) {
       return;
     }
 
-    const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
-    const { changeDeltaX, changeDeltaY } = this.state;
+    const { width: widthBB, height: heightBB } = playFieldDomElement.current.getBoundingClientRect();
 
     const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
     const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
 
-    this.setState(previousState => ({
-      playfieldWidth: widthBB,
-      playfieldHeight: heightBB,
-      positionX: random(widthBB - previousState.width),
-      positionY: random(heightBB - previousState.height),
-      changeDeltaX: randomChangeDeltaX,
-      changeDeltaY: randomChangeDeltaY,
-    }));
-  }
+    setPlayfieldWidth(widthBB);
+    setPlayfieldHeight(heightBB);
+    setPositionX(random(widthBB - width));
+    setPositionY(random(heightBB - height));
+    setChangeDeltaX(randomChangeDeltaX);
+    setChangeDeltaY(randomChangeDeltaY);
+  };
 
-  updatePosition() {
-    if (this.props.isPaused) {
+  const updatePosition = () => {
+    if (isPaused) {
       return;
     }
-
-    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
 
-    if (this.isPastLeftBoundary()) {
+    if (isPastLeftBoundary()) {
       newChangeDeltaX = Math.abs(changeDeltaX);
     }
 
-    if (this.isPastRightBoundary()) {
+    if (isPastRightBoundary()) {
       newChangeDeltaX = Math.abs(changeDeltaX) * -1;
     }
 
-    if (this.isPastTopBoundary()) {
+    if (isPastTopBoundary()) {
       newChangeDeltaY = Math.abs(changeDeltaY);
     }
 
-    if (this.isPastBottomBoundary()) {
+    if (isPastBottomBoundary()) {
       newChangeDeltaY = Math.abs(changeDeltaY) * -1;
     }
 
-    if (this.isCollidingWithBoundaries()) {
+    if (isCollidingWithBoundaries()) {
       const upperRandomBound = 1.0 + (maxRandomness / 2 / 100);
       const lowerRandomBound = 1.0 - (maxRandomness / 2 / 100);
 
@@ -129,30 +97,39 @@ class Playfield extends Component {
       newChangeDeltaY *= random(lowerRandomBound, upperRandomBound, true);
     }
 
-    this.setState(previousState => ({
-      positionX: previousState.positionX + newChangeDeltaX,
-      positionY: previousState.positionY + newChangeDeltaY,
-      changeDeltaX: newChangeDeltaX,
-      changeDeltaY: newChangeDeltaY,
-    }));
-  }
+    setPositionX((prevPositionX) => {
+      return prevPositionX + newChangeDeltaX;
+    });
+    setPositionX((prevPositionY) => {
+      return prevPositionY + newChangeDeltaX;
+    });
+    setChangeDeltaX(newChangeDeltaX);
+    setChangeDeltaX(newChangeDeltaY);
+  };
 
-  render() {
-    return (
-      <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
-        <Logo
-          positionX={ this.state.positionX }
-          positionY={ this.state.positionY }
-          width={ this.state.width }
-          height={ this.state.height }
-          colours={ this.state.colours }
-          changeColours={ this.isCollidingWithBoundaries() }
-        />
-        <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
-      </PlayfieldWrapper>
-    );
-  }
-}
+  // start/stop gameloop
+  useEffect(() => {
+    setPosition();
+
+    setTimeout(() => {
+      updatePosition();
+    }, 2000);
+  }, []);
+
+  return (
+    <PlayfieldWrapper ref={ (element) => { playFieldDomElement.current = element; } }>
+      <Logo
+        positionX={ positionX }
+        positionY={ positionY }
+        width={ width }
+        height={ height }
+        colours={ colours }
+        changeColours={ isCollidingWithBoundaries() }
+      />
+      <Sound playSound={ isCollidingWithBoundaries() && !soundIsDisabled } />
+    </PlayfieldWrapper>
+  );
+};
 
 Playfield.propTypes = {
   isPaused: PropTypes.bool,
