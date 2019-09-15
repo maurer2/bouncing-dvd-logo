@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import uid from 'uid';
 import styled from 'styled-components/macro';
-import { Loop } from 'react-game-kit';
 import debounce from 'lodash.debounce';
 
 import Playfield from '../Playfield/Playfield';
@@ -64,15 +63,13 @@ const Game = () => {
 
 
   return (
-    <Loop>
-      <GameWrapper
-        isPaused={ !isRunning }
-        onClick={ togglePlayState }
-        ref={ (element) => { wrapperDomElement.current = element; } }
-      >
-        <Playfield isPaused={ !isRunning } key={ keyValue } />
-      </GameWrapper>
-    </Loop>
+    <GameWrapper
+      isPaused={ !isRunning }
+      onClick={ togglePlayState }
+      ref={ (element) => { wrapperDomElement.current = element; } }
+    >
+      <Playfield isPaused={ !isRunning } key={ keyValue } />
+    </GameWrapper>
   );
 };
 
