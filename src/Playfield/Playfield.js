@@ -15,10 +15,6 @@ const PlayfieldWrapper = styled.div`
 `;
 
 class Playfield extends Component {
-  static contextTypes = {
-    loop: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
 
@@ -32,17 +28,36 @@ class Playfield extends Component {
       maxRandomness: 5,
     };
 
+    this.loopTimestamp = 0;
     this.updatePosition = this.updatePosition.bind(this);
   }
 
   componentDidMount() {
+    // inital random position
     this.setPosition();
-
-    this.context.loop.subscribe(this.updatePosition);
+    this.startLoop();
   }
 
   componentWillUnmount() {
-    this.context.loop.unsubscribe(this.updatePosition);
+    this.stopLoop();
+  }
+
+  startLoop() {
+    if (this.loopTimestamp) {
+      return;
+    }
+
+    this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
+  }
+
+  stopLoop() {
+    window.cancelAnimationFrame(this.loopTimestamp);
+  }
+
+  loop() {
+    this.updatePosition();
+
+    this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
   }
 
   isPastLeftBoundary() {
@@ -96,11 +111,12 @@ class Playfield extends Component {
   }
 
   updatePosition() {
-    if (this.props.isPaused) {
+    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
+    const { isPaused } = this.props;
+
+    if (isPaused) {
       return;
     }
-
-    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
@@ -130,25 +146,27 @@ class Playfield extends Component {
     }
 
     this.setState(previousState => ({
-      positionX: previousState.positionX + newChangeDeltaX,
-      positionY: previousState.positionY + newChangeDeltaY,
+      positionX: Math.round(previousState.positionX + newChangeDeltaX),
+      positionY: Math.round(previousState.positionY + newChangeDeltaY),
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
     }));
   }
 
   render() {
+    const { positionX, positionY, width, height, colours, soundIsDisabled } = this.state;
+
     return (
       <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
         <Logo
-          positionX={ this.state.positionX }
-          positionY={ this.state.positionY }
-          width={ this.state.width }
-          height={ this.state.height }
-          colours={ this.state.colours }
+          positionX={ positionX }
+          positionY={ positionY }
+          width={ width }
+          height={ height }
+          colours={ colours }
           changeColours={ this.isCollidingWithBoundaries() }
         />
-        <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
+        <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
       </PlayfieldWrapper>
     );
   }
