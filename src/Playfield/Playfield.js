@@ -34,9 +34,8 @@ class Playfield extends Component {
   }
 
   componentDidMount() {
-    this.intervalId = setInterval(this.setCount.bind(this), 16);
-
     this.setPosition();
+    this.intervalId = setInterval(this.setCount.bind(this), 16);
   }
 
   componentWillUnmount() {
@@ -45,7 +44,7 @@ class Playfield extends Component {
 
   setCount() {
     this.setState((prevState) => {
-      const { count } = prevState.count;
+      const { count } = prevState;
       const newCount = (count % 60 === 0) ? 1 : count + 1;
 
       return {
@@ -107,11 +106,12 @@ class Playfield extends Component {
   }
 
   updatePosition() {
-    if (this.props.isPaused) {
+    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
+    const { isPaused } = this.props;
+
+    if (isPaused) {
       return;
     }
-
-    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
@@ -141,8 +141,8 @@ class Playfield extends Component {
     }
 
     this.setState(previousState => ({
-      positionX: previousState.positionX + newChangeDeltaX,
-      positionY: previousState.positionY + newChangeDeltaY,
+      positionX: Math.round(previousState.positionX + newChangeDeltaX),
+      positionY: Math.round(previousState.positionY + newChangeDeltaY),
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
     }));
