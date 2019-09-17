@@ -30,29 +30,36 @@ class Playfield extends Component {
     };
 
     this.intervalId = -1;
+    this.loopTimestamp = 0;
     this.updatePosition = this.updatePosition.bind(this);
   }
 
   componentDidMount() {
+    // inital random position
     this.setPosition();
-    this.intervalId = setInterval(this.setCount.bind(this), 16);
+    this.startLoop();
   }
 
   componentWillUnmount() {
-    clearInterval(this.intervalId);
+    this.stopLoop();
   }
 
-  setCount() {
-    this.setState((prevState) => {
-      const { count } = prevState;
-      const newCount = (count % 60 === 0) ? 1 : count + 1;
+  startLoop() {
+    if (this.loopTimestamp) {
+      return;
+    }
 
-      return {
-        count: newCount,
-      };
-    }, () => {
-      this.updatePosition();
-    });
+    this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
+  }
+
+  stopLoop() {
+    window.cancelAnimationFrame(this.loopTimestamp);
+  }
+
+  loop() {
+    this.updatePosition();
+
+    this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
   }
 
   isPastLeftBoundary() {
