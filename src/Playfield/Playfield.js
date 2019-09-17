@@ -15,10 +15,6 @@ const PlayfieldWrapper = styled.div`
 `;
 
 class Playfield extends Component {
-  static contextTypes = {
-    loop: PropTypes.object,
-  };
-
   constructor(props) {
     super(props);
 
@@ -28,21 +24,36 @@ class Playfield extends Component {
       changeDeltaX: 2,
       changeDeltaY: 2,
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
-      soundIsDisabled: false,
+      soundIsDisabled: true,
       maxRandomness: 5,
+      count: 1,
     };
 
+    this.intervalId = -1;
     this.updatePosition = this.updatePosition.bind(this);
   }
 
   componentDidMount() {
-    this.setPosition();
+    this.intervalId = setInterval(this.setCount.bind(this), 16);
 
-    this.context.loop.subscribe(this.updatePosition);
+    this.setPosition();
   }
 
   componentWillUnmount() {
-    this.context.loop.unsubscribe(this.updatePosition);
+    clearInterval(this.intervalId);
+  }
+
+  setCount() {
+    this.setState((prevState) => {
+      const { count } = prevState.count;
+      const newCount = (count % 60 === 0) ? 1 : count + 1;
+
+      return {
+        count: newCount,
+      };
+    }, () => {
+      this.updatePosition();
+    });
   }
 
   isPastLeftBoundary() {
@@ -138,17 +149,19 @@ class Playfield extends Component {
   }
 
   render() {
+    const { positionX, positionY, width, height, colours, soundIsDisabled } = this.state;
+
     return (
       <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
         <Logo
-          positionX={ this.state.positionX }
-          positionY={ this.state.positionY }
-          width={ this.state.width }
-          height={ this.state.height }
-          colours={ this.state.colours }
+          positionX={ positionX }
+          positionY={ positionY }
+          width={ width }
+          height={ height }
+          colours={ colours }
           changeColours={ this.isCollidingWithBoundaries() }
         />
-        <Sound playSound={ this.isCollidingWithBoundaries() && !this.state.soundIsDisabled } />
+        <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
       </PlayfieldWrapper>
     );
   }

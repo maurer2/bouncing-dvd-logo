@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import uid from 'uid';
 import styled from 'styled-components/macro';
-import { Loop } from 'react-game-kit';
 import debounce from 'lodash.debounce';
 
 import Playfield from '../Playfield/Playfield';
@@ -12,6 +11,7 @@ const GameWrapper = styled.div`
   height: 100vh;
   transition: filter 0.15s ease-in-out;
   cursor: pointer;
+  color: white;
 
   ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
@@ -62,17 +62,14 @@ const Game = () => {
     };
   }, []);
 
-
   return (
-    <Loop>
-      <GameWrapper
-        isPaused={ !isRunning }
-        onClick={ togglePlayState }
-        ref={ (element) => { wrapperDomElement.current = element; } }
-      >
-        <Playfield isPaused={ !isRunning } key={ keyValue } />
-      </GameWrapper>
-    </Loop>
+    <GameWrapper
+      isPaused={ !isRunning }
+      onClick={ togglePlayState }
+      ref={ (element) => { wrapperDomElement.current = element; } }
+    >
+      <Playfield isPaused={ !isRunning } key={ keyValue } />
+    </GameWrapper>
   );
 };
 
