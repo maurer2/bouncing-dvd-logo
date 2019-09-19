@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { createGlobalStyle } from 'styled-components/macro';
 
+import Settings from './Settings/Settings';
 import Game from './Game/Game';
 
 const GlobalStyles = createGlobalStyle`
@@ -30,10 +31,10 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const App = () => (
-  <>
+  <Settings>
     <GlobalStyles />
     <Game />
-  </>
+  </Settings>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

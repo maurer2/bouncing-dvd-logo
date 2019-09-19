@@ -7,6 +7,8 @@ import styled from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 
+import store from '../store';
+
 const PlayfieldWrapper = styled.div`
   position: relative;
   height: 100%;
@@ -23,8 +25,7 @@ class Playfield extends Component {
       height: 138, // AR 0,92
       changeDeltaX: 2,
       changeDeltaY: 2,
-      colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
-      soundIsDisabled: false,
+      soundIsDisabled: true,
       maxRandomness: 5,
     };
 
@@ -154,19 +155,25 @@ class Playfield extends Component {
   }
 
   render() {
-    const { positionX, positionY, width, height, colours, soundIsDisabled } = this.state;
+    const { positionX, positionY, width, height, soundIsDisabled } = this.state;
 
     return (
       <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
-        <Logo
-          positionX={ positionX }
-          positionY={ positionY }
-          width={ width }
-          height={ height }
-          colours={ colours }
-          changeColours={ this.isCollidingWithBoundaries() }
-        />
-        <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
+        <store.Consumer>
+          { ({ colours }) => (
+            <>
+              <Logo
+                positionX={ positionX }
+                positionY={ positionY }
+                width={ width }
+                height={ height }
+                colours={ colours }
+                changeColours={ this.isCollidingWithBoundaries() }
+              />
+              <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
+            </>
+          )}
+        </store.Consumer>
       </PlayfieldWrapper>
     );
   }
