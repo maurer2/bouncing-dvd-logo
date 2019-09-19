@@ -25,7 +25,6 @@ class Playfield extends Component {
       height: 138, // AR 0,92
       changeDeltaX: 2,
       changeDeltaY: 2,
-      soundIsDisabled: true,
       maxRandomness: 5,
     };
 
@@ -155,12 +154,12 @@ class Playfield extends Component {
   }
 
   render() {
-    const { positionX, positionY, width, height, soundIsDisabled } = this.state;
+    const { positionX, positionY, width, height } = this.state;
 
     return (
       <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
         <store.Consumer>
-          { ({ colours }) => (
+          { ({ colours, soundIsDisabled }) => (
             <>
               <Logo
                 positionX={ positionX }

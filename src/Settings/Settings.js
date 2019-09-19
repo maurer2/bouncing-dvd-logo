@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import store from '../store';
 
 class Settings extends Component {
@@ -7,17 +9,19 @@ class Settings extends Component {
 
     this.state = {
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
+      soundIsDisabled: false,
     };
   }
 
   render() {
-    const { colours } = this.state;
+    const { colours, soundIsDisabled } = this.state;
     const { children } = this.props;
 
     return (
       <store.Provider
         value={{
           colours,
+          soundIsDisabled,
         }}
       >
         { children }
@@ -25,5 +29,14 @@ class Settings extends Component {
     );
   }
 }
+
+const { node, arrayOf, oneOfType } = PropTypes;
+
+Settings.propTypes = {
+  children: oneOfType([
+    arrayOf(node),
+    node,
+  ]),
+};
 
 export default Settings;
