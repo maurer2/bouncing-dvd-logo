@@ -39,14 +39,15 @@ const Sound = ({ playSound }) => {
         <audio autoPlay>
           <source src={ soundFile } type="audio/wav" />
         </audio>
-      )};
+      )}
     </>
   );
 };
 
+const { bool } = PropTypes;
 
 Sound.propTypes = {
-  playSound: PropTypes.bool,
+  playSound: bool,
 };
 
 export default Sound;

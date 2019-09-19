@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
 import styled from 'styled-components/macro';
 
+import store from '../store';
 import { ReactComponent as CatLogo } from './cat.svg';
 
 const LogoElement = styled.div.attrs(props => ({
@@ -18,12 +19,13 @@ const LogoElement = styled.div.attrs(props => ({
   color: ${props => `${props.colourValue}`};
 `;
 
-const Logo = ({ positionX, positionY, width, height, colours, changeColours }) => {
-  const [colour, setColour] = useState(colours[0]);
+const Logo = ({ positionX, positionY, width, height, changeColours }) => {
+  const context = useContext(store);
+  const [colour, setColour] = useState(context.colours[0]);
   const prevChangeColours = useRef(false);
 
   const getRandomColor = (prevColour) => {
-    const newColours = colours.filter(colourEntry => colourEntry !== prevColour);
+    const newColours = context.colours.filter(colourEntry => colourEntry !== prevColour);
     const randomColourIndex = random(newColours.length - 1);
     const newColour = newColours[randomColourIndex];
 
@@ -51,13 +53,14 @@ const Logo = ({ positionX, positionY, width, height, colours, changeColours }) =
   );
 };
 
+const { number, bool } = PropTypes;
+
 Logo.propTypes = {
-  positionX: PropTypes.number,
-  positionY: PropTypes.number,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  colours: PropTypes.arrayOf(PropTypes.string),
-  changeColours: PropTypes.bool,
+  positionX: number,
+  positionY: number,
+  width: number,
+  height: number,
+  changeColours: bool,
 };
 
 export default Logo;

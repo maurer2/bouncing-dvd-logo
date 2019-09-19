@@ -157,29 +157,28 @@ class Playfield extends Component {
     const { positionX, positionY, width, height } = this.state;
 
     return (
-      <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
-        <store.Consumer>
-          { ({ colours, soundIsDisabled }) => (
-            <>
-              <Logo
-                positionX={ positionX }
-                positionY={ positionY }
-                width={ width }
-                height={ height }
-                colours={ colours }
-                changeColours={ this.isCollidingWithBoundaries() }
-              />
-              <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
-            </>
-          )}
-        </store.Consumer>
-      </PlayfieldWrapper>
+      <store.Consumer>
+        { ({ soundIsDisabled }) => (
+          <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
+            <Logo
+              positionX={ positionX }
+              positionY={ positionY }
+              width={ width }
+              height={ height }
+              changeColours={ this.isCollidingWithBoundaries() }
+            />
+            <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
+          </PlayfieldWrapper>
+        )}
+      </store.Consumer>
     );
   }
 }
 
+const { bool } = PropTypes;
+
 Playfield.propTypes = {
-  isPaused: PropTypes.bool,
+  isPaused: bool,
 };
 
 export default Playfield;
