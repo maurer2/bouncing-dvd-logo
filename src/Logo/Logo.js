@@ -20,12 +20,12 @@ const LogoElement = styled.div.attrs(props => ({
 `;
 
 const Logo = ({ positionX, positionY, width, height, changeColours }) => {
-  const context = useContext(store);
-  const [colour, setColour] = useState(context.colours[0]);
+  const { colours } = useContext(store);
+  const [colour, setColour] = useState(colours[0]);
   const prevChangeColours = useRef(false);
 
   const getRandomColor = (prevColour) => {
-    const newColours = context.colours.filter(colourEntry => colourEntry !== prevColour);
+    const newColours = colours.filter(colourEntry => colourEntry !== prevColour);
     const randomColourIndex = random(newColours.length - 1);
     const newColour = newColours[randomColourIndex];
 
