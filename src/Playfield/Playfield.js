@@ -167,7 +167,7 @@ class Playfield extends Component {
               height={ height }
               changeColours={ this.isCollidingWithBoundaries() }
             />
-            <Sound playSound={ this.isCollidingWithBoundaries() && !soundIsDisabled } />
+            <Sound playSound={ this.isCollidingWithBoundaries() } />
           </PlayfieldWrapper>
         )}
       </store.Consumer>

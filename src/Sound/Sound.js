@@ -1,45 +1,40 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import soundFile from './soundFile.wav';
 
+import store from '../store';
+
 const Sound = ({ playSound }) => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
-  const playSoundPrev = useRef(false);
-
-  const activateSound = () => {
-    if (soundIsPlaying) {
-      return;
-    }
-
-    setSoundIsPlaying(true);
-
-    window.setTimeout(() => {
-      setSoundIsPlaying(false);
-    }, 800);
-  };
+  const prevPlaySound = useRef(false);
+  const { soundIsDisabled } = useContext(store);
 
   useEffect(() => {
-    let { current: oldplaySoundValue } = playSoundPrev;
-
-    if (playSound === oldplaySoundValue) {
+    if (soundIsDisabled) {
       return;
     }
 
-    activateSound();
-    oldplaySoundValue = playSound;
-  }, [playSound, soundIsPlaying]);
+    if (playSound && playSound !== prevPlaySound.current) {
+      setSoundIsPlaying(true);
 
-  if (!soundIsPlaying) {
-    return null;
-  }
+      window.setTimeout(() => {
+        setSoundIsPlaying(false);
+      }, 800);
+    }
+
+    prevPlaySound.current = prevPlaySound;
+  }, [playSound, soundIsDisabled]);
 
   return (
     <>
-      { soundIsPlaying && (
-        <audio autoPlay>
-          <source src={ soundFile } type="audio/wav" />
-        </audio>
-      )}
+      {soundIsPlaying
+        ? (
+          <audio autoPlay>
+            <source src={ soundFile } type="audio/wav" />
+          </audio>
+        )
+        : null
+      }
     </>
   );
 };
