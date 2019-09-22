@@ -7,6 +7,33 @@ import styled from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 
+const isPastLeftBoundary = positionX => positionX <= 0;
+
+const isPastRightBoundary = (positionX, width, playfieldWidth) => {
+  const maxPositionStillInside = (playfieldWidth - width);
+
+  return positionX >= maxPositionStillInside;
+};
+
+const isPastTopBoundary = positionY => positionY <= 0;
+
+const isPastBottomBoundary = (positionY, height, playfieldHeight) => {
+  const maxPositionStillInside = (playfieldHeight - height);
+
+  return positionY >= maxPositionStillInside;
+};
+
+const isCollidingWithBoundaries = (
+  positionX, positionY, width, height, playfieldWidth, playfieldHeight,
+) => {
+  const leftCheck = isPastLeftBoundary(positionX);
+  const rightCheck = isPastRightBoundary(positionX, width, playfieldWidth);
+  const topCheck = isPastTopBoundary(positionY);
+  const bottomCheck = isPastBottomBoundary(positionY, height, playfieldHeight);
+
+  return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
+};
+
 const PlayfieldWrapper = styled.div`
   position: relative;
   height: 100%;
@@ -24,6 +51,7 @@ class Playfield extends Component {
       changeDeltaX: 2,
       changeDeltaY: 2,
       maxRandomness: 5,
+      isColliding: false,
     };
 
     this.loopTimestamp = 0;
@@ -58,35 +86,6 @@ class Playfield extends Component {
     this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
   }
 
-  isPastLeftBoundary() {
-    const { positionX } = this.state;
-
-    return positionX <= 0;
-  }
-
-  isPastRightBoundary() {
-    const { positionX, width, playfieldWidth } = this.state;
-
-    return positionX >= (playfieldWidth - width);
-  }
-
-  isPastTopBoundary() {
-    const { positionY } = this.state;
-
-    return positionY <= 0;
-  }
-
-  isPastBottomBoundary() {
-    const { positionY, height, playfieldHeight } = this.state;
-
-    return positionY >= (playfieldHeight - height);
-  }
-
-  isCollidingWithBoundaries() {
-    return this.isPastLeftBoundary() || this.isPastRightBoundary()
-      || this.isPastTopBoundary() || this.isPastBottomBoundary();
-  }
-
   setPosition() {
     if (this.playfield === undefined) {
       return;
@@ -110,6 +109,7 @@ class Playfield extends Component {
 
   updatePosition() {
     const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
+    const { positionX, positionY, width, height, playfieldWidth, playfieldHeight } = this.state;
     const { isPaused } = this.props;
 
     if (isPaused) {
@@ -118,29 +118,33 @@ class Playfield extends Component {
 
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
+    let newIsColliding = false;
 
-    if (this.isPastLeftBoundary()) {
+    if (isPastLeftBoundary(positionX)) {
       newChangeDeltaX = Math.abs(changeDeltaX);
     }
 
-    if (this.isPastRightBoundary()) {
+    if (isPastRightBoundary(positionX, width, playfieldWidth)) {
       newChangeDeltaX = Math.abs(changeDeltaX) * -1;
     }
 
-    if (this.isPastTopBoundary()) {
+    if (isPastTopBoundary(positionY)) {
       newChangeDeltaY = Math.abs(changeDeltaY);
     }
 
-    if (this.isPastBottomBoundary()) {
+    if (isPastBottomBoundary(positionY, height, playfieldHeight)) {
       newChangeDeltaY = Math.abs(changeDeltaY) * -1;
     }
 
-    if (this.isCollidingWithBoundaries()) {
+    if (isCollidingWithBoundaries(
+      positionX, positionY, width, height, playfieldWidth, playfieldHeight,
+    )) {
       const upperRandomBound = 1.0 + (maxRandomness / 2 / 100);
       const lowerRandomBound = 1.0 - (maxRandomness / 2 / 100);
 
       newChangeDeltaX *= random(lowerRandomBound, upperRandomBound, true);
       newChangeDeltaY *= random(lowerRandomBound, upperRandomBound, true);
+      newIsColliding = true;
     }
 
     this.setState(previousState => ({
@@ -148,11 +152,12 @@ class Playfield extends Component {
       positionY: Math.round(previousState.positionY + newChangeDeltaY),
       changeDeltaX: newChangeDeltaX,
       changeDeltaY: newChangeDeltaY,
+      isColliding: newIsColliding,
     }));
   }
 
   render() {
-    const { positionX, positionY, width, height } = this.state;
+    const { positionX, positionY, width, height, isColliding } = this.state;
 
     return (
       <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
@@ -161,9 +166,9 @@ class Playfield extends Component {
           positionY={ positionY }
           width={ width }
           height={ height }
-          changeColours={ this.isCollidingWithBoundaries() }
+          changeColours={ isColliding }
         />
-        <Sound playSound={ this.isCollidingWithBoundaries() } />
+        <Sound playSound={ isColliding } />
       </PlayfieldWrapper>
     );
   }
