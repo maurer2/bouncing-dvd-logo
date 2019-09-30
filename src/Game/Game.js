@@ -11,17 +11,18 @@ const GameWrapper = styled.div`
   height: 100vh;
   transition: filter 0.15s ease-in-out;
   cursor: pointer;
+  color: white;
 
   ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
 
 const Game = () => {
-  const [isRunning, setIsRunning] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState(() => uid(4));
   const gameResizeObserver = useRef({});
   const wrapperDomElement = useRef(null);
 
-  const togglePlayState = () => setIsRunning(!isRunning);
+  const togglePlayState = () => setIsPaused(!isPaused);
 
   const reset = () => setKeyValue(() => uid(4));
 
@@ -61,14 +62,14 @@ const Game = () => {
     };
   }, []);
 
-
   return (
     <GameWrapper
-      isPaused={ !isRunning }
+
+      isPaused={ isPaused }
       onClick={ togglePlayState }
       ref={ (element) => { wrapperDomElement.current = element; } }
     >
-      <Playfield isPaused={ !isRunning } key={ keyValue } />
+      <Playfield isPaused={ isPaused } key={ keyValue } />
     </GameWrapper>
   );
 };
