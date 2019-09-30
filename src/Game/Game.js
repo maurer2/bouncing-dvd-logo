@@ -64,7 +64,6 @@ const Game = () => {
 
   return (
     <GameWrapper
-
       isPaused={ isPaused }
       onClick={ togglePlayState }
       ref={ (element) => { wrapperDomElement.current = element; } }
