@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
@@ -42,18 +42,49 @@ const PlayfieldWrapper = styled.div`
 `;
 
 const Playfield = () => {
-  const [positionX, setPositionX] = useState(100);
-  const [positionY, setPositionY] = useState(100);
-  const [playfieldWidth, setPlayfieldWidth] = useState(0);
-  const [playfieldHeight, setPlayfieldHeight] = useState(0);
-  const [changeDeltaX, setChangeDeltaX] = useState(0);
-  const [changeDeltaY, setChangeDeltaY] = useState(0);
+  const [positionX, setPositionX] = useState(0);
+  const [positionY, setPositionY] = useState(0);
+  const [playfieldWidth, setPlayfieldWith] = useState(100);
+  const [playfieldHeight, setPlayfieldHeight] = useState(100);
 
-  const playFieldDomElement = useRef();
   const loopTimestamp = useRef(null);
+  const playFieldDomElement = useRef();
+  const isFirstRun = useRef(true);
+
+  let changeDeltaX = 0;
+  let changeDeltaY = 0;
 
   const width = 150;
   const height = 138; // AR 0,92
+
+  // set random initial position and direction
+  function initPosition() {
+    if (playFieldDomElement.current === null) {
+      return;
+    }
+
+    const { width: widthBB, height: heightBB } = playFieldDomElement.current.getBoundingClientRect();
+    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
+    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
+
+    setPlayfieldWith(() => widthBB);
+    setPlayfieldHeight(() => heightBB);
+    changeDeltaX = randomChangeDeltaX;
+    changeDeltaY = randomChangeDeltaY;
+
+    setPositionX(() => random(widthBB - width));
+    setPositionY(() => random(heightBB - height));
+  }
+
+  function updatePosition() {
+    console.log('update');
+  }
+
+  function loop() {
+    updatePosition();
+
+    loopTimestamp.current = window.requestAnimationFrame(loop);
+  }
 
   function startLoop() {
     if (loopTimestamp.current !== null) {
@@ -67,42 +98,23 @@ const Playfield = () => {
     window.cancelAnimationFrame(loopTimestamp.current);
   }
 
-  function loop() {
-    updatePosition();
-
-    loopTimestamp.current = window.requestAnimationFrame(loop);
-  }
-
-  function setPosition() {
-    if (playFieldDomElement.current === null) {
-      return;
-    }
-
-    const { width: widthBB, height: heightBB } = playFieldDomElement.current.getBoundingClientRect();
-
-    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
-    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
-
-    setPlayfieldWidth(() => widthBB);
-    setPlayfieldHeight(() => heightBB);
-    setPositionX(previousState => random(widthBB - previousState.width));
-    setPositionY(previousState => random(heightBB - previousState.heightBB));
-    setChangeDeltaX(() => randomChangeDeltaX);
-    setChangeDeltaY(() => randomChangeDeltaY);
-  }
-
-  function updatePosition() {
-    console.log('update');
-  }
-
   useEffect(() => {
-    setPosition();
+    initPosition();
+
+    isFirstRun.current = false;
     startLoop();
 
     return () => stopLoop();
   }, []);
 
-  const isColliding = isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight);
+  const isColliding = isCollidingWithBoundaries(
+    positionX,
+    positionY,
+    width,
+    height,
+    playfieldWidth,
+    playfieldHeight,
+  );
 
   return (
     <PlayfieldWrapper ref={ playFieldDomElement }>
@@ -111,9 +123,9 @@ const Playfield = () => {
         positionY={ positionY }
         width={ width }
         height={ height }
-        changeColours={ isColliding }
+        changeColours={ isColliding && !isFirstRun }
       />
-      <Sound playSound={ isColliding } />
+      <Sound playSound={ isColliding && !isFirstRun } />
     </PlayfieldWrapper>
   );
 };
