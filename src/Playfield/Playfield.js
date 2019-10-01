@@ -46,38 +46,69 @@ const Playfield = () => {
   const [positionY, setPositionY] = useState(0);
   const [playfieldWidth, setPlayfieldWith] = useState(100);
   const [playfieldHeight, setPlayfieldHeight] = useState(100);
+  const [isColliding, setIsColliding] = useState(false);
 
   const loopTimestamp = useRef(null);
   const playFieldDomElement = useRef();
   const isFirstRun = useRef(true);
 
-  let changeDeltaX = 0;
-  let changeDeltaY = 0;
+  let changeDeltaX = 2;
+  let changeDeltaY = 2;
 
   const width = 150;
   const height = 138; // AR 0,92
 
   // set random initial position and direction
   function initPosition() {
-    if (playFieldDomElement.current === null) {
-      return;
-    }
-
     const { width: widthBB, height: heightBB } = playFieldDomElement.current.getBoundingClientRect();
-    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
-    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
 
     setPlayfieldWith(() => widthBB);
     setPlayfieldHeight(() => heightBB);
-    changeDeltaX = randomChangeDeltaX;
-    changeDeltaY = randomChangeDeltaY;
 
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
   }
 
   function updatePosition() {
-    console.log('update');
+    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
+    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
+
+    let newChangeDeltaX = randomChangeDeltaX;
+    let newChangeDeltaY = randomChangeDeltaY;
+
+    console.log(positionX);
+
+    if (isPastLeftBoundary(positionX)) {
+      newChangeDeltaX = Math.abs(changeDeltaX);
+    }
+
+    if (isPastRightBoundary(positionX, width, playfieldWidth)) {
+      newChangeDeltaX = Math.abs(changeDeltaX) * -1;
+    }
+
+    if (isPastTopBoundary(positionY)) {
+      newChangeDeltaY = Math.abs(changeDeltaY);
+    }
+
+    if (isPastBottomBoundary(positionY, height, playfieldHeight)) {
+      newChangeDeltaY = Math.abs(changeDeltaY) * -1;
+    }
+
+    if (isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight)) {
+      const upperRandomBound = 1.0 + (5 / 2 / 100);
+      const lowerRandomBound = 1.0 - (5 / 2 / 100);
+
+      newChangeDeltaX *= random(lowerRandomBound, upperRandomBound, true);
+      newChangeDeltaY *= random(lowerRandomBound, upperRandomBound, true);
+
+      setIsColliding(() => true);
+    }
+
+    setPositionX(prevPositionX => prevPositionX + newChangeDeltaX);
+    setPositionY(prevPositionY => prevPositionY + newChangeDeltaY);
+
+    changeDeltaX = newChangeDeltaX;
+    changeDeltaY = newChangeDeltaY;
   }
 
   function loop() {
@@ -106,15 +137,6 @@ const Playfield = () => {
 
     return () => stopLoop();
   }, []);
-
-  const isColliding = isCollidingWithBoundaries(
-    positionX,
-    positionY,
-    width,
-    height,
-    playfieldWidth,
-    playfieldHeight,
-  );
 
   return (
     <PlayfieldWrapper ref={ playFieldDomElement }>
