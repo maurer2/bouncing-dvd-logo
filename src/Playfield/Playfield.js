@@ -44,68 +44,61 @@ const PlayfieldWrapper = styled.div`
 const Playfield = () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
-  const [playfieldWidth, setPlayfieldWith] = useState(100);
-  const [playfieldHeight, setPlayfieldHeight] = useState(100);
-  const [isColliding, setIsColliding] = useState(false);
 
   const loopTimestamp = useRef(null);
-  const playFieldDomElement = useRef();
-  const isFirstRun = useRef(true);
+  const playfieldDomElement = useRef();
+  const playfieldBB = useRef();
 
   let changeDeltaX = 2;
   let changeDeltaY = 2;
 
+  // svg
   const width = 150;
   const height = 138; // AR 0,92
 
   // set random initial position and direction
   function initPosition() {
-    const { width: widthBB, height: heightBB } = playFieldDomElement.current.getBoundingClientRect();
-
-    setPlayfieldWith(() => widthBB);
-    setPlayfieldHeight(() => heightBB);
+    const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
   }
 
   function updatePosition() {
-    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
-    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
+    const { width: widthBB, height: heightBB } = playfieldBB.current;
+    let newChangeDeltaX = changeDeltaX;
+    let newChangeDeltaY = changeDeltaY;
 
-    let newChangeDeltaX = randomChangeDeltaX;
-    let newChangeDeltaY = randomChangeDeltaY;
+    // const isColliding = isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight);
+    let isColliding = false;
 
-    console.log(positionX);
+    setPositionX((prevPositionX) => {
+      if (isPastLeftBoundary(prevPositionX)) {
+        newChangeDeltaX = Math.abs(changeDeltaX);
+        isColliding = true;
+      }
 
-    if (isPastLeftBoundary(positionX)) {
-      newChangeDeltaX = Math.abs(changeDeltaX);
-    }
+      if (isPastRightBoundary(prevPositionX, width, widthBB)) {
+        newChangeDeltaX = Math.abs(changeDeltaX) * -1;
+        isColliding = true;
+      }
 
-    if (isPastRightBoundary(positionX, width, playfieldWidth)) {
-      newChangeDeltaX = Math.abs(changeDeltaX) * -1;
-    }
+      return prevPositionX + newChangeDeltaX;
+    });
 
-    if (isPastTopBoundary(positionY)) {
-      newChangeDeltaY = Math.abs(changeDeltaY);
-    }
+    setPositionY((prevPositionY) => {
+      if (isPastTopBoundary(prevPositionY)) {
+        newChangeDeltaY = Math.abs(changeDeltaY);
+        isColliding = true;
+      }
+  
+      if (isPastBottomBoundary(prevPositionY, height, heightBB)) {
+        newChangeDeltaY = Math.abs(changeDeltaY) * -1;
+        isColliding = true;
+      }
 
-    if (isPastBottomBoundary(positionY, height, playfieldHeight)) {
-      newChangeDeltaY = Math.abs(changeDeltaY) * -1;
-    }
-
-    if (isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight)) {
-      const upperRandomBound = 1.0 + (5 / 2 / 100);
-      const lowerRandomBound = 1.0 - (5 / 2 / 100);
-
-      newChangeDeltaX *= random(lowerRandomBound, upperRandomBound, true);
-      newChangeDeltaY *= random(lowerRandomBound, upperRandomBound, true);
-
-      setIsColliding(() => true);
-    }
-
-    setPositionX(prevPositionX => prevPositionX + newChangeDeltaX);
-    setPositionY(prevPositionY => prevPositionY + newChangeDeltaY);
+      return prevPositionY + newChangeDeltaY;
+    });
 
     changeDeltaX = newChangeDeltaX;
     changeDeltaY = newChangeDeltaY;
@@ -130,24 +123,24 @@ const Playfield = () => {
   }
 
   useEffect(() => {
-    initPosition();
+    playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
 
-    isFirstRun.current = false;
+    initPosition();
     startLoop();
 
     return () => stopLoop();
   }, []);
 
   return (
-    <PlayfieldWrapper ref={ playFieldDomElement }>
+    <PlayfieldWrapper ref={ playfieldDomElement }>
       <Logo
         positionX={ positionX }
         positionY={ positionY }
         width={ width }
         height={ height }
-        changeColours={ isColliding && !isFirstRun }
+        changeColours={ false }
       />
-      <Sound playSound={ isColliding && !isFirstRun } />
+      <Sound playSound={ false } />
     </PlayfieldWrapper>
   );
 };
