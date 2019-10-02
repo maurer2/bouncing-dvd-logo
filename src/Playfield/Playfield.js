@@ -45,10 +45,11 @@ const Playfield = () => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
-  const loopTimestamp = useRef(null);
+  const loopTimestamp = useRef(0);
   const playfieldDomElement = useRef();
   const playfieldBB = useRef();
-
+  const isColliding = useRef(false);
+  
   let changeDeltaX = 2;
   let changeDeltaY = 2;
 
@@ -69,18 +70,18 @@ const Playfield = () => {
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
 
-    // const isColliding = isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight);
-    let isColliding = false;
+    let hasCollided = false;
 
+    // const isColliding = isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight);
     setPositionX((prevPositionX) => {
       if (isPastLeftBoundary(prevPositionX)) {
         newChangeDeltaX = Math.abs(changeDeltaX);
-        isColliding = true;
+        hasCollided = true;
       }
 
       if (isPastRightBoundary(prevPositionX, width, widthBB)) {
         newChangeDeltaX = Math.abs(changeDeltaX) * -1;
-        isColliding = true;
+        hasCollided = true;
       }
 
       return prevPositionX + newChangeDeltaX;
@@ -89,12 +90,12 @@ const Playfield = () => {
     setPositionY((prevPositionY) => {
       if (isPastTopBoundary(prevPositionY)) {
         newChangeDeltaY = Math.abs(changeDeltaY);
-        isColliding = true;
+        hasCollided = true;
       }
   
       if (isPastBottomBoundary(prevPositionY, height, heightBB)) {
         newChangeDeltaY = Math.abs(changeDeltaY) * -1;
-        isColliding = true;
+        hasCollided = true;
       }
 
       return prevPositionY + newChangeDeltaY;
@@ -102,6 +103,8 @@ const Playfield = () => {
 
     changeDeltaX = newChangeDeltaX;
     changeDeltaY = newChangeDeltaY;
+
+    isColliding.current = hasCollided;
   }
 
   function loop() {
@@ -111,7 +114,7 @@ const Playfield = () => {
   }
 
   function startLoop() {
-    if (loopTimestamp.current !== null) {
+    if (loopTimestamp.current !== 0) {
       return;
     }
 
@@ -138,9 +141,9 @@ const Playfield = () => {
         positionY={ positionY }
         width={ width }
         height={ height }
-        changeColours={ false }
+        changeColours={ isColliding.current }
       />
-      <Sound playSound={ false } />
+      <Sound playSound={ isColliding.current } />
     </PlayfieldWrapper>
   );
 };
