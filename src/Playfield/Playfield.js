@@ -41,14 +41,16 @@ const PlayfieldWrapper = styled.div`
   pointer-events: none;
 `;
 
-const Playfield = () => {
+const Playfield = ({ isPaused }) => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
   const playfieldDomElement = useRef();
   const playfieldBB = useRef();
+
   const isColliding = useRef(false);
+  const gameIsPaused = useRef(false);
   
   let changeDeltaX = 2;
   let changeDeltaY = 2;
@@ -69,10 +71,8 @@ const Playfield = () => {
     const { width: widthBB, height: heightBB } = playfieldBB.current;
     let newChangeDeltaX = changeDeltaX;
     let newChangeDeltaY = changeDeltaY;
-
     let hasCollided = false;
 
-    // const isColliding = isCollidingWithBoundaries(positionX, positionY, width, height, playfieldWidth, playfieldHeight);
     setPositionX((prevPositionX) => {
       if (isPastLeftBoundary(prevPositionX)) {
         newChangeDeltaX = Math.abs(changeDeltaX);
@@ -108,7 +108,9 @@ const Playfield = () => {
   }
 
   function loop() {
-    updatePosition();
+    if (!(gameIsPaused.current)) {
+      updatePosition();
+    }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
   }
@@ -133,6 +135,10 @@ const Playfield = () => {
 
     return () => stopLoop();
   }, []);
+
+  useEffect(() => {
+    gameIsPaused.current = isPaused;
+  }, [isPaused]);
 
   return (
     <PlayfieldWrapper ref={ playfieldDomElement }>
