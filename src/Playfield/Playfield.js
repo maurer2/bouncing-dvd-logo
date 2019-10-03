@@ -23,6 +23,7 @@ const isPastBottomBoundary = (positionY, height, playfieldHeight) => {
   return positionY >= maxPositionStillInside;
 };
 
+/*
 const isCollidingWithBoundaries = (
   positionX, positionY, width, height, playfieldWidth, playfieldHeight,
 ) => {
@@ -33,6 +34,7 @@ const isCollidingWithBoundaries = (
 
   return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
 };
+*/
 
 const PlayfieldWrapper = styled.div`
   position: relative;
@@ -51,10 +53,10 @@ const Playfield = (props) => {
 
   const playfieldDomElement = useRef();
   const playfieldBB = useRef();
-  
+
   const isColliding = useRef(false);
   const isPaused = useRef(false);
-  // const maxRandomness = 5; // max value of deviation from correct reflection on collision
+  const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
   // svg
   const width = 150;
@@ -75,8 +77,11 @@ const Playfield = (props) => {
   function updatePosition() {
     const { width: widthBB, height: heightBB } = playfieldBB.current;
 
-    let newChangeDeltaX = changeDeltaX.current;
-    let newChangeDeltaY = changeDeltaY.current;
+    const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
+    const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
+
+    let newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
+    let newChangeDeltaY = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
     let hasCollided = false;
 
     setPositionX((prevPositionX) => {
@@ -90,7 +95,7 @@ const Playfield = (props) => {
         hasCollided = true;
       }
 
-      return prevPositionX + newChangeDeltaX;
+      return Math.round(prevPositionX + newChangeDeltaX);
     });
 
     setPositionY((prevPositionY) => {
@@ -104,7 +109,7 @@ const Playfield = (props) => {
         hasCollided = true;
       }
 
-      return prevPositionY + newChangeDeltaY;
+      return Math.round(prevPositionY + newChangeDeltaY);
     });
 
     if (hasCollided) {
