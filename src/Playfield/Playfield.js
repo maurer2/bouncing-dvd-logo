@@ -41,19 +41,20 @@ const PlayfieldWrapper = styled.div`
   pointer-events: none;
 `;
 
-const Playfield = ({ isPaused }) => {
+const Playfield = (props) => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
+  const changeDeltaX = useRef(2);
+  const changeDeltaY = useRef(2);
+
   const playfieldDomElement = useRef();
   const playfieldBB = useRef();
-
-  const isColliding = useRef(false);
-  const gameIsPaused = useRef(false);
   
-  let changeDeltaX = 2;
-  let changeDeltaY = 2;
+  const isColliding = useRef(false);
+  const isPaused = useRef(false);
+  // const maxRandomness = 5; // max value of deviation from correct reflection on collision
 
   // svg
   const width = 150;
@@ -65,22 +66,27 @@ const Playfield = ({ isPaused }) => {
 
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
+
+    // initial direction
+    changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
+    changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
   }
 
   function updatePosition() {
     const { width: widthBB, height: heightBB } = playfieldBB.current;
-    let newChangeDeltaX = changeDeltaX;
-    let newChangeDeltaY = changeDeltaY;
+
+    let newChangeDeltaX = changeDeltaX.current;
+    let newChangeDeltaY = changeDeltaY.current;
     let hasCollided = false;
 
     setPositionX((prevPositionX) => {
       if (isPastLeftBoundary(prevPositionX)) {
-        newChangeDeltaX = Math.abs(changeDeltaX);
+        newChangeDeltaX = Math.abs(changeDeltaX.current);
         hasCollided = true;
       }
 
       if (isPastRightBoundary(prevPositionX, width, widthBB)) {
-        newChangeDeltaX = Math.abs(changeDeltaX) * -1;
+        newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
         hasCollided = true;
       }
 
@@ -89,26 +95,28 @@ const Playfield = ({ isPaused }) => {
 
     setPositionY((prevPositionY) => {
       if (isPastTopBoundary(prevPositionY)) {
-        newChangeDeltaY = Math.abs(changeDeltaY);
+        newChangeDeltaY = Math.abs(changeDeltaY.current);
         hasCollided = true;
       }
-  
+
       if (isPastBottomBoundary(prevPositionY, height, heightBB)) {
-        newChangeDeltaY = Math.abs(changeDeltaY) * -1;
+        newChangeDeltaY = Math.abs(changeDeltaY.current) * -1;
         hasCollided = true;
       }
 
       return prevPositionY + newChangeDeltaY;
     });
 
-    changeDeltaX = newChangeDeltaX;
-    changeDeltaY = newChangeDeltaY;
+    if (hasCollided) {
+      changeDeltaX.current = newChangeDeltaX;
+      changeDeltaY.current = newChangeDeltaY;
+    }
 
     isColliding.current = hasCollided;
   }
 
   function loop() {
-    if (!(gameIsPaused.current)) {
+    if (!(isPaused.current)) {
       updatePosition();
     }
 
@@ -137,8 +145,16 @@ const Playfield = ({ isPaused }) => {
   }, []);
 
   useEffect(() => {
-    gameIsPaused.current = isPaused;
-  }, [isPaused]);
+    isPaused.current = props.isPaused;
+  }, [props.isPaused]);
+
+  useEffect(() => {
+    if (!isColliding.current) {
+      return;
+    }
+
+    console.log('colliding');
+  }, [isColliding.current]);
 
   return (
     <PlayfieldWrapper ref={ playfieldDomElement }>
