@@ -19,7 +19,7 @@ const GameWrapper = styled.div`
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState(() => uid(4));
-  const gameResizeObserver = useRef({});
+  const gameResizeObserver = useRef();
   const wrapperDomElement = useRef(null);
 
   const togglePlayState = () => setIsPaused(!isPaused);
@@ -27,6 +27,15 @@ const Game = () => {
   const reset = () => setKeyValue(() => uid(4));
 
   const handleResize = () => reset();
+
+  const handleInput = (event) => {
+    const pressedKey = event.key || event.keyCode;
+    const observedKeys = [' ', 'k', 'K']; // " " === spacebar
+
+    if (observedKeys.includes(pressedKey)) {
+      togglePlayState();
+    }
+  };
 
   // setup resize/intersection observer
   useEffect(() => {
@@ -62,11 +71,17 @@ const Game = () => {
     };
   }, []);
 
+  useEffect(() => {
+    wrapperDomElement.current.focus();
+  }, []);
+
   return (
     <GameWrapper
       isPaused={ isPaused }
       onClick={ togglePlayState }
+      onKeyPress={ event => handleInput(event) }
       ref={ (element) => { wrapperDomElement.current = element; } }
+      tabIndex="0"
     >
       <Playfield isPaused={ isPaused } key={ keyValue } />
     </GameWrapper>

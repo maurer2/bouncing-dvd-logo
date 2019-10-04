@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
@@ -7,32 +7,26 @@ import styled from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 
-const isPastLeftBoundary = positionX => positionX <= 0;
+const isPastStartBoundary = position => (position <= 0);
 
-const isPastRightBoundary = (positionX, width, playfieldWidth) => {
-  const maxPositionStillInside = (playfieldWidth - width);
+const isPastEndBoundary = (position, objectSize, playfieldSize) => {
+  const maxPositionStillInside = (playfieldSize - objectSize);
 
-  return positionX >= maxPositionStillInside;
+  return position >= maxPositionStillInside;
 };
 
-const isPastTopBoundary = positionY => positionY <= 0;
-
-const isPastBottomBoundary = (positionY, height, playfieldHeight) => {
-  const maxPositionStillInside = (playfieldHeight - height);
-
-  return positionY >= maxPositionStillInside;
-};
-
+/*
 const isCollidingWithBoundaries = (
   positionX, positionY, width, height, playfieldWidth, playfieldHeight,
 ) => {
-  const leftCheck = isPastLeftBoundary(positionX);
-  const rightCheck = isPastRightBoundary(positionX, width, playfieldWidth);
-  const topCheck = isPastTopBoundary(positionY);
-  const bottomCheck = isPastBottomBoundary(positionY, height, playfieldHeight);
+  const leftCheck = isPastStartBoundary(positionX);
+  const rightCheck = isPastEndBoundary(positionX, width, playfieldWidth);
+  const topCheck = isPastStartBoundary(positionY);
+  const bottomCheck = isPastEndBoundary(positionY, height, playfieldHeight);
 
   return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
 };
+*/
 
 const PlayfieldWrapper = styled.div`
   position: relative;
@@ -41,138 +35,135 @@ const PlayfieldWrapper = styled.div`
   pointer-events: none;
 `;
 
-class Playfield extends Component {
-  constructor(props) {
-    super(props);
+const Playfield = (props) => {
+  const [positionX, setPositionX] = useState(0);
+  const [positionY, setPositionY] = useState(0);
 
-    this.state = {
-      width: 150,
-      height: 138, // AR 0,92
-      changeDeltaX: 2,
-      changeDeltaY: 2,
-      maxRandomness: 5,
-      isColliding: false,
-    };
+  const loopTimestamp = useRef(0);
+  const changeDeltaX = useRef(2); // velocity x
+  const changeDeltaY = useRef(2); // velocity y
 
-    this.loopTimestamp = 0;
-    this.updatePosition = this.updatePosition.bind(this);
+  const playfieldDomElement = useRef();
+  const playfieldBB = useRef();
+
+  const isColliding = useRef(false);
+  const isPaused = useRef(false);
+  const isInit = useRef(false);
+  const maxRandomness = 6; // max value of deviation from correct reflection on collision
+
+  // svg
+  const width = 150;
+  const height = 138; // AR 0,92
+
+  // set random initial position and direction
+  function initPosition() {
+    const { width: widthBB, height: heightBB } = playfieldBB.current;
+
+    setPositionX(() => random(widthBB - width));
+    setPositionY(() => random(heightBB - height));
+
+    // initial direction
+    changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
+    changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
+    isInit.current = true;
   }
 
-  componentDidMount() {
-    // inital random position
-    this.setPosition();
-    this.startLoop();
+  function updatePosition() {
+    const { width: widthBB, height: heightBB } = playfieldBB.current;
+
+    const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
+    const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
+
+    let newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
+    let newChangeDeltaY = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
+    let hasCollided = false;
+
+    setPositionX((prevPositionX) => {
+      if (isPastStartBoundary(prevPositionX)) {
+        newChangeDeltaX = Math.abs(changeDeltaX.current);
+        hasCollided = true;
+      }
+
+      if (isPastEndBoundary(prevPositionX, width, widthBB)) {
+        newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
+        hasCollided = true;
+      }
+
+      return Math.round(prevPositionX + newChangeDeltaX);
+    });
+
+    setPositionY((prevPositionY) => {
+      if (isPastStartBoundary(prevPositionY)) {
+        newChangeDeltaY = Math.abs(changeDeltaY.current);
+        hasCollided = true;
+      }
+
+      if (isPastEndBoundary(prevPositionY, height, heightBB)) {
+        newChangeDeltaY = Math.abs(changeDeltaY.current) * -1;
+        hasCollided = true;
+      }
+
+      return Math.round(prevPositionY + newChangeDeltaY);
+    });
+
+    if (hasCollided) {
+      changeDeltaX.current = newChangeDeltaX;
+      changeDeltaY.current = newChangeDeltaY;
+    }
+
+    isColliding.current = hasCollided;
   }
 
-  componentWillUnmount() {
-    this.stopLoop();
+  function loop() {
+    if (!isPaused.current) {
+      updatePosition();
+    }
+
+    loopTimestamp.current = window.requestAnimationFrame(loop);
   }
 
-  startLoop() {
-    if (this.loopTimestamp) {
+  function startLoop() {
+    if (loopTimestamp.current !== 0) {
       return;
     }
 
-    this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
+    loopTimestamp.current = window.requestAnimationFrame(loop);
   }
 
-  stopLoop() {
-    window.cancelAnimationFrame(this.loopTimestamp);
+  function stopLoop() {
+    window.cancelAnimationFrame(loopTimestamp.current);
   }
 
-  loop() {
-    this.updatePosition();
+  useEffect(() => {
+    playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
 
-    this.loopTimestamp = window.requestAnimationFrame(this.loop.bind(this));
-  }
+    initPosition();
+    startLoop();
 
-  setPosition() {
-    if (this.playfield === undefined) {
-      return;
-    }
+    return () => stopLoop();
+  }, []);
 
-    const { width: widthBB, height: heightBB } = this.playfield.getBoundingClientRect();
-    const { changeDeltaX, changeDeltaY } = this.state;
+  useEffect(() => {
+    isPaused.current = props.isPaused;
+  }, [props.isPaused]);
 
-    const randomChangeDeltaX = random(1) === 0 ? changeDeltaX * -1 : changeDeltaX * +1;
-    const randomChangeDeltaY = random(1) === 0 ? changeDeltaY * -1 : changeDeltaY * +1;
-
-    this.setState(previousState => ({
-      playfieldWidth: widthBB,
-      playfieldHeight: heightBB,
-      positionX: random(widthBB - previousState.width),
-      positionY: random(heightBB - previousState.height),
-      changeDeltaX: randomChangeDeltaX,
-      changeDeltaY: randomChangeDeltaY,
-    }));
-  }
-
-  updatePosition() {
-    const { changeDeltaX, changeDeltaY, maxRandomness } = this.state;
-    const { positionX, positionY, width, height, playfieldWidth, playfieldHeight } = this.state;
-    const { isPaused } = this.props;
-
-    if (isPaused) {
-      return;
-    }
-
-    let newChangeDeltaX = changeDeltaX;
-    let newChangeDeltaY = changeDeltaY;
-    let newIsColliding = false;
-
-    if (isPastLeftBoundary(positionX)) {
-      newChangeDeltaX = Math.abs(changeDeltaX);
-    }
-
-    if (isPastRightBoundary(positionX, width, playfieldWidth)) {
-      newChangeDeltaX = Math.abs(changeDeltaX) * -1;
-    }
-
-    if (isPastTopBoundary(positionY)) {
-      newChangeDeltaY = Math.abs(changeDeltaY);
-    }
-
-    if (isPastBottomBoundary(positionY, height, playfieldHeight)) {
-      newChangeDeltaY = Math.abs(changeDeltaY) * -1;
-    }
-
-    if (isCollidingWithBoundaries(
-      positionX, positionY, width, height, playfieldWidth, playfieldHeight,
-    )) {
-      const upperRandomBound = 1.0 + (maxRandomness / 2 / 100);
-      const lowerRandomBound = 1.0 - (maxRandomness / 2 / 100);
-
-      newChangeDeltaX *= random(lowerRandomBound, upperRandomBound, true);
-      newChangeDeltaY *= random(lowerRandomBound, upperRandomBound, true);
-      newIsColliding = true;
-    }
-
-    this.setState(previousState => ({
-      positionX: Math.round(previousState.positionX + newChangeDeltaX),
-      positionY: Math.round(previousState.positionY + newChangeDeltaY),
-      changeDeltaX: newChangeDeltaX,
-      changeDeltaY: newChangeDeltaY,
-      isColliding: newIsColliding,
-    }));
-  }
-
-  render() {
-    const { positionX, positionY, width, height, isColliding } = this.state;
-
-    return (
-      <PlayfieldWrapper ref={ (element) => { this.playfield = element; } }>
-        <Logo
-          positionX={ positionX }
-          positionY={ positionY }
-          width={ width }
-          height={ height }
-          changeColours={ isColliding }
-        />
-        <Sound playSound={ isColliding } />
-      </PlayfieldWrapper>
-    );
-  }
-}
+  return (
+    <PlayfieldWrapper ref={ playfieldDomElement }>
+      {isInit.current && (
+        <>
+          <Logo
+            positionX={ positionX }
+            positionY={ positionY }
+            width={ width }
+            height={ height }
+            changeColours={ isColliding.current }
+          />
+          <Sound playSound={ isColliding.current } />
+        </>
+      )}
+    </PlayfieldWrapper>
+  );
+};
 
 const { bool } = PropTypes;
 
