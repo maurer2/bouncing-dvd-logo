@@ -40,14 +40,15 @@ const Playfield = (props) => {
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
-  const changeDeltaX = useRef(2);
-  const changeDeltaY = useRef(2);
+  const changeDeltaX = useRef(2); // velocity x
+  const changeDeltaY = useRef(2); // velocity y
 
   const playfieldDomElement = useRef();
   const playfieldBB = useRef();
 
   const isColliding = useRef(false);
   const isPaused = useRef(false);
+  const isInit = useRef(false);
   const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
   // svg
@@ -64,6 +65,7 @@ const Playfield = (props) => {
     // initial direction
     changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
     changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
+    isInit.current = true;
   }
 
   function updatePosition() {
@@ -147,14 +149,18 @@ const Playfield = (props) => {
 
   return (
     <PlayfieldWrapper ref={ playfieldDomElement }>
-      <Logo
-        positionX={ positionX }
-        positionY={ positionY }
-        width={ width }
-        height={ height }
-        changeColours={ isColliding.current }
-      />
-      <Sound playSound={ isColliding.current } />
+      {isInit.current && (
+        <>
+          <Logo
+            positionX={ positionX }
+            positionY={ positionY }
+            width={ width }
+            height={ height }
+            changeColours={ isColliding.current }
+          />
+          <Sound playSound={ isColliding.current } />
+        </>
+      )}
     </PlayfieldWrapper>
   );
 };
