@@ -7,30 +7,22 @@ import styled from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 
-const isPastLeftBoundary = positionX => positionX <= 0;
+const isPastStartBoundary = position => (position <= 0);
 
-const isPastRightBoundary = (positionX, width, playfieldWidth) => {
-  const maxPositionStillInside = (playfieldWidth - width);
+const isPastEndBoundary = (position, objectSize, playfieldSize) => {
+  const maxPositionStillInside = (playfieldSize - objectSize);
 
-  return positionX >= maxPositionStillInside;
-};
-
-const isPastTopBoundary = positionY => positionY <= 0;
-
-const isPastBottomBoundary = (positionY, height, playfieldHeight) => {
-  const maxPositionStillInside = (playfieldHeight - height);
-
-  return positionY >= maxPositionStillInside;
+  return position >= maxPositionStillInside;
 };
 
 /*
 const isCollidingWithBoundaries = (
   positionX, positionY, width, height, playfieldWidth, playfieldHeight,
 ) => {
-  const leftCheck = isPastLeftBoundary(positionX);
-  const rightCheck = isPastRightBoundary(positionX, width, playfieldWidth);
-  const topCheck = isPastTopBoundary(positionY);
-  const bottomCheck = isPastBottomBoundary(positionY, height, playfieldHeight);
+  const leftCheck = isPastStartBoundary(positionX);
+  const rightCheck = isPastEndBoundary(positionX, width, playfieldWidth);
+  const topCheck = isPastStartBoundary(positionY);
+  const bottomCheck = isPastEndBoundary(positionY, height, playfieldHeight);
 
   return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
 };
@@ -85,12 +77,12 @@ const Playfield = (props) => {
     let hasCollided = false;
 
     setPositionX((prevPositionX) => {
-      if (isPastLeftBoundary(prevPositionX)) {
+      if (isPastStartBoundary(prevPositionX)) {
         newChangeDeltaX = Math.abs(changeDeltaX.current);
         hasCollided = true;
       }
 
-      if (isPastRightBoundary(prevPositionX, width, widthBB)) {
+      if (isPastEndBoundary(prevPositionX, width, widthBB)) {
         newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
         hasCollided = true;
       }
@@ -99,12 +91,12 @@ const Playfield = (props) => {
     });
 
     setPositionY((prevPositionY) => {
-      if (isPastTopBoundary(prevPositionY)) {
+      if (isPastStartBoundary(prevPositionY)) {
         newChangeDeltaY = Math.abs(changeDeltaY.current);
         hasCollided = true;
       }
 
-      if (isPastBottomBoundary(prevPositionY, height, heightBB)) {
+      if (isPastEndBoundary(prevPositionY, height, heightBB)) {
         newChangeDeltaY = Math.abs(changeDeltaY.current) * -1;
         hasCollided = true;
       }
@@ -121,7 +113,7 @@ const Playfield = (props) => {
   }
 
   function loop() {
-    if (!(isPaused.current)) {
+    if (!isPaused.current) {
       updatePosition();
     }
 
@@ -152,14 +144,6 @@ const Playfield = (props) => {
   useEffect(() => {
     isPaused.current = props.isPaused;
   }, [props.isPaused]);
-
-  useEffect(() => {
-    if (!isColliding.current) {
-      return;
-    }
-
-    console.log('colliding');
-  }, [isColliding.current]);
 
   return (
     <PlayfieldWrapper ref={ playfieldDomElement }>
