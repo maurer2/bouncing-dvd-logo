@@ -13,7 +13,7 @@ const GameWrapper = styled.div`
   cursor: pointer;
   color: white;
 
-  ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
+  ${(props) => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
 
 const Game = () => {
@@ -46,7 +46,7 @@ const Game = () => {
       let isFirstTime = true; // ignore inital call on page load
 
       gameResizeObserver.current = new window.ResizeObserver((entries) => {
-        const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
+        const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
 
         if (isFirstTime) {
           isFirstTime = false;
@@ -79,7 +79,7 @@ const Game = () => {
     <GameWrapper
       isPaused={ isPaused }
       onClick={ togglePlayState }
-      onKeyPress={ event => handleInput(event) }
+      onKeyPress={ (event) => handleInput(event) }
       ref={ (element) => { wrapperDomElement.current = element; } }
       tabIndex="0"
     >
