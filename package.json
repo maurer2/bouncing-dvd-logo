@@ -52,12 +52,6 @@
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build"
   },
-  "browserslist": [
-    "last 1 version",
-    "> 1%",
-    "maintained node versions",
-    "not dead"
-  ],
   "resolutions": {
     "copy-webpack-plugin/serialize-javascript": "^2.1.1"
   }
