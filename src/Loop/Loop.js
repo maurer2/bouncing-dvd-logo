@@ -24,7 +24,7 @@ const Loop2 = (props) => {
   };
   */
 
-  useEffect( () => {
+  useEffect(() => {
     const intervalId = setInterval(() => {
       setCount((currentCount) => {
         const newCount = (currentCount % 60 === 0) ? 1 : currentCount + 1;
@@ -52,7 +52,7 @@ const Loop2 = (props) => {
 };
 
 Loop2.propTypes = {
-  
+
 };
 
 export default Loop2;

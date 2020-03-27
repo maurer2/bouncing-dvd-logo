@@ -7,7 +7,7 @@ import styled from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 
-const isPastStartBoundary = position => (position <= 0);
+const isPastStartBoundary = (position) => (position <= 0);
 
 const isPastEndBoundary = (position, objectSize, playfieldSize) => {
   const maxPositionStillInside = (playfieldSize - objectSize);
