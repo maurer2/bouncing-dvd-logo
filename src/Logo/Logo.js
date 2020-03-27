@@ -2,24 +2,10 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
-import styled from 'styled-components/macro';
+import * as Styles from './Logo.styles';
 
 import store from '../store';
 import { ReactComponent as CatLogo } from './cat.svg';
-
-const LogoElement = styled.div.attrs((props) => ({
-  style: {
-    transform: `translate(${Math.round(props.positionX)}px, ${Math.round(props.positionY)}px)`,
-  },
-}))`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => `${props.widthValue}px`};
-  height: ${(props) => `${props.heightValue}px`};
-  color: ${(props) => `${props.colourValue}`};
-  will-change: transform;
-`;
 
 const Logo = ({ positionX, positionY, width, height, changeColours }) => {
   const { colours } = useContext(store);
@@ -43,7 +29,7 @@ const Logo = ({ positionX, positionY, width, height, changeColours }) => {
   }, [changeColours, getRandomColor]);
 
   return (
-    <LogoElement
+    <Styles.LogoElement
       positionX={ positionX }
       positionY={ positionY }
       widthValue={ width }
@@ -51,7 +37,7 @@ const Logo = ({ positionX, positionY, width, height, changeColours }) => {
       colourValue= { colour }
     >
       <CatLogo />
-    </LogoElement>
+    </Styles.LogoElement>
   );
 };
 

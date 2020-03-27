@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
-import styled from 'styled-components/macro';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
+import * as Styles from './Playfield.styles';
 
 const isPastStartBoundary = (position) => (position <= 0);
 
@@ -27,13 +27,6 @@ const isCollidingWithBoundaries = (
   return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
 };
 */
-
-const PlayfieldWrapper = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-`;
 
 const Playfield = (props) => {
   const [positionX, setPositionX] = useState(0);
@@ -148,7 +141,7 @@ const Playfield = (props) => {
   }, [props.isPaused]);
 
   return (
-    <PlayfieldWrapper ref={ playfieldDomElement }>
+    <Styles.PlayfieldWrapper ref={ playfieldDomElement }>
       {isInit.current && (
         <>
           <Logo
@@ -161,7 +154,7 @@ const Playfield = (props) => {
           <Sound playSound={ isColliding.current } />
         </>
       )}
-    </PlayfieldWrapper>
+    </Styles.PlayfieldWrapper>
   );
 };
 
