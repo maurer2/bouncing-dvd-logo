@@ -5,7 +5,7 @@ import random from 'lodash.random';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
-import * as Styles from './Playfield.styles';
+import * as Styles from './Playingfield.styles';
 
 const isPastStartBoundary = (position) => (position <= 0);
 
@@ -28,7 +28,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const Playfield = (props) => {
+const PlayField = (props) => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -141,7 +141,7 @@ const Playfield = (props) => {
   }, [props.isPaused]);
 
   return (
-    <Styles.PlayfieldWrapper ref={ playfieldDomElement }>
+    <Styles.PlayingFieldWrapper ref={ playfieldDomElement }>
       {isInit.current && (
         <>
           <Logo
@@ -154,14 +154,14 @@ const Playfield = (props) => {
           <Sound playSound={ isColliding.current } />
         </>
       )}
-    </Styles.PlayfieldWrapper>
+    </Styles.PlayingFieldWrapper>
   );
 };
 
 const { bool } = PropTypes;
 
-Playfield.propTypes = {
+PlayField.propTypes = {
   isPaused: bool,
 };
 
-export default Playfield;
+export default PlayField;

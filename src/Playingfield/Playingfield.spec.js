@@ -4,12 +4,12 @@ import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import 'jest-styled-components';
 
-import Playfield from './Playfield';
+import PlayingField from './Playingfield';
 
 // React 16 Enzyme adapter
 Enzyme.configure({ adapter: new Adapter() });
 
-describe('Playfield', () => {
+describe('PlayingField', () => {
   const subscribeMock = jest.fn();
   const unsubscribeMock = jest.fn();
 
@@ -20,7 +20,7 @@ describe('Playfield', () => {
     },
   };
 
-  const wrapper = shallow(<Playfield isPaused={ false } />, { context });
+  const wrapper = shallow(<PlayingField isPaused={ false } />, { context });
 
   wrapper.update();
 

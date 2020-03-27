@@ -4,7 +4,7 @@ import uid from 'uid';
 import debounce from 'lodash.debounce';
 
 import * as Styles from './Game.styles';
-import Playfield from '../Playfield/Playfield';
+import PlayField from '../Playingfield/Playingfield';
 
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
@@ -73,7 +73,7 @@ const Game = () => {
       ref={ (element) => { wrapperDomElement.current = element; } }
       tabIndex="0"
     >
-      <Playfield isPaused={ isPaused } key={ keyValue } />
+      <PlayField isPaused={ isPaused } key={ keyValue } />
     </Styles.GameWrapper>
   );
 };
