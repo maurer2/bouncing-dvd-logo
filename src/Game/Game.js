@@ -1,20 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 import uid from 'uid';
-import styled from 'styled-components/macro';
 import debounce from 'lodash.debounce';
 
-import Playfield from '../Playfield/Playfield';
-
-const GameWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  transition: filter 0.15s ease-in-out;
-  cursor: pointer;
-  color: white;
-
-  ${props => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
-`;
+import * as Styles from './Game.styles';
+import PlayField from '../Playingfield/Playingfield';
 
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
@@ -46,7 +36,7 @@ const Game = () => {
       let isFirstTime = true; // ignore inital call on page load
 
       gameResizeObserver.current = new window.ResizeObserver((entries) => {
-        const gameHasResized = entries.some(entry => (entry.target === wrapperDomElement.current));
+        const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
 
         if (isFirstTime) {
           isFirstTime = false;
@@ -76,15 +66,15 @@ const Game = () => {
   }, []);
 
   return (
-    <GameWrapper
+    <Styles.GameWrapper
       isPaused={ isPaused }
       onClick={ togglePlayState }
-      onKeyPress={ event => handleInput(event) }
+      onKeyPress={ (event) => handleInput(event) }
       ref={ (element) => { wrapperDomElement.current = element; } }
       tabIndex="0"
     >
-      <Playfield isPaused={ isPaused } key={ keyValue } />
-    </GameWrapper>
+      <PlayField isPaused={ isPaused } key={ keyValue } />
+    </Styles.GameWrapper>
   );
 };
 
