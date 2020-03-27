@@ -18,13 +18,13 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     box-sizing: border-box;
-    background-color: #000;
+    font-size: 16px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
       "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 16px;
+    background-color: #000;
   }
 
   body {

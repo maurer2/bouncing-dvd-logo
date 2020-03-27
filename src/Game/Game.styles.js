@@ -4,9 +4,8 @@ import styled from 'styled-components/macro';
 export const GameWrapper = styled.div`
   width: 100vw;
   height: 100vh;
-  transition: filter 0.15s ease-in-out;
-  cursor: pointer;
   color: white;
-
+  cursor: pointer;
+  transition: filter 0.15s ease-in-out;
   ${(props) => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
 `;
