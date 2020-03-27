@@ -1,16 +1,23 @@
 module.exports = {
+  parser: "babel-eslint",
   extends: [
     "airbnb-base",
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
   ],
-  parser: "babel-eslint",
   env: {
     "jest": true,
     "browser": true,
     "node": true,
   },
+  plugins: [
+    "react",
+  ],
   rules: {
+    "quotes": [2, "single", { "avoidEscape": true }],
+    "semi": ["error", "always"],
+    "comma-dangle": [2, "always-multiline"],
     "react/jsx-uses-vars": "error",
     "react/jsx-uses-react": "error",
     "object-curly-newline": ["error", {
@@ -20,16 +27,25 @@ module.exports = {
       "exceptMethods": [
         "render"
       ]
-    }]
+    }],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [{
+          "name": "styled-components",
+          "message": "Direct import of styled-components prohibited. Use styled-components/macro instead"
+        }],
+        "patterns": [
+          "!styled-components/macro"
+        ]
+      }
+    ]
   },
   parserOptions: {
     "ecmaFeatures": {
       "jsx": true,
     },
   },
-  plugins: [
-    "react"
-  ],
   settings: {
     "react": {
       "pragma": "React",
