@@ -29,13 +29,14 @@
     "babel-plugin-macros": "^2.4.4",
     "lodash.debounce": "^4.0.8",
     "lodash.random": "^3.2.0",
+    "nanoid": "^3.0.1",
+    "nanoid-dictionary": "^3.0.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "sort-package-json": "^1.40.0",
     "styled-components": "^5.0.1",
-    "styled-normalize": "^8.0.7",
-    "uid": "^0.0.2"
+    "styled-normalize": "^8.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.5.4",

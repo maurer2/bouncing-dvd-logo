@@ -1,20 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import uid from 'uid';
 import debounce from 'lodash.debounce';
+
+import { nanoid } from 'nanoid';
+import dictionaryLowercase from 'nanoid-dictionary/lowercase';
 
 import * as Styles from './Game.styles';
 import PlayField from '../Playingfield/Playingfield';
 
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
-  const [keyValue, setKeyValue] = useState(() => uid(4));
+  const [keyValue, setKeyValue] = useState(() => nanoid(dictionaryLowercase, 5));
   const gameResizeObserver = useRef();
   const wrapperDomElement = useRef(null);
 
   const togglePlayState = () => setIsPaused(!isPaused);
 
-  const reset = () => setKeyValue(() => uid(4));
+  const reset = () => setKeyValue(() => nanoid(dictionaryLowercase, 5));
 
   const handleResize = () => reset();
 

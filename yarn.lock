@@ -7496,6 +7496,16 @@ nan@^2.12.1:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
   integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
 
+nanoid-dictionary@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/nanoid-dictionary/-/nanoid-dictionary-3.0.0.tgz#e4ad77e528792095662a7be1855ce31448d0687c"
+  integrity sha512-dYCOXltfavrN7LGYt3DEAGl6Ya3UcnypXPsYR7HZ5k1eIesakVm+zlfv7V75uSe+Zhyxvyhg9yEbPl8qMx1dwA==
+
+nanoid@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.0.1.tgz#8fb66b6910902327d4a47f623f9a3e502d563edf"
+  integrity sha512-y5gyHbIZQUaim/PrgYLd27MPoDIbGk9Yv5WeWLzFcfDxdV0svMV6geY6G/z/gWrP+OiBrj4SJ+z3Tpyn6IaMOA==
+
 nanomatch@^1.2.9:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -11356,11 +11366,6 @@ typescript@^3.5.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
-
-uid@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/uid/-/uid-0.0.2.tgz#5e4a5d4b78138b4f70f89fd3c76fc59aa9d2f103"
-  integrity sha1-XkpdS3gTi09w+J/Tx2/FmqnS8QM=
 
 unherit@^1.0.4:
   version "1.1.3"
