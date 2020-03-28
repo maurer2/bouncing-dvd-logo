@@ -33,7 +33,7 @@ const Game = () => {
     const resizeObserverIsSupported = !(window.ResizeObserver === undefined);
 
     if (resizeObserverIsSupported) {
-      let isFirstTime = true; // ignore inital call on page load
+      let isFirstTime = true; // ignore initial call on page load
 
       gameResizeObserver.current = new window.ResizeObserver((entries) => {
         const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
