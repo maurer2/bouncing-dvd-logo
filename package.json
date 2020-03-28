@@ -2,7 +2,7 @@
   "name": "bouncing-dvd-logo",
   "version": "0.1.0",
   "private": true,
-  "license": "",
+  "license": "*",
   "homepage": "http://maurer2.github.io/bouncing-dvd-logo",
   "repository": "https://github.com/maurer2/bouncing-dvd-logo",
   "author": "Martin",
@@ -33,8 +33,8 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "sort-package-json": "^1.40.0",
-    "styled-components": "^5.0.0",
-    "styled-normalize": "^8.0.6",
+    "styled-components": "^5.0.1",
+    "styled-normalize": "^8.0.7",
     "uid": "^0.0.2"
   },
   "devDependencies": {

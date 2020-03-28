@@ -7,5 +7,6 @@ export const GameWrapper = styled.div`
   color: white;
   cursor: pointer;
   transition: filter 0.15s ease-in-out;
-  ${(props) => (props.isPaused ? 'filter: opacity(0.25)' : 'filter: opacity(1)')};
+  filter: ${(({ isPaused }) => (isPaused ? 'opacity(0.25)' : 'opacity(1)'))};
+  overflow: hidden;
 `;
