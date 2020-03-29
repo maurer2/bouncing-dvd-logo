@@ -1,20 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import uid from 'uid';
 import debounce from 'lodash.debounce';
+
+import { nanoid } from 'nanoid';
 
 import * as Styles from './Game.styles';
 import PlayField from '../Playingfield/Playingfield';
 
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
-  const [keyValue, setKeyValue] = useState(() => uid(4));
+  const [keyValue, setKeyValue] = useState(() => `key-${nanoid(5)}`);
   const gameResizeObserver = useRef();
   const wrapperDomElement = useRef(null);
 
   const togglePlayState = () => setIsPaused(!isPaused);
 
-  const reset = () => setKeyValue(() => uid(4));
+  const reset = () => setKeyValue(() => `key-${nanoid(5)}`);
 
   const handleResize = () => reset();
 
@@ -33,7 +34,7 @@ const Game = () => {
     const resizeObserverIsSupported = !(window.ResizeObserver === undefined);
 
     if (resizeObserverIsSupported) {
-      let isFirstTime = true; // ignore inital call on page load
+      let isFirstTime = true; // ignore initial call on page load
 
       gameResizeObserver.current = new window.ResizeObserver((entries) => {
         const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));

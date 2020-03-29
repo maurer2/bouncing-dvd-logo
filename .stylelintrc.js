@@ -18,5 +18,6 @@ module.exports = {
       },
     ],
     'selector-pseudo-element-colon-notation': null,
+    'selector-type-no-unknown': [true, { ignoreTypes: ['$dummyValue'] }]
   },
 };

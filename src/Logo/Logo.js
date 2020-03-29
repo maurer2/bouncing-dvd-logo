@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, { useEffect, useState, useRef, useContext, useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
@@ -20,13 +20,19 @@ const Logo = ({ positionX, positionY, width, height, changeColours }) => {
     return newColour;
   };
 
+  const getNewColor = useCallback(() => {
+    const newColor = getRandomColor(colour);
+
+    return newColor;
+  }, [colour]);
+
   useEffect(() => {
     if (changeColours && changeColours !== prevChangeColours.current) {
-      setColour(getRandomColor);
+      setColour(getNewColor);
     }
 
     prevChangeColours.current = changeColours;
-  }, [changeColours, getRandomColor]);
+  }, [changeColours, getNewColor]);
 
   return (
     <Styles.LogoElement
