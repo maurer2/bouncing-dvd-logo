@@ -9,4 +9,5 @@ export const GameWrapper = styled.div`
   transition: filter 0.15s ease-in-out;
   filter: ${(({ isPaused }) => (isPaused ? 'opacity(0.25)' : 'opacity(1)'))};
   overflow: hidden;
+  outline: none;
 `;

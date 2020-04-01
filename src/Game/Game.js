@@ -10,54 +10,52 @@ import PlayField from '../Playingfield/Playingfield';
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState(() => `key-${nanoid(5)}`);
-  const gameResizeObserver = useRef();
   const wrapperDomElement = useRef(null);
+  const isInitialResize = useRef(true);
+  const debouncedResizeHandler = useRef({});
+  const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
+  const gameResizeObserver = useRef(new window.ResizeObserver((entries) => {
+    const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
+
+    if (isInitialResize.current) {
+      isInitialResize.current = false;
+
+      return;
+    }
+
+    if (gameHasResized) {
+      debouncedResizeHandler.current();
+    }
+  }));
 
   const togglePlayState = () => setIsPaused(!isPaused);
-
   const reset = () => setKeyValue(() => `key-${nanoid(5)}`);
-
   const handleResize = () => reset();
 
   const handleInput = (event) => {
     const pressedKey = event.key || event.keyCode;
-    const observedKeys = [' ', 'k', 'K']; // " " === spacebar
+    const observedKeys = [' ', 'k']; // " " === spacebar
 
-    if (observedKeys.includes(pressedKey)) {
+    if (observedKeys.includes(pressedKey.toLowerCase())) {
       togglePlayState();
     }
   };
 
   // setup resize/intersection observer
   useEffect(() => {
-    const debouncedResizeHandler = debounce(handleResize, 300);
-    const resizeObserverIsSupported = !(window.ResizeObserver === undefined);
+    debouncedResizeHandler.current = debounce(handleResize, 300);
 
-    if (resizeObserverIsSupported) {
-      let isFirstTime = true; // ignore initial call on page load
-
-      gameResizeObserver.current = new window.ResizeObserver((entries) => {
-        const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
-
-        if (isFirstTime) {
-          isFirstTime = false;
-          return;
-        }
-
-        if (gameHasResized) {
-          debouncedResizeHandler();
-        }
-      });
+    if (resizeObserverIsSupported.current) {
       gameResizeObserver.current.observe(wrapperDomElement.current);
     } else {
-      window.addEventListener('resize', debouncedResizeHandler);
+      window.addEventListener('resize', debouncedResizeHandler.current);
     }
 
     return () => {
-      if (resizeObserverIsSupported) {
+      if (resizeObserverIsSupported.current) {
         gameResizeObserver.current.unobserve(wrapperDomElement.current);
       } else {
-        window.removeEventListener('resize', debouncedResizeHandler);
+        window.removeEventListener('resize', debouncedResizeHandler.current);
       }
     };
   }, []);
@@ -73,6 +71,7 @@ const Game = () => {
       onKeyPress={ (event) => handleInput(event) }
       ref={ (element) => { wrapperDomElement.current = element; } }
       tabIndex="0"
+      autoFocus={true}
     >
       <PlayField isPaused={ isPaused } key={ keyValue } />
     </Styles.GameWrapper>
