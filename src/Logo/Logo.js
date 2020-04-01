@@ -12,27 +12,21 @@ const Logo = ({ positionX, positionY, width, height, changeColours }) => {
   const [colour, setColour] = useState(colours[0]);
   const prevChangeColours = useRef(false);
 
-  const getRandomColor = (prevColour) => {
-    const newColours = colours.filter((colourEntry) => colourEntry !== prevColour);
+  const setNewColour = useCallback(() => {
+    const newColours = colours.filter((colourEntry) => colourEntry !== colour);
     const randomColourIndex = random(newColours.length - 1);
     const newColour = newColours[randomColourIndex];
 
-    return newColour;
-  };
-
-  const getNewColor = useCallback(() => {
-    const newColor = getRandomColor(colour);
-
-    return newColor;
-  }, [colour]);
+    setColour(newColour);
+  }, [colour, colours]);
 
   useEffect(() => {
     if (changeColours && changeColours !== prevChangeColours.current) {
-      setColour(getNewColor);
+      setNewColour();
     }
 
     prevChangeColours.current = changeColours;
-  }, [changeColours, getNewColor]);
+  }, [changeColours, setNewColour]);
 
   return (
     <Styles.LogoElement
