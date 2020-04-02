@@ -4,8 +4,8 @@ import styled from 'styled-components/macro';
 export const Controls = styled.div`
   display: flex;
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 0.5rem;
+  right: 0.5rem;
 `;
 
 export const Control = styled.button.attrs(() => ({
@@ -15,4 +15,5 @@ export const Control = styled.button.attrs(() => ({
   border: 1px solid white;
   background: none;
   color: white;
+  outline: none;
 `;

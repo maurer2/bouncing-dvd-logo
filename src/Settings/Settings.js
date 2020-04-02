@@ -17,7 +17,13 @@ class Settings extends Component {
 
   toggleSound() {
     console.log(this.state);
-    this.setState((state) => !state.soundIsDisabled);
+
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        soundIsDisabled: !(prevState.soundIsDisabled),
+      };
+    });
   }
 
   render() {
