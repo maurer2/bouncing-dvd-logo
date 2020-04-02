@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 // eslint-disable-next-line import/prefer-default-export
 export const LogoElement = styled.figure.attrs((props) => ({
   style: {
-    transform: `translate3d(${Math.floor(props.positionX)}px, ${Math.floor(props.positionY)}px, 0)`,
+    transform: `translate(${Math.floor(props.positionX)}px, ${Math.floor(props.positionY)})`,
   },
 }))`
   position: absolute;
