@@ -11,6 +11,19 @@ class Settings extends Component {
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
       soundIsDisabled: false,
     };
+
+    this.toggleSound = this.toggleSound.bind(this);
+  }
+
+  toggleSound() {
+    console.log(this.state);
+
+    this.setState((prevState) => {
+      return {
+        ...prevState,
+        soundIsDisabled: !(prevState.soundIsDisabled),
+      };
+    });
   }
 
   render() {
@@ -22,6 +35,7 @@ class Settings extends Component {
         value={{
           colours,
           soundIsDisabled,
+          toggleSound: this.toggleSound,
         }}
       >
         { children }

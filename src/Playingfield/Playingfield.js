@@ -6,6 +6,8 @@ import random from 'lodash.random';
 import { StyleSheetManager } from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
+import Controls from '../Controls/Controls';
+
 import * as Styles from './Playingfield.styles';
 
 const isPastStartBoundary = (position) => (position <= 0);
@@ -153,6 +155,7 @@ const PlayField = (props) => {
               height={ height }
               changeColours={ isColliding.current }
             />
+            <Controls />
             <Sound playSound={ isColliding.current } />
           </>
         )}
