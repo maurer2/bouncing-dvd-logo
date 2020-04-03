@@ -17,6 +17,10 @@ export const Control = styled.button.attrs(() => ({
   color: white;
   outline: none;
   cursor: pointer;
+  width: 5vw;
+  height: 5vw;
+  min-width: 50px;
+  min-height: 50px;
 
   svg {
     display: block;

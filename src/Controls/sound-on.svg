@@ -1,6 +1,6 @@
-<svg width="75" height="75" xmlns="http://www.w3.org/2000/svg">
-  <g>
-    <path transform="rotate(-180 16.075927734375004,38.29999923706055)" id="waves" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" d="m5,27.6a19.5,19.5 0 0 1 0,21.4m7.1,-28.5a30,30 0 0 1 0,35.6m6.5,-42.1a38.8,38.8 0 0 1 0,48.6"/>
-    <path transform="rotate(-180 53.19450378417969,38.259498596191406)" id="speaker" stroke="#fff" stroke-width="5" stroke-linejoin="round" fill="#111" d="m69.889,13.769l-17.154,14.837l-16.235,0l0,19.093l15.989,0l17.4,15.051l0,-48.981z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 75 75">
+  <g fill="none" stroke="#fff" stroke-width="5">
+    <path stroke-linecap="round" d="M27.152 49a19.5 19.5 0 010-21.4m-7.1 28.5a30 30 0 010-35.6m-6.5 42.1a38.8 38.8 0 010-48.6"/>
+    <path stroke-linejoin="round" d="M36.5 62.75l17.154-14.837h16.235V28.82H53.9L36.5 13.769V62.75z"/>
   </g>
 </svg>
