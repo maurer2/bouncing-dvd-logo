@@ -7,7 +7,7 @@ import * as Styles from './Logo.styles';
 import store from '../store';
 import { ReactComponent as CatLogo } from './cat.svg';
 
-const Logo = ({ positionX, positionY, width, height, changeColours }) => {
+const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) => {
   const { colours } = useContext(store);
   const [colour, setColour] = useState(colours[0]);
   const prevChangeColours = useRef(false);
@@ -35,6 +35,7 @@ const Logo = ({ positionX, positionY, width, height, changeColours }) => {
       widthValue={ width }
       heightValue={ height }
       colourValue= { colour }
+      isPaused={ isPaused }
     >
       <CatLogo />
     </Styles.LogoElement>
@@ -49,6 +50,7 @@ Logo.propTypes = {
   width: number,
   height: number,
   changeColours: bool,
+  isPaused: bool,
 };
 
 export default Logo;

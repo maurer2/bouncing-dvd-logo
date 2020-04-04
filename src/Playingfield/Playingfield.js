@@ -30,7 +30,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayField = (props) => {
+const PlayingField = (props) => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -139,7 +139,9 @@ const PlayField = (props) => {
   }, []);
 
   useEffect(() => {
-    isPaused.current = props.isPaused;
+    const currentPlayState = props.isPaused;
+
+    isPaused.current = currentPlayState;
   }, [props.isPaused]);
 
   return (
@@ -152,6 +154,7 @@ const PlayField = (props) => {
             width={ width }
             height={ height }
             changeColours={ isColliding.current }
+            isPaused={ props.isPaused }
           />
           <Controls />
           <Sound playSound={ isColliding.current } />
@@ -163,8 +166,8 @@ const PlayField = (props) => {
 
 const { bool } = PropTypes;
 
-PlayField.propTypes = {
+PlayingField.propTypes = {
   isPaused: bool,
 };
 
-export default PlayField;
+export default PlayingField;

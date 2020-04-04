@@ -14,4 +14,5 @@ export const LogoElement = styled.figure.attrs((props) => ({
   margin: 0;
   color: ${(props) => `${props.colourValue}`};
   will-change: transform;
+  opacity: ${(({ isPaused }) => (isPaused ? '0.25' : '1'))};
 `;

@@ -68,7 +68,6 @@ const Game = () => {
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
-        isPaused={ isPaused }
         onClick={ togglePlayState }
         onKeyPress={ (event) => handleInput(event) }
         ref={ (element) => { wrapperDomElement.current = element; } }
