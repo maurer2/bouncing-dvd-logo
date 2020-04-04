@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce';
 
 import { nanoid } from 'nanoid';
 
+import { StyleSheetManager } from 'styled-components/macro';
 import * as Styles from './Game.styles';
 import PlayField from '../Playingfield/Playingfield';
 
@@ -65,16 +66,18 @@ const Game = () => {
   }, []);
 
   return (
-    <Styles.GameWrapper
-      isPaused={ isPaused }
-      onClick={ togglePlayState }
-      onKeyPress={ (event) => handleInput(event) }
-      ref={ (element) => { wrapperDomElement.current = element; } }
-      tabIndex="0"
-      autoFocus={true}
-    >
-      <PlayField isPaused={ isPaused } key={ keyValue } />
-    </Styles.GameWrapper>
+    <StyleSheetManager disableVendorPrefixes>
+      <Styles.GameWrapper
+        isPaused={ isPaused }
+        onClick={ togglePlayState }
+        onKeyPress={ (event) => handleInput(event) }
+        ref={ (element) => { wrapperDomElement.current = element; } }
+        tabIndex="0"
+        autoFocus={true}
+      >
+        <PlayField isPaused={ isPaused } key={ keyValue } />
+      </Styles.GameWrapper>
+    </StyleSheetManager>
   );
 };
 

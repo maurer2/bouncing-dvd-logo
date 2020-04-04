@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
 
-import { StyleSheetManager } from 'styled-components/macro';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
@@ -144,23 +143,21 @@ const PlayField = (props) => {
   }, [props.isPaused]);
 
   return (
-    <StyleSheetManager disableVendorPrefixes>
-      <Styles.PlayingFieldWrapper ref={ playfieldDomElement }>
-        {isInit.current && (
-          <>
-            <Logo
-              positionX={ positionX }
-              positionY={ positionY }
-              width={ width }
-              height={ height }
-              changeColours={ isColliding.current }
-            />
-            <Controls />
-            <Sound playSound={ isColliding.current } />
-          </>
-        )}
-      </Styles.PlayingFieldWrapper>
-    </StyleSheetManager>
+    <Styles.PlayingFieldWrapper ref={ playfieldDomElement }>
+      {isInit.current && (
+        <>
+          <Logo
+            positionX={ positionX }
+            positionY={ positionY }
+            width={ width }
+            height={ height }
+            changeColours={ isColliding.current }
+          />
+          <Controls />
+          <Sound playSound={ isColliding.current } />
+        </>
+      )}
+    </Styles.PlayingFieldWrapper>
   );
 };
 

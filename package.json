@@ -23,7 +23,8 @@
     "test": "react-scripts test"
   },
   "resolutions": {
-    "stylelint/postcss-sass/gonzales-pe/minimist": "^1.2.3"
+    "stylelint/postcss-sass/gonzales-pe/minimist": "^1.2.3",
+    "kind-of": "^6.0.3"
   },
   "dependencies": {
     "@babel/core": "^7.9.0",

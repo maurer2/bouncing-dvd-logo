@@ -9,33 +9,30 @@ class Settings extends Component {
 
     this.state = {
       colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
-      soundIsDisabled: false,
+      soundIsDisabled: true,
     };
 
     this.toggleSound = this.toggleSound.bind(this);
   }
 
   toggleSound() {
-    console.log(this.state);
-
-    this.setState((prevState) => {
-      return {
-        ...prevState,
-        soundIsDisabled: !(prevState.soundIsDisabled),
-      };
-    });
+    this.setState((prevState) => ({
+      ...prevState,
+      soundIsDisabled: !(prevState.soundIsDisabled),
+    }));
   }
 
   render() {
     const { colours, soundIsDisabled } = this.state;
     const { children } = this.props;
+    const { toggleSound } = this;
 
     return (
       <store.Provider
         value={{
           colours,
           soundIsDisabled,
-          toggleSound: this.toggleSound,
+          toggleSound,
         }}
       >
         { children }

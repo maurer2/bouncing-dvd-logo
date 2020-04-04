@@ -8,20 +8,16 @@ import * as Styles from './Controls.styles';
 const Controls = () => {
   const { soundIsDisabled, toggleSound } = useContext(store);
 
-  const handleClick = (event) => {
+  function handleClick(event) {
     event.stopPropagation();
 
     toggleSound();
-  };
+  }
 
   return (
     <Styles.Controls>
       <Styles.Control onClick={handleClick}>
-        { soundIsDisabled ? (
-          <SoundOffIcon />
-        ) : (
-          <SoundOnIcon />
-        )}
+        { soundIsDisabled ? <SoundOffIcon /> : <SoundOnIcon /> }
       </Styles.Control>
     </Styles.Controls>
   );
