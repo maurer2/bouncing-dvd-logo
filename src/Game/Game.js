@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 import debounce from 'lodash.debounce';
 
@@ -14,10 +14,11 @@ const Game = () => {
   const wrapperDomElement = useRef(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef({});
-  const resizeObserverIsSupported = useRef(() => !(window.ResizeObserver === undefined));
+
   const gameResizeObserver = useRef(new window.ResizeObserver((entries) => {
     const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
 
+    // ignore resize observer on dom load
     if (isInitialResize.current) {
       isInitialResize.current = false;
 
@@ -31,7 +32,7 @@ const Game = () => {
 
   const togglePlayState = () => setIsPaused(!isPaused);
   const reset = () => setKeyValue(() => `key-${nanoid(5)}`);
-  const handleResize = () => reset();
+  const handleResize = useCallback(() => reset(), []);
 
   const handleInput = (event) => {
     const pressedKey = event.key || event.keyCode;
@@ -46,20 +47,14 @@ const Game = () => {
   useEffect(() => {
     debouncedResizeHandler.current = debounce(handleResize, 300);
 
-    if (resizeObserverIsSupported.current) {
-      gameResizeObserver.current.observe(wrapperDomElement.current);
-    } else {
-      window.addEventListener('resize', debouncedResizeHandler.current);
-    }
+    const currentResizeObserver = gameResizeObserver.current;
+
+    currentResizeObserver.observe(wrapperDomElement.current);
 
     return () => {
-      if (resizeObserverIsSupported.current) {
-        gameResizeObserver.current.unobserve(wrapperDomElement.current);
-      } else {
-        window.removeEventListener('resize', debouncedResizeHandler.current);
-      }
+      currentResizeObserver.unobserve(wrapperDomElement.current);
     };
-  }, []);
+  }, [handleResize]);
 
   useEffect(() => {
     wrapperDomElement.current.focus();
