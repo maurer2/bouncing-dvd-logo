@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import random from 'lodash.random';
@@ -109,21 +109,21 @@ const PlayingField = (props) => {
     isColliding.current = hasCollided;
   }
 
-  function loop() {
+  const loop = useCallback(() => {
     if (!isPaused.current) {
       updatePosition();
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }
+  }, []);
 
-  function startLoop() {
+  const startLoop = useCallback(() => {
     if (loopTimestamp.current !== 0) {
       return;
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }
+  }, [loop]);
 
   function stopLoop() {
     window.cancelAnimationFrame(loopTimestamp.current);
@@ -136,7 +136,7 @@ const PlayingField = (props) => {
     startLoop();
 
     return () => stopLoop();
-  }, []);
+  }, [startLoop]);
 
   useEffect(() => {
     const currentPlayState = props.isPaused;
