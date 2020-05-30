@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import random from 'lodash.random';
 import * as Styles from './Logo.styles';
 
-import store from '../store';
+import Store from '../Store';
+
 import { ReactComponent as CatLogo } from './cat.svg';
 
 const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) => {
-  const { colours } = useContext(store);
+  const { colours } = useContext(Store);
   const [colour, setColour] = useState(colours[0]);
   const prevChangeColours = useRef(false);
 

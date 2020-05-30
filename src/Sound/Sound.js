@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import soundFile from './soundFile.wav';
 
-import store from '../store';
+import Store from '../Store';
 
 const Sound = ({ playSound }) => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
-  const { soundIsDisabled } = useContext(store);
+  const { soundIsDisabled } = useContext(Store);
 
   useEffect(() => {
     if (soundIsDisabled) {

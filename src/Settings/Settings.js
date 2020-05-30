@@ -1,45 +1,27 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import store from '../store';
+import Store from '../Store';
 
-class Settings extends Component {
-  constructor(props) {
-    super(props);
+const Settings = ({ children }) => {
+  const [soundIsDisabled, setSoundIsDisabled] = useState(true);
 
-    this.state = {
-      colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
-      soundIsDisabled: true,
-    };
+  const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'];
 
-    this.toggleSound = this.toggleSound.bind(this);
-  }
+  const toggleSound = () => setSoundIsDisabled((prevSoundIsDisabled) => !prevSoundIsDisabled);
 
-  toggleSound() {
-    this.setState((prevState) => ({
-      ...prevState,
-      soundIsDisabled: !(prevState.soundIsDisabled),
-    }));
-  }
-
-  render() {
-    const { colours, soundIsDisabled } = this.state;
-    const { children } = this.props;
-    const { toggleSound } = this;
-
-    return (
-      <store.Provider
-        value={{
-          colours,
-          soundIsDisabled,
-          toggleSound,
-        }}
-      >
-        { children }
-      </store.Provider>
-    );
-  }
-}
+  return (
+    <Store.Provider
+      value={{
+        colours,
+        soundIsDisabled,
+        toggleSound,
+      }}
+    >
+      { children }
+    </Store.Provider>
+  );
+};
 
 const { node, arrayOf, oneOfType } = PropTypes;
 
