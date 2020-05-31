@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 import debounce from 'lodash.debounce';
 
-import { nanoid } from 'nanoid';
+import generate from 'nanoid-generate';
 
 import { StyleSheetManager } from 'styled-components/macro';
 import * as Styles from './Game.styles';
@@ -10,7 +10,7 @@ import PlayField from '../Playingfield/Playingfield';
 
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
-  const [keyValue, setKeyValue] = useState(() => `key-${nanoid(5)}`);
+  const [keyValue, setKeyValue] = useState(() => generate.lowercase(5));
   const wrapperDomElement = useRef(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef({});
@@ -31,7 +31,7 @@ const Game = () => {
   }));
 
   const togglePlayState = () => setIsPaused(!isPaused);
-  const reset = () => setKeyValue(() => `key-${nanoid(5)}`);
+  const reset = () => setKeyValue(() => generate.lowercase(5));
   const handleResize = useCallback(() => reset(), []);
 
   const handleInput = (event) => {
