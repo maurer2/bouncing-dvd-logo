@@ -26,6 +26,7 @@ const Game = () => {
     }
 
     if (gameHasResized) {
+      // @ts-ignore
       debouncedResizeHandler.current();
     }
   }));

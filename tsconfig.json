@@ -2,6 +2,7 @@
   "include": [
     "./src/**/*"
   ],
+  "files": ["./src/ResizeObserver.d.ts"],
   "compilerOptions": {
     "target": "es6",
     "module": "esnext",
@@ -17,13 +18,14 @@
     "outDir": "./dist",
     "isolatedModules": true,
     "strict": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": true,
+    "strictNullChecks": false
   }
 }

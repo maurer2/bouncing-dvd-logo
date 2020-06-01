@@ -1,5 +1,5 @@
 module.exports = {
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   extends: [
     'airbnb-base',
     'eslint:recommended',
@@ -20,6 +20,7 @@ module.exports = {
     'comma-dangle': [2, 'always-multiline'],
     'react/jsx-uses-vars': 'error',
     'react/jsx-uses-react': 'error',
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'object-curly-newline': ['error', {
       ObjectPattern: 'never',
     }],
@@ -52,6 +53,8 @@ module.exports = {
     ],
   },
   parserOptions: {
+    ecmaVersion: 2016,
+    sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
     },

@@ -22,6 +22,7 @@ const Sound = ({ playSound }) => {
       }, 800);
     }
 
+    // @ts-ignore
     prevPlaySound.current = prevPlaySound;
   }, [playSound, soundIsDisabled]);
 

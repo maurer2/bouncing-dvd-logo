@@ -52,6 +52,7 @@ const PlayingField = (props) => {
 
   // set random initial position and direction
   function initPosition() {
+    // @ts-ignore
     const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     setPositionX(() => random(widthBB - width));
@@ -64,6 +65,7 @@ const PlayingField = (props) => {
   }
 
   function updatePosition() {
+    // @ts-ignore
     const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
@@ -130,6 +132,7 @@ const PlayingField = (props) => {
   }
 
   useEffect(() => {
+    // @ts-ignore
     playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
 
     initPosition();
