@@ -1,33 +1,34 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   extends: [
-    'airbnb-base',
     'eslint:recommended',
+    'airbnb',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'plugin:lodash/recommended',
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
+  ],
+  plugins: [
+    'react',
+    'react-hooks',
+    '@typescript-eslint',
+    'lodash',
   ],
   env: {
     jest: true,
     browser: true,
     node: true,
   },
-  plugins: [
-    'react',
-  ],
   rules: {
+    // general
     quotes: [2, 'single', { avoidEscape: true }],
     semi: ['error', 'always'],
     'comma-dangle': [2, 'always-multiline'],
-    'react/jsx-uses-vars': 'error',
-    'react/jsx-uses-react': 'error',
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'object-curly-newline': ['error', {
       ObjectPattern: 'never',
-    }],
-    'class-methods-use-this': ['error', {
-      exceptMethods: [
-        'render',
-      ],
     }],
     'no-restricted-imports': [
       'error',
@@ -44,6 +45,7 @@ module.exports = {
     'import/extensions': [
       'error',
       'ignorePackages',
+      // following endings should never be added to imports
       {
         js: 'never',
         jsx: 'never',
@@ -51,6 +53,27 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'import/prefer-default-export': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: [['builtin', 'external'], ['internal', 'parent'], ['sibling'], ['index']],
+        'newlines-between': 'always',
+      },
+    ],
+    'no-useless-constructor': 'off',
+    // typescript
+    '@typescript-eslint/no-useless-constructor': 'error',
+    // react
+    'react/jsx-uses-vars': 'error',
+    'react/jsx-uses-react': 'error',
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    // react hooks
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    // lodash
+    'lodash/import-scope': [2, 'member'],
+    'lodash/prefer-lodash-method': 'off',
   },
   parserOptions: {
     ecmaVersion: 2016,
@@ -61,8 +84,7 @@ module.exports = {
   },
   settings: {
     react: {
-      pragma: 'React',
-      version: '^16.13.1',
+      version: 'detect',
     },
   },
 };
