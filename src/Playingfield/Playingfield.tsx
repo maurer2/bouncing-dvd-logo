@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-
 import random from 'lodash.random';
 
 import Logo from '../Logo/Logo';
@@ -148,19 +147,19 @@ const PlayingField = (props) => {
   }, [props.isPaused]);
 
   return (
-    <Styles.PlayingFieldWrapper ref={ playfieldDomElement }>
+    <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
       {isInit.current && (
         <>
           <Logo
-            positionX={ positionX }
-            positionY={ positionY }
-            width={ width }
-            height={ height }
-            changeColours={ isColliding.current }
-            isPaused={ props.isPaused }
+            positionX={positionX}
+            positionY={positionY}
+            width={width}
+            height={height}
+            changeColours={isColliding.current}
+            isPaused={props.isPaused}
           />
           <Controls />
-          <Sound playSound={ isColliding.current } />
+          <Sound playSound={isColliding.current} />
         </>
       )}
     </Styles.PlayingFieldWrapper>

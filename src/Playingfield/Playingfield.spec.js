@@ -20,7 +20,7 @@ describe('PlayingField', () => {
     },
   };
 
-  const wrapper = shallow(<PlayingField isPaused={ false } />, { context });
+  const wrapper = shallow(<PlayingField isPaused={false} />, { context });
 
   wrapper.update();
 

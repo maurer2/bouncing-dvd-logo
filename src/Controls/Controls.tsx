@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+
 import Store from '../Store';
 
 import { ReactComponent as SoundOnIcon } from './sound-on.svg';

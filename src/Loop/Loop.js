@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
@@ -43,11 +42,11 @@ const Loop2 = (props) => {
   // return <div>{childrenWithProps}</div>
 
   return (
-    <React.Fragment>
+    <>
       <div>
         { props.children }
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

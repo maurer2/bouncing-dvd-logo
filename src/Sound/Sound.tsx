@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
-import soundFile from './soundFile.wav';
 
 import Store from '../Store';
+
+import soundFile from './soundFile.wav';
+
 
 const Sound = ({ playSound }) => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
@@ -31,11 +33,10 @@ const Sound = ({ playSound }) => {
       {soundIsPlaying
         ? (
           <audio autoPlay>
-            <source src={ soundFile } type="audio/wav" />
+            <source src={soundFile} type="audio/wav" />
           </audio>
         )
-        : null
-      }
+        : null}
     </>
   );
 };

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Normalize } from 'styled-normalize';
-
 import { createGlobalStyle } from 'styled-components/macro';
 
 import Settings from './Settings/Settings';

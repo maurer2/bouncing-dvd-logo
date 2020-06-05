@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef, useContext, useCallback } from 'react';
-
 import PropTypes from 'prop-types';
 import random from 'lodash.random';
-import * as Styles from './Logo.styles';
 
 import Store from '../Store';
 
+import * as Styles from './Logo.styles';
 import { ReactComponent as CatLogo } from './cat.svg';
 
 const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) => {
@@ -31,12 +30,12 @@ const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) 
 
   return (
     <Styles.LogoElement
-      positionX={ positionX }
-      positionY={ positionY }
-      widthValue={ width }
-      heightValue={ height }
-      colourValue= { colour }
-      isPaused={ isPaused }
+      positionX={positionX}
+      positionY={positionY}
+      widthValue={width}
+      heightValue={height}
+      colourValue={colour}
+      isPaused={isPaused}
     >
       <CatLogo />
     </Styles.LogoElement>

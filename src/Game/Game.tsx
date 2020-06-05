@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-
 import debounce from 'lodash.debounce';
-
 import generate from 'nanoid-generate';
-
 import { StyleSheetManager } from 'styled-components/macro';
-import * as Styles from './Game.styles';
+
 import PlayField from '../Playingfield/Playingfield';
+
+import * as Styles from './Game.styles';
 
 const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
@@ -64,13 +63,13 @@ const Game = () => {
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
-        onClick={ togglePlayState }
-        onKeyPress={ (event) => handleInput(event) }
-        ref={ (element) => { wrapperDomElement.current = element; } }
+        onClick={togglePlayState}
+        onKeyPress={(event) => handleInput(event)}
+        ref={(element) => { wrapperDomElement.current = element; }}
         tabIndex="0"
-        autoFocus={true}
+        autoFocus
       >
-        <PlayField isPaused={ isPaused } key={ keyValue } />
+        <PlayField isPaused={isPaused} key={keyValue} />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

@@ -10,7 +10,7 @@ import Sound from './Sound';
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('Sound', () => {
-  const wrapper = shallow(<Sound playSound={ false } />);
+  const wrapper = shallow(<Sound playSound={false} />);
 
   test('should match snapshot', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
