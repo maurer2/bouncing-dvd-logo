@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
 
-const Settings = ({ children }) => {
+const Settings: FC<any> = ({ children }): JSX.Element => {
   const [soundIsDisabled, setSoundIsDisabled] = useState(true);
 
   const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'];
@@ -29,7 +29,7 @@ Settings.propTypes = {
   children: oneOfType([
     arrayOf(node),
     node,
-  ]),
+  ]).isRequired,
 };
 
 export default Settings;

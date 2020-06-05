@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, FC } from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
@@ -6,7 +6,7 @@ import Store from '../Store';
 import soundFile from './soundFile.wav';
 
 
-const Sound = ({ playSound }) => {
+const Sound: FC<any> = ({ playSound }): JSX.Element => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
   const { soundIsDisabled } = useContext(Store);
@@ -24,8 +24,7 @@ const Sound = ({ playSound }) => {
       }, 800);
     }
 
-    // @ts-ignore
-    prevPlaySound.current = prevPlaySound;
+    (prevPlaySound as any).current = prevPlaySound;
   }, [playSound, soundIsDisabled]);
 
   return (
@@ -44,7 +43,7 @@ const Sound = ({ playSound }) => {
 const { bool } = PropTypes;
 
 Sound.propTypes = {
-  playSound: bool,
+  playSound: bool.isRequired,
 };
 
 export default Sound;

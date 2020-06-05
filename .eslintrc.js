@@ -74,6 +74,8 @@ module.exports = {
     // lodash
     'lodash/import-scope': [2, 'member'],
     'lodash/prefer-lodash-method': 'off',
+    // a11y
+    'jsx-a11y/media-has-caption': 'off'
   },
   parserOptions: {
     ecmaVersion: 2016,

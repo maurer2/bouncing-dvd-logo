@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, FC } from 'react';
 import PropTypes from 'prop-types';
-import random from 'lodash.random';
+import { random } from 'lodash';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
@@ -29,7 +29,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField = (props) => {
+const PlayingField: FC<any> = (props): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -38,7 +38,7 @@ const PlayingField = (props) => {
   const changeDeltaY = useRef(2); // velocity y
 
   const playfieldDomElement = useRef();
-  const playfieldBB = useRef();
+  const playfieldBB = useRef({});
 
   const isColliding = useRef(false);
   const isPaused = useRef(false);
@@ -51,8 +51,7 @@ const PlayingField = (props) => {
 
   // set random initial position and direction
   function initPosition() {
-    // @ts-ignore
-    const { width: widthBB, height: heightBB } = playfieldBB.current;
+    const { width: widthBB, height: heightBB } = (playfieldBB as any).current;
 
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
@@ -64,8 +63,7 @@ const PlayingField = (props) => {
   }
 
   function updatePosition() {
-    // @ts-ignore
-    const { width: widthBB, height: heightBB } = playfieldBB.current;
+    const { width: widthBB, height: heightBB } = (playfieldBB as any).current;
 
     const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
     const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
@@ -131,8 +129,7 @@ const PlayingField = (props) => {
   }
 
   useEffect(() => {
-    // @ts-ignore
-    playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
+    playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
 
     initPosition();
     startLoop();
@@ -169,7 +166,7 @@ const PlayingField = (props) => {
 const { bool } = PropTypes;
 
 PlayingField.propTypes = {
-  isPaused: bool,
+  isPaused: bool.isRequired,
 };
 
 export default PlayingField;

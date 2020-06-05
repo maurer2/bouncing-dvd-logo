@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, FC } from 'react';
 
 import Store from '../Store';
 
@@ -6,7 +6,7 @@ import { ReactComponent as SoundOnIcon } from './sound-on.svg';
 import { ReactComponent as SoundOffIcon } from './sound-off.svg';
 import * as Styles from './Controls.styles';
 
-const Controls = () => {
+const Controls: FC<any> = (): JSX.Element => {
   const { soundIsDisabled, toggleSound } = useContext(Store);
 
   function handleClick(event) {

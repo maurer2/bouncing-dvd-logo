@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import debounce from 'lodash.debounce';
+import React, { useState, useRef, useEffect, useCallback, FC } from 'react';
+import { debounce } from 'lodash';
 import generate from 'nanoid-generate';
 import { StyleSheetManager } from 'styled-components/macro';
 
@@ -7,7 +7,7 @@ import PlayField from '../Playingfield/Playingfield';
 
 import * as Styles from './Game.styles';
 
-const Game = () => {
+const Game: FC<any> = (): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState(() => generate.lowercase(5));
   const wrapperDomElement = useRef(null);
@@ -25,8 +25,7 @@ const Game = () => {
     }
 
     if (gameHasResized) {
-      // @ts-ignore
-      debouncedResizeHandler.current();
+      (debouncedResizeHandler as any).current();
     }
   }));
 
