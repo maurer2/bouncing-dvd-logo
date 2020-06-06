@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef, useContext, FC } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext, FC,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
@@ -42,8 +44,6 @@ const Sound: FC<any> = ({ playSound }): JSX.Element => {
 
 const { bool } = PropTypes;
 
-Sound.propTypes = {
-  playSound: bool.isRequired,
-};
+Sound.propTypes = { playSound: bool.isRequired };
 
 export default Sound;

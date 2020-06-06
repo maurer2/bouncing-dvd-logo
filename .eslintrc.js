@@ -24,11 +24,32 @@ module.exports = {
   },
   rules: {
     // general
-    quotes: [2, 'single', { avoidEscape: true }],
+    quotes: [2, 'single', {
+      avoidEscape: true
+    }],
     semi: ['error', 'always'],
     'comma-dangle': [2, 'always-multiline'],
     'object-curly-newline': ['error', {
-      ObjectPattern: 'never',
+      // destructuring
+      "ObjectPattern": {
+        "minProperties": 4,
+        "consistent": false,
+        "multiline": true
+      },
+      "ObjectExpression": {
+        "minProperties": 2,
+        "consistent": false,
+        "multiline": true
+      },
+      "ImportDeclaration": {
+        "minProperties": 4,
+        "consistent": false,
+        "multiline": true
+      },
+      "ExportDeclaration": "always",
+    }],
+    "object-property-newline": ["error", {
+      "allowAllPropertiesOnSameLine": false
     }],
     'no-restricted-imports': [
       'error',
@@ -57,7 +78,12 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: [['builtin', 'external'], ['internal', 'parent'], ['sibling'], ['index']],
+        groups: [
+          ['builtin', 'external'],
+          ['internal', 'parent'],
+          ['sibling'],
+          ['index']
+        ],
         'newlines-between': 'always',
       },
     ],
@@ -67,7 +93,9 @@ module.exports = {
     // react
     'react/jsx-uses-vars': 'error',
     'react/jsx-uses-react': 'error',
-    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    'react/jsx-filename-extension': [1, {
+      extensions: ['.js', '.jsx', '.ts', '.tsx']
+    }],
     // react hooks
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

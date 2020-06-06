@@ -50,8 +50,6 @@ const Loop2 = (props) => {
   );
 };
 
-Loop2.propTypes = {
-
-};
+Loop2.propTypes = {};
 
 export default Loop2;

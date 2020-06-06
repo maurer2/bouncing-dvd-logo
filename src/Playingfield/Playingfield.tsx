@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, useCallback, FC } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  FC,
+} from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash';
 
@@ -165,8 +171,6 @@ const PlayingField: FC<any> = (props): JSX.Element => {
 
 const { bool } = PropTypes;
 
-PlayingField.propTypes = {
-  isPaused: bool.isRequired,
-};
+PlayingField.propTypes = { isPaused: bool.isRequired };
 
 export default PlayingField;

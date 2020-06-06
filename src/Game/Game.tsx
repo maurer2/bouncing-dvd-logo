@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect, useCallback, FC } from 'react';
+import React, {
+  useState, useRef, useEffect, useCallback, FC,
+} from 'react';
 import { debounce } from 'lodash';
 import generate from 'nanoid-generate';
 import { StyleSheetManager } from 'styled-components/macro';

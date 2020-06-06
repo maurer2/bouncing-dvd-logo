@@ -8,9 +8,7 @@ export const Controls = styled.div`
   right: 0.5rem;
 `;
 
-export const Control = styled.button.attrs(() => ({
-  type: 'button',
-}))`
+export const Control = styled.button.attrs(() => ({ type: 'button' }))`
   padding: 0;
   border: 0;
   background: none;
