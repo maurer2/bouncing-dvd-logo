@@ -13,6 +13,7 @@ import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
 
 import * as Styles from './Playingfield.styles';
+import * as Types from './Playingfield.types';
 
 const isPastStartBoundary = (position) => (position <= 0);
 
@@ -35,7 +36,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField: FC<any> = (props): JSX.Element => {
+const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 

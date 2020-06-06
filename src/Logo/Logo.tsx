@@ -7,9 +7,10 @@ import { random } from 'lodash';
 import Store from '../Store';
 
 import * as Styles from './Logo.styles';
+import * as Types from './Logo.types';
 import { ReactComponent as CatLogo } from './cat.svg';
 
-const Logo: FC<any> = ({
+const Logo: FC<Types.GameProps> = ({
   positionX,
   positionY,
   width,

@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import Store from '../Store';
 
 import soundFile from './soundFile.wav';
+import * as Types from './Sound.types';
 
 
-const Sound: FC<any> = ({ playSound }): JSX.Element => {
+const Sound: FC<Types.SoundProps> = ({ playSound }): JSX.Element => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
   const { soundIsDisabled } = useContext(Store);
