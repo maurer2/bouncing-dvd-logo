@@ -3,6 +3,7 @@ import React, {
   useState,
   useRef,
   useCallback,
+  useMemo,
   FC,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -14,14 +15,6 @@ import Controls from '../Controls/Controls';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
-
-const isPastStartBoundary = (position) => (position <= 0);
-
-const isPastEndBoundary = (position, objectSize, playfieldSize) => {
-  const maxPositionStillInside = (playfieldSize - objectSize);
-
-  return position >= maxPositionStillInside;
-};
 
 /*
 const isCollidingWithBoundaries = (
@@ -56,6 +49,14 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
   const width = 150;
   const height = 138; // AR 0,92
 
+  const isPastStartBoundary = useMemo(() => (position) => (position <= 0), []);
+
+  const isPastEndBoundary = useMemo(() => (position, objectSize, playfieldSize) => {
+    const maxPositionStillInside = (playfieldSize - objectSize);
+
+    return position >= maxPositionStillInside;
+  }, []);
+
   // set random initial position and direction
   function initPosition() {
     const { width: widthBB, height: heightBB } = (playfieldBB as any).current;
@@ -69,7 +70,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
     isInit.current = true;
   }
 
-  function updatePosition() {
+  const updatePosition = useCallback(() => {
     const { width: widthBB, height: heightBB } = (playfieldBB as any).current;
 
     const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
@@ -113,7 +114,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
     }
 
     isColliding.current = hasCollided;
-  }
+  }, [isPastStartBoundary, isPastEndBoundary]);
 
   const loop = useCallback(() => {
     if (!isPaused.current) {
@@ -121,7 +122,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, []);
+  }, [updatePosition]);
 
   const startLoop = useCallback(() => {
     if (loopTimestamp.current !== 0) {
