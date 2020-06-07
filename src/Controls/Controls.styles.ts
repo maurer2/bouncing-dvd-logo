@@ -1,6 +1,5 @@
 import styled from 'styled-components/macro';
 
-// eslint-disable-next-line import/prefer-default-export
 export const Controls = styled.div`
   display: flex;
   position: absolute;

@@ -36,7 +36,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
+const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused: isPausedProp }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -45,7 +45,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
   const changeDeltaY = useRef(2); // velocity y
 
   const playfieldDomElement = useRef();
-  const playfieldBB = useRef({});
+  const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
   const isPaused = useRef(false);
@@ -58,7 +58,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
 
   // set random initial position and direction
   function initPosition() {
-    const { width: widthBB, height: heightBB } = (playfieldBB as any).current;
+    const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
@@ -70,7 +70,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
   }
 
   function updatePosition() {
-    const { width: widthBB, height: heightBB } = (playfieldBB as any).current;
+    const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
     const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
@@ -145,10 +145,10 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
   }, [startLoop]);
 
   useEffect(() => {
-    const currentPlayState = props.isPaused;
+    const currentPlayState = isPausedProp;
 
     isPaused.current = currentPlayState;
-  }, [props.isPaused]);
+  }, [isPausedProp]);
 
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
@@ -160,7 +160,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = (props): JSX.Element => {
             width={width}
             height={height}
             changeColours={isColliding.current}
-            isPaused={props.isPaused}
+            isPaused={isPausedProp}
           />
           <Controls />
           <Sound playSound={isColliding.current} />
