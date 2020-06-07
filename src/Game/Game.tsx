@@ -15,9 +15,9 @@ const Game: FC<Types.GameProps> = (): JSX.Element => {
   const [keyValue, setKeyValue] = useState(() => generate.lowercase(5));
   const wrapperDomElement = useRef(null);
   const isInitialResize = useRef(true);
-  const debouncedResizeHandler = useRef({});
+  const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
 
-  const gameResizeObserver = useRef(new window.ResizeObserver((entries) => {
+  const gameResizeObserver = useRef<ResizeObserver>(new window.ResizeObserver((entries) => {
     const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
 
     // ignore resize observer on dom load
@@ -28,7 +28,7 @@ const Game: FC<Types.GameProps> = (): JSX.Element => {
     }
 
     if (gameHasResized) {
-      (debouncedResizeHandler as any).current();
+      debouncedResizeHandler.current();
     }
   }));
 
