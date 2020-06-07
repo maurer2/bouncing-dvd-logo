@@ -36,7 +36,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused: isPausedProp }): JSX.Element => {
+const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -48,7 +48,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused: isPausedProp }): 
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
-  const isPaused = useRef(false);
+  const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
   const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
@@ -116,7 +116,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused: isPausedProp }): 
   }
 
   const loop = useCallback(() => {
-    if (!isPaused.current) {
+    if (!isPausedPrevious.current) {
       updatePosition();
     }
 
@@ -145,10 +145,10 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused: isPausedProp }): 
   }, [startLoop]);
 
   useEffect(() => {
-    const currentPlayState = isPausedProp;
+    const currentPlayState = isPaused;
 
-    isPaused.current = currentPlayState;
-  }, [isPausedProp]);
+    isPausedPrevious.current = currentPlayState;
+  }, [isPaused]);
 
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
@@ -160,7 +160,7 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused: isPausedProp }): 
             width={width}
             height={height}
             changeColours={isColliding.current}
-            isPaused={isPausedProp}
+            isPaused={isPaused}
           />
           <Controls />
           <Sound playSound={isColliding.current} />
