@@ -31,15 +31,11 @@ const Sound: FC<Types.SoundProps> = ({ playSound }): JSX.Element => {
   }, [playSound, soundIsDisabled]);
 
   return (
-    <>
-      {soundIsPlaying
-        ? (
-          <audio autoPlay>
-            <source src={soundFile} type="audio/wav" />
-          </audio>
-        )
-        : null}
-    </>
+    soundIsPlaying && (
+      <audio autoPlay>
+        <source src={soundFile} type="audio/wav" />
+      </audio>
+    )
   );
 };
 
