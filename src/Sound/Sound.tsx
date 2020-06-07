@@ -10,9 +10,9 @@ import * as Types from './Sound.types';
 
 
 const Sound: FC<Types.SoundProps> = ({ playSound }): JSX.Element => {
+  const { soundIsDisabled } = useContext(Store);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
-  const { soundIsDisabled } = useContext(Store);
 
   useEffect(() => {
     if (soundIsDisabled) {
@@ -27,7 +27,7 @@ const Sound: FC<Types.SoundProps> = ({ playSound }): JSX.Element => {
       }, 800);
     }
 
-    (prevPlaySound as any).current = prevPlaySound;
+    prevPlaySound.current = playSound;
   }, [playSound, soundIsDisabled]);
 
   return (
