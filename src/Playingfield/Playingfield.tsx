@@ -1,13 +1,19 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  FC,
+} from 'react';
 import PropTypes from 'prop-types';
-
-import random from 'lodash.random';
+import { random } from 'lodash';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
 
 import * as Styles from './Playingfield.styles';
+import * as Types from './Playingfield.types';
 
 const isPastStartBoundary = (position) => (position <= 0);
 
@@ -30,7 +36,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField = (props) => {
+const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -39,10 +45,10 @@ const PlayingField = (props) => {
   const changeDeltaY = useRef(2); // velocity y
 
   const playfieldDomElement = useRef();
-  const playfieldBB = useRef();
+  const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
-  const isPaused = useRef(false);
+  const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
   const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
@@ -110,7 +116,7 @@ const PlayingField = (props) => {
   }
 
   const loop = useCallback(() => {
-    if (!isPaused.current) {
+    if (!isPausedPrevious.current) {
       updatePosition();
     }
 
@@ -130,7 +136,7 @@ const PlayingField = (props) => {
   }
 
   useEffect(() => {
-    playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
+    playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
 
     initPosition();
     startLoop();
@@ -139,25 +145,25 @@ const PlayingField = (props) => {
   }, [startLoop]);
 
   useEffect(() => {
-    const currentPlayState = props.isPaused;
+    const currentPlayState = isPaused;
 
-    isPaused.current = currentPlayState;
-  }, [props.isPaused]);
+    isPausedPrevious.current = currentPlayState;
+  }, [isPaused]);
 
   return (
-    <Styles.PlayingFieldWrapper ref={ playfieldDomElement }>
+    <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
       {isInit.current && (
         <>
           <Logo
-            positionX={ positionX }
-            positionY={ positionY }
-            width={ width }
-            height={ height }
-            changeColours={ isColliding.current }
-            isPaused={ props.isPaused }
+            positionX={positionX}
+            positionY={positionY}
+            width={width}
+            height={height}
+            changeColours={isColliding.current}
+            isPaused={isPaused}
           />
           <Controls />
-          <Sound playSound={ isColliding.current } />
+          <Sound playSound={isColliding.current} />
         </>
       )}
     </Styles.PlayingFieldWrapper>
@@ -166,8 +172,6 @@ const PlayingField = (props) => {
 
 const { bool } = PropTypes;
 
-PlayingField.propTypes = {
-  isPaused: bool,
-};
+PlayingField.propTypes = { isPaused: bool.isRequired };
 
 export default PlayingField;

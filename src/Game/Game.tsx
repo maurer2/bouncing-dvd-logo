@@ -1,21 +1,23 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-
-import debounce from 'lodash.debounce';
-
+import React, {
+  useState, useRef, useEffect, useCallback, FC,
+} from 'react';
+import { debounce } from 'lodash';
 import generate from 'nanoid-generate';
-
 import { StyleSheetManager } from 'styled-components/macro';
-import * as Styles from './Game.styles';
+
 import PlayField from '../Playingfield/Playingfield';
 
-const Game = () => {
+import * as Styles from './Game.styles';
+import * as Types from './Game.types';
+
+const Game: FC<Types.GameProps> = (): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState(() => generate.lowercase(5));
   const wrapperDomElement = useRef(null);
   const isInitialResize = useRef(true);
-  const debouncedResizeHandler = useRef({});
+  const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
 
-  const gameResizeObserver = useRef(new window.ResizeObserver((entries) => {
+  const gameResizeObserver = useRef<ResizeObserver>(new window.ResizeObserver((entries) => {
     const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
 
     // ignore resize observer on dom load
@@ -63,13 +65,13 @@ const Game = () => {
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
-        onClick={ togglePlayState }
-        onKeyPress={ (event) => handleInput(event) }
-        ref={ (element) => { wrapperDomElement.current = element; } }
+        onClick={togglePlayState}
+        onKeyPress={(event) => handleInput(event)}
+        ref={(element) => { wrapperDomElement.current = element; }}
         tabIndex="0"
-        autoFocus={true}
+        autoFocus
       >
-        <PlayField isPaused={ isPaused } key={ keyValue } />
+        <PlayField isPaused={isPaused} key={keyValue} />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

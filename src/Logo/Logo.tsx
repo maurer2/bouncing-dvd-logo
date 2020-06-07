@@ -1,14 +1,23 @@
-import React, { useEffect, useState, useRef, useContext, useCallback } from 'react';
-
+import React, {
+  useEffect, useState, useRef, useContext, useCallback, FC,
+} from 'react';
 import PropTypes from 'prop-types';
-import random from 'lodash.random';
-import * as Styles from './Logo.styles';
+import { random } from 'lodash';
 
 import Store from '../Store';
 
+import * as Styles from './Logo.styles';
+import * as Types from './Logo.types';
 import { ReactComponent as CatLogo } from './cat.svg';
 
-const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) => {
+const Logo: FC<Types.GameProps> = ({
+  positionX,
+  positionY,
+  width,
+  height,
+  changeColours,
+  isPaused,
+}): JSX.Element => {
   const { colours } = useContext(Store);
   const [colour, setColour] = useState(colours[0]);
   const prevChangeColours = useRef(false);
@@ -31,12 +40,12 @@ const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) 
 
   return (
     <Styles.LogoElement
-      positionX={ positionX }
-      positionY={ positionY }
-      widthValue={ width }
-      heightValue={ height }
-      colourValue= { colour }
-      isPaused={ isPaused }
+      positionX={positionX}
+      positionY={positionY}
+      widthValue={width}
+      heightValue={height}
+      colourValue={colour}
+      isPaused={isPaused}
     >
       <CatLogo />
     </Styles.LogoElement>
@@ -46,12 +55,12 @@ const Logo = ({ positionX, positionY, width, height, changeColours, isPaused }) 
 const { number, bool } = PropTypes;
 
 Logo.propTypes = {
-  positionX: number,
-  positionY: number,
-  width: number,
-  height: number,
-  changeColours: bool,
-  isPaused: bool,
+  positionX: number.isRequired,
+  positionY: number.isRequired,
+  width: number.isRequired,
+  height: number.isRequired,
+  changeColours: bool.isRequired,
+  isPaused: bool.isRequired,
 };
 
 export default Logo;

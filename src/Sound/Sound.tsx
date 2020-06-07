@@ -1,13 +1,18 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext, FC,
+} from 'react';
 import PropTypes from 'prop-types';
-import soundFile from './soundFile.wav';
 
 import Store from '../Store';
 
-const Sound = ({ playSound }) => {
+import soundFile from './soundFile.wav';
+import * as Types from './Sound.types';
+
+
+const Sound: FC<Types.SoundProps> = ({ playSound }): JSX.Element => {
+  const { soundIsDisabled } = useContext(Store);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
-  const { soundIsDisabled } = useContext(Store);
 
   useEffect(() => {
     if (soundIsDisabled) {
@@ -22,27 +27,20 @@ const Sound = ({ playSound }) => {
       }, 800);
     }
 
-    prevPlaySound.current = prevPlaySound;
+    prevPlaySound.current = playSound;
   }, [playSound, soundIsDisabled]);
 
   return (
-    <>
-      {soundIsPlaying
-        ? (
-          <audio autoPlay>
-            <source src={ soundFile } type="audio/wav" />
-          </audio>
-        )
-        : null
-      }
-    </>
+    soundIsPlaying && (
+      <audio autoPlay>
+        <source src={soundFile} type="audio/wav" />
+      </audio>
+    )
   );
 };
 
 const { bool } = PropTypes;
 
-Sound.propTypes = {
-  playSound: bool,
-};
+Sound.propTypes = { playSound: bool.isRequired };
 
 export default Sound;
