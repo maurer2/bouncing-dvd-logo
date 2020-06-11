@@ -11,6 +11,7 @@ import { random } from 'lodash';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
+import useGameLoop from '../Hooks/useGameLoop';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
@@ -40,11 +41,10 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element =>
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
-  const loopTimestamp = useRef(0);
   const changeDeltaX = useRef(2); // velocity x
   const changeDeltaY = useRef(2); // velocity y
 
-  const playfieldDomElement = useRef();
+  const playfieldDomElement = useRef<HTMLElement>(null);
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
@@ -115,34 +115,22 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element =>
     isColliding.current = hasCollided;
   }
 
-  const loop = useCallback(() => {
-    if (!isPausedPrevious.current) {
-      updatePosition();
-    }
-
-    loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, []);
-
-  const startLoop = useCallback(() => {
-    if (loopTimestamp.current !== 0) {
-      return;
-    }
-
-    loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [loop]);
+  const [loopTimestamp] = useGameLoop(isPaused, () => {
+    updatePosition();
+  });
 
   function stopLoop() {
-    window.cancelAnimationFrame(loopTimestamp.current);
+    window.cancelAnimationFrame(loopTimestamp);
   }
 
   useEffect(() => {
     playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
 
     initPosition();
-    startLoop();
+    // startLoop();
 
     return () => stopLoop();
-  }, [startLoop]);
+  }, []);
 
   useEffect(() => {
     const currentPlayState = isPaused;
