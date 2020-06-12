@@ -1,18 +1,17 @@
-
 import { useCallback, useRef, useEffect } from 'react';
 
-export default function useGameLoop(isPaused: boolean, cb: () => void): Readonly<[number]> {
+export default function useGameLoop(isPaused: boolean, isPausedPrevious2: boolean, cb: () => void): Readonly<[number]> {
   const loopTimestamp = useRef(0);
-  const isPausedFresh = useRef(isPaused);
+  const isPausedPrevious = useRef(false);
 
   useEffect(() => {
-    isPausedFresh.current = isPaused;
-  }, [isPaused]);
+    isPausedPrevious.current = isPaused;
+  });
 
   const loop = useCallback(() => {
-    console.log(isPausedFresh.current);
+    console.log(isPausedPrevious, isPaused);
 
-    if (!isPaused) {
+    if (!isPausedPrevious.current) {
       cb();
     }
 
