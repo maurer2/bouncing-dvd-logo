@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useEffect, useCallback, FC,
+  useState, useRef, useEffect, useCallback, FC, PropsWithChildren,
 } from 'react';
 import { debounce } from 'lodash';
 import generate from 'nanoid-generate';
@@ -10,7 +10,7 @@ import PlayField from '../Playingfield/Playingfield';
 import * as Styles from './Game.styles';
 import * as Types from './Game.types';
 
-const Game: FC<Types.GameProps> = (): JSX.Element => {
+const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState(() => generate.lowercase(5));
   const wrapperDomElement = useRef(null);

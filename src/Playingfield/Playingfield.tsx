@@ -36,7 +36,7 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
