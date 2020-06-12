@@ -1,22 +1,16 @@
 import { useCallback, useRef, useEffect } from 'react';
 
-export default function useGameLoop(isPaused: boolean, isPausedPrevious2: boolean, cb: () => void): Readonly<[number]> {
+export default function useGameLoop(isPaused: boolean, cb: () => void): Readonly<number> {
   const loopTimestamp = useRef(0);
   const isPausedPrevious = useRef(false);
 
-  useEffect(() => {
-    isPausedPrevious.current = isPaused;
-  });
-
   const loop = useCallback(() => {
-    console.log(isPausedPrevious, isPaused);
-
     if (!isPausedPrevious.current) {
       cb();
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isPaused, cb]);
+  }, [cb]);
 
   useEffect(() => {
     if (loopTimestamp.current !== 0) {
@@ -26,6 +20,9 @@ export default function useGameLoop(isPaused: boolean, isPausedPrevious2: boolea
     loopTimestamp.current = window.requestAnimationFrame(loop);
   }, [loop]);
 
+  useEffect(() => {
+    isPausedPrevious.current = isPaused;
+  });
 
-  return [loopTimestamp.current] as const;
+  return loopTimestamp.current as number;
 }

@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useState,
   useRef,
-  useCallback,
   FC,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -48,7 +47,6 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element =>
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
-  const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
   const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
@@ -115,28 +113,20 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element =>
     isColliding.current = hasCollided;
   }
 
-  const [loopTimestamp] = useGameLoop(isPaused, () => {
+  const loopTimestamp = useGameLoop(isPaused, () => {
     updatePosition();
   });
 
   function stopLoop() {
     window.cancelAnimationFrame(loopTimestamp);
   }
-
   useEffect(() => {
     playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
 
     initPosition();
-    // startLoop();
 
-    return () => stopLoop();
+    // return () => stopLoop();
   }, []);
-
-  useEffect(() => {
-    const currentPlayState = isPaused;
-
-    isPausedPrevious.current = currentPlayState;
-  }, [isPaused]);
 
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
