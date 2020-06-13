@@ -2,6 +2,7 @@ import React, {
   useEffect,
   useState,
   useRef,
+  useCallback,
   FC,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -10,7 +11,6 @@ import { random } from 'lodash';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
-import useGameLoop from '../Hooks/useGameLoop';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
@@ -36,17 +36,19 @@ const isCollidingWithBoundaries = (
 };
 */
 
-const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
+  const loopTimestamp = useRef(0);
   const changeDeltaX = useRef(2); // velocity x
   const changeDeltaY = useRef(2); // velocity y
 
-  const playfieldDomElement = useRef<HTMLElement>(null);
+  const playfieldDomElement = useRef();
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
+  const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
   const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
@@ -113,20 +115,40 @@ const PlayingField: FC<Types.PlayingfieldProps> = ({ isPaused }): JSX.Element =>
     isColliding.current = hasCollided;
   }
 
-  const loopTimestamp = useGameLoop(isPaused, () => {
-    updatePosition();
-  });
+  const loop = useCallback(() => {
+    if (!isPausedPrevious.current) {
+      updatePosition();
+    }
+
+    loopTimestamp.current = window.requestAnimationFrame(loop);
+  }, []);
+
+  const startLoop = useCallback(() => {
+    if (loopTimestamp.current !== 0) {
+      return;
+    }
+
+    loopTimestamp.current = window.requestAnimationFrame(loop);
+  }, [loop]);
 
   function stopLoop() {
-    window.cancelAnimationFrame(loopTimestamp);
+    window.cancelAnimationFrame(loopTimestamp.current);
   }
+
   useEffect(() => {
     playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
 
     initPosition();
+    startLoop();
 
-    // return () => stopLoop();
-  }, []);
+    return () => stopLoop();
+  }, [startLoop]);
+
+  useEffect(() => {
+    const currentPlayState = isPaused;
+
+    isPausedPrevious.current = currentPlayState;
+  }, [isPaused]);
 
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
