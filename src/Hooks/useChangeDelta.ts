@@ -23,6 +23,12 @@ export default function useChangeDelta(hasCollided: boolean): Readonly<[number, 
   const changeX = useMemo(() => {
     const newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
 
+    /*
+    if (hasCollided) {
+      return newChangeDeltaX;
+    }
+    */
+
     return newChangeDeltaX;
   }, [hasCollided, upperRandomBound, lowerRandomBound]);
 

@@ -11,6 +11,7 @@ import { random } from 'lodash';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
+import useChangeDelta from '../Hooks/useChangeDelta';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
@@ -51,6 +52,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
   const maxRandomness = 6; // max value of deviation from correct reflection on collision
+
+  const [changeX, changeY] = useChangeDelta(isColliding.current);
 
   // svg
   const width = 150;
@@ -149,6 +152,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
     isPausedPrevious.current = currentPlayState;
   }, [isPaused]);
+
+  console.log('change', changeX);
 
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
