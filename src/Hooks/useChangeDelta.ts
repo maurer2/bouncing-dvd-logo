@@ -9,8 +9,9 @@ export default function useChangeDelta(hasCollided: boolean): Readonly<[number, 
 
   const changeDeltaX = useRef(2); // velocity x
   const changeDeltaY = useRef(2); // velocity y
+  const hasCollidedPrev = useRef(false);
 
-  const maxRandomness = 6; // max value of deviation from correct reflection on collision
+  const maxRandomness = 10; // max value of deviation from correct reflection on collision
   const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
   const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
 
@@ -20,24 +21,34 @@ export default function useChangeDelta(hasCollided: boolean): Readonly<[number, 
     changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
   }, []);
 
+  // keep track of previous useState
+  useEffect(() => {
+    hasCollidedPrev.current = hasCollided;
+  });
+
   const changeX = useMemo(() => {
-    const newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
+    if (hasCollided && !(hasCollidedPrev.current)) {
+      const newChangeDelta = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
 
-    /*
-    if (hasCollided) {
-      return newChangeDeltaX;
+      changeDeltaX.current = newChangeDelta;
+
+      return newChangeDelta;
     }
-    */
 
-    return newChangeDeltaX;
+    return changeDeltaX.current;
   }, [hasCollided, upperRandomBound, lowerRandomBound]);
 
   const changeY = useMemo(() => {
-    const newChangeDeltaY = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
+    if (hasCollided && !(hasCollidedPrev.current)) {
+      const newChangeDelta = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
 
-    return newChangeDeltaY;
+      changeDeltaY.current = newChangeDelta;
+
+      return newChangeDelta;
+    }
+
+    return changeDeltaY.current;
   }, [hasCollided, upperRandomBound, lowerRandomBound]);
-
 
   return [changeX, changeY] as const;
 }
