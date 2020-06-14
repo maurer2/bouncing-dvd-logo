@@ -12,6 +12,7 @@ import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
 import useChangeDelta from '../Hooks/useChangeDelta';
+import useCollisionDetection from '../Hooks/useCollisionDetection';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
@@ -23,19 +24,6 @@ const isPastEndBoundary = (position, objectSize, playfieldSize) => {
 
   return position >= maxPositionStillInside;
 };
-
-/*
-const isCollidingWithBoundaries = (
-  positionX, positionY, width, height, playfieldWidth, playfieldHeight,
-) => {
-  const leftCheck = isPastStartBoundary(positionX);
-  const rightCheck = isPastEndBoundary(positionX, width, playfieldWidth);
-  const topCheck = isPastStartBoundary(positionY);
-  const bottomCheck = isPastEndBoundary(positionY, height, playfieldHeight);
-
-  return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
-};
-*/
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
@@ -58,6 +46,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   // svg
   const width = 150;
   const height = 138; // AR 0,92
+
+  const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
+
+  if (isCollidingXStart || isCollidingXEnd) {
+    console.log(isCollidingXStart, isCollidingXEnd);
+  }
 
   // set random initial position and direction
   // useEffectOnce
