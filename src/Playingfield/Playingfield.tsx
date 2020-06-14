@@ -75,8 +75,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     // changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
     // changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
 
-    changeDeltaX.current = changeX;
-    changeDeltaY.current = changeY;
+    changeDeltaX.current = changeX.current;
+    changeDeltaY.current = changeY.current;
 
     isInit.current = true;
   }, [changeX, changeY]);

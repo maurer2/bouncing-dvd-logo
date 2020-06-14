@@ -3,12 +3,14 @@ import {
 } from 'react';
 import { random } from 'lodash';
 
-export default function useChangeDelta(hasCollided: boolean): Readonly<[number, number]> {
-  // const [changeX, setChangeX] = useState(0);
-  // const [changeY, setChangeY] = useState(0);
 
-  const changeDeltaX = useRef(2); // velocity x
-  const changeDeltaY = useRef(2); // velocity y
+// const test = typeof useRef;
+
+// const rt = <ReturnType<typeof useRef>>
+
+export default function useChangeDelta(hasCollided: boolean): Readonly<[any, any]> {
+  const changeDeltaX = useRef(2);
+  const changeDeltaY = useRef(2);
   const hasCollidedPrev = useRef(false);
 
   const maxRandomness = 10; // max value of deviation from correct reflection on collision
@@ -50,5 +52,5 @@ export default function useChangeDelta(hasCollided: boolean): Readonly<[number, 
     return changeDeltaY.current;
   }, [hasCollided, upperRandomBound, lowerRandomBound]);
 
-  return [changeX, changeY] as const;
+  return [changeDeltaX, changeDeltaY] as const;
 }
