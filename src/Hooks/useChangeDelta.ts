@@ -1,14 +1,12 @@
 import {
-  useState, useCallback, useRef, useEffect, useMemo,
+  useState, useCallback, useRef, useEffect, useMemo, MutableRefObject,
 } from 'react';
 import { random } from 'lodash';
 
 
-// const test = typeof useRef;
+// Readonly<[ReturnType<typeof useRef>
 
-// const rt = <ReturnType<typeof useRef>>
-
-export default function useChangeDelta(hasCollided: boolean): Readonly<[any, any]> {
+export default function useChangeDelta(hasCollided: boolean): Readonly<[MutableRefObject<number>, MutableRefObject<number>]> {
   const changeDeltaX = useRef(2);
   const changeDeltaY = useRef(2);
   const hasCollidedPrev = useRef(false);
