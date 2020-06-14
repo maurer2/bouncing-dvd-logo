@@ -60,17 +60,26 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const height = 138; // AR 0,92
 
   // set random initial position and direction
-  function initPosition() {
+  // useEffectOnce
+  const initPosition = useCallback(() => {
+    if (isInit.current) {
+      return;
+    }
+
     const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
 
     // initial direction
-    changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
-    changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
+    // changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
+    // changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
+
+    changeDeltaX.current = changeX;
+    changeDeltaY.current = changeY;
+
     isInit.current = true;
-  }
+  }, [changeX, changeY]);
 
   function updatePosition() {
     const { width: widthBB, height: heightBB } = playfieldBB.current;
@@ -145,7 +154,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     startLoop();
 
     return () => stopLoop();
-  }, [startLoop]);
+  }, [initPosition, startLoop]);
 
   useEffect(() => {
     const currentPlayState = isPaused;
@@ -153,7 +162,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     isPausedPrevious.current = currentPlayState;
   }, [isPaused]);
 
-  console.log('change', changeX);
+  // console.log('change', changeX);
 
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
