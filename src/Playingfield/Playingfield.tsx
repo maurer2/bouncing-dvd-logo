@@ -72,9 +72,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     setPositionY(() => random(heightBB - height));
 
     // initial direction
-    // changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
-    // changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
-
     changeDeltaX.current = changeX.current;
     changeDeltaY.current = changeY.current;
 
@@ -89,6 +86,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
     let newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
     let newChangeDeltaY = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
+    // let newChangeDeltaX = changeX.current;
+    // let newChangeDeltaY = changeY.current;
     let hasCollided = false;
 
     setPositionX((prevPositionX) => {
