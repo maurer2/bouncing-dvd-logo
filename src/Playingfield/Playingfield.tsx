@@ -17,14 +17,6 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
 
-const isPastStartBoundary = (position) => (position <= 0);
-
-const isPastEndBoundary = (position, objectSize, playfieldSize) => {
-  const maxPositionStillInside = (playfieldSize - objectSize);
-
-  return position >= maxPositionStillInside;
-};
-
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
@@ -48,6 +40,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const height = 138; // AR 0,92
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
+  const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(positionY, height, playfieldBB.current.height);
 
   // set random initial position and direction
   // useEffectOnce
@@ -69,7 +62,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   }, [changeX, changeY]);
 
   function updatePosition() {
-    const { width: widthBB, height: heightBB } = playfieldBB.current;
+    // const { width: widthBB, height: heightBB } = playfieldBB.current;
 
     const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
     const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
@@ -81,30 +74,26 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     let hasCollided = false;
 
     setPositionX((prevPositionX) => {
-      if (isPastStartBoundary(prevPositionX)) {
+      if (isCollidingXStart.current) {
         newChangeDeltaX = Math.abs(changeDeltaX.current);
         hasCollided = true;
-
-        console.log(isCollidingXStart);
       }
 
-      if (isPastEndBoundary(prevPositionX, width, widthBB)) {
+      if (isCollidingXEnd.current) {
         newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
         hasCollided = true;
-
-        console.log(isCollidingXEnd);
       }
 
       return Math.round(prevPositionX + newChangeDeltaX);
     });
 
     setPositionY((prevPositionY) => {
-      if (isPastStartBoundary(prevPositionY)) {
+      if (isCollidingYStart.current) {
         newChangeDeltaY = Math.abs(changeDeltaY.current);
         hasCollided = true;
       }
 
-      if (isPastEndBoundary(prevPositionY, height, heightBB)) {
+      if (isCollidingYEnd.current) {
         newChangeDeltaY = Math.abs(changeDeltaY.current) * -1;
         hasCollided = true;
       }
