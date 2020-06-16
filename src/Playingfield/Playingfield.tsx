@@ -49,10 +49,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
 
-  if (isCollidingXStart || isCollidingXEnd) {
-    console.log(isCollidingXStart, isCollidingXEnd);
-  }
-
   // set random initial position and direction
   // useEffectOnce
   const initPosition = useCallback(() => {
@@ -88,11 +84,15 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
       if (isPastStartBoundary(prevPositionX)) {
         newChangeDeltaX = Math.abs(changeDeltaX.current);
         hasCollided = true;
+
+        console.log(isCollidingXStart);
       }
 
       if (isPastEndBoundary(prevPositionX, width, widthBB)) {
         newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
         hasCollided = true;
+
+        console.log(isCollidingXEnd);
       }
 
       return Math.round(prevPositionX + newChangeDeltaX);

@@ -1,10 +1,10 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, MutableRefObject } from 'react';
 
 export default function useCollisionDetection(
   position: number,
   objectSize: number,
   worldSize: number,
-): Readonly<[boolean, boolean]> {
+): Readonly<[MutableRefObject<boolean>, MutableRefObject<boolean>]> {
   const hasCollidedWithStart = useRef(false);
   const hasCollidedWithEnd = useRef(false);
 
@@ -18,5 +18,5 @@ export default function useCollisionDetection(
     hasCollidedWithEnd.current = (position > maxPositionNotColliding);
   }, [position, objectSize, worldSize]);
 
-  return [hasCollidedWithStart.current, hasCollidedWithEnd.current] as const;
+  return [hasCollidedWithStart, hasCollidedWithEnd] as const;
 }
