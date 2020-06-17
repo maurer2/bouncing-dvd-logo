@@ -5,8 +5,12 @@ import { random } from 'lodash';
 
 export default function useChangeDelta(
   hasCollided: boolean,
+  hasCollidedX: boolean,
+  hasCollidedY: boolean,
 ): Readonly<[MutableRefObject<number>, MutableRefObject<number>]> {
   const hasCollidedPrev = useRef(false);
+  const hasCollidedXPrev = useRef(false);
+  const hasCollidedYPrev = useRef(false);
   const changeDeltaX = useRef(2);
   const changeDeltaY = useRef(2);
 
@@ -21,24 +25,30 @@ export default function useChangeDelta(
   }, []);
 
   useEffect(() => {
-    if (hasCollided && !(hasCollidedPrev.current)) {
-      const newChangeDelta = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
+    if (hasCollidedX && !(hasCollidedXPrev.current)) {
+      let newChangeDelta = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
+
+      newChangeDelta = (Math.sign(newChangeDelta) === 1) ? Math.abs(newChangeDelta) * -1 : Math.abs(newChangeDelta);
 
       changeDeltaX.current = newChangeDelta;
     }
-  }, [hasCollided, upperRandomBound, lowerRandomBound]);
+  }, [hasCollidedX, upperRandomBound, lowerRandomBound]);
 
   useEffect(() => {
-    if (hasCollided && !(hasCollidedPrev.current)) {
-      const newChangeDelta = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
+    if (hasCollidedY && !(hasCollidedYPrev.current)) {
+      let newChangeDelta = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
+
+      newChangeDelta = (Math.sign(newChangeDelta) === 1) ? Math.abs(newChangeDelta) * -1 : Math.abs(newChangeDelta);
 
       changeDeltaY.current = newChangeDelta;
     }
-  }, [hasCollided, upperRandomBound, lowerRandomBound]);
+  }, [hasCollidedY, upperRandomBound, lowerRandomBound]);
 
   // keep track of previous collision state
   useEffect(() => {
     hasCollidedPrev.current = hasCollided;
+    hasCollidedXPrev.current = hasCollidedX;
+    hasCollidedYPrev.current = hasCollidedY;
   });
 
   return [changeDeltaX, changeDeltaY] as const;
