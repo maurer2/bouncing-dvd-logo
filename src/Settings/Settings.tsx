@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, PropsWithChildren } from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
@@ -6,7 +6,7 @@ import Store from '../Store';
 import * as Types from './Settings.types';
 
 
-const Settings: FC<Types.SettingsProps> = ({ children }): JSX.Element => {
+const Settings: FC<Readonly<PropsWithChildren<Types.SettingsProps>>> = ({ children }): JSX.Element => {
   const [soundIsDisabled, setSoundIsDisabled] = useState(true);
 
   const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'];
