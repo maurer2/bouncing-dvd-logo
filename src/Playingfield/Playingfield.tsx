@@ -23,7 +23,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
   const loopTimestamp = useRef(0);
 
-  const playfieldDomElement = useRef();
+  const playfieldDomElement = useRef<HTMLElement>(null);
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
@@ -112,7 +112,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   }
 
   useEffect(() => {
-    playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
+    playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
 
     initPosition();
     startLoop();
