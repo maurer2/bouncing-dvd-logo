@@ -22,8 +22,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
-  const changeDeltaX = useRef(2); // velocity x
-  const changeDeltaY = useRef(2); // velocity y
 
   const playfieldDomElement = useRef();
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
@@ -33,7 +31,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const isCollidingY = useRef(false);
   const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
-  const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
   // svg
   const width = 150;
@@ -41,7 +38,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(positionY, height, playfieldBB.current.height);
-  const [changeX, changeY] = useChangeDelta(isColliding.current, isCollidingX.current, isCollidingY.current);
+  const [changeX, changeY] = useChangeDelta(isCollidingX.current, isCollidingY.current);
 
   // set random initial position and direction
   // useEffectOnce
@@ -55,73 +52,46 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     setPositionX(() => random(widthBB - width));
     setPositionY(() => random(heightBB - height));
 
-    // initial direction
-    changeDeltaX.current = changeX.current;
-    changeDeltaY.current = changeY.current;
-
     isInit.current = true;
-  }, [changeX, changeY]);
+  }, []);
 
   const loop = useCallback(() => {
     if (!isPausedPrevious.current) {
-      const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
-      const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
-
-      let newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
-      let newChangeDeltaY = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
-      // let newChangeDeltaX = changeX.current;
-      // let newChangeDeltaY = changeY.current;
-      let hasCollided = false;
-
       let hasCollidedX = false;
       let hasCollidedY = false;
 
       setPositionX((prevPositionX) => {
         if (isCollidingXStart.current) {
-          newChangeDeltaX = Math.abs(changeDeltaX.current);
-
-          hasCollided = true;
           hasCollidedX = true;
         }
 
         if (isCollidingXEnd.current) {
-          newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
-          hasCollided = true;
           hasCollidedX = true;
         }
 
-        return Math.round(prevPositionX + newChangeDeltaX);
+        return Math.round(prevPositionX + changeX.current);
       });
 
       setPositionY((prevPositionY) => {
         if (isCollidingYStart.current) {
-          newChangeDeltaY = Math.abs(changeDeltaY.current);
-          hasCollided = true;
           hasCollidedY = true;
         }
 
         if (isCollidingYEnd.current) {
-          newChangeDeltaY = Math.abs(changeDeltaY.current) * -1;
-          hasCollided = true;
           hasCollidedY = true;
         }
 
-        return Math.round(prevPositionY + newChangeDeltaY);
+        return Math.round(prevPositionY + changeY.current);
       });
 
-      if (hasCollided) {
-        changeDeltaX.current = newChangeDeltaX;
-        changeDeltaY.current = newChangeDeltaY;
-      }
-
-      isColliding.current = hasCollided;
+      isColliding.current = hasCollidedX || hasCollidedY;
 
       isCollidingX.current = hasCollidedX;
       isCollidingY.current = hasCollidedY;
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd]);
+  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY]);
 
   useEffect(() => {
     if (isCollidingYStart.current || isCollidingYEnd.current || isCollidingXStart.current || isCollidingXEnd.current) {
@@ -156,7 +126,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     isPausedPrevious.current = currentPlayState;
   }, [isPaused]);
 
-  console.log('change X', (changeX.current > 0));
+  // console.log('change X', (changeX.current > 0));
   // console.log('change Y', (changeY.current > 0));
 
   return (

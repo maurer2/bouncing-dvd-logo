@@ -4,11 +4,9 @@ import { random } from 'lodash';
 // Readonly<[ReturnType<typeof useRef>
 
 export default function useChangeDelta(
-  hasCollided: boolean,
   hasCollidedX: boolean,
   hasCollidedY: boolean,
 ): Readonly<[MutableRefObject<number>, MutableRefObject<number>]> {
-  const hasCollidedPrev = useRef(false);
   const hasCollidedXPrev = useRef(false);
   const hasCollidedYPrev = useRef(false);
   const changeDeltaX = useRef(2);
@@ -46,7 +44,6 @@ export default function useChangeDelta(
 
   // keep track of previous collision state
   useEffect(() => {
-    hasCollidedPrev.current = hasCollided;
     hasCollidedXPrev.current = hasCollidedX;
     hasCollidedYPrev.current = hasCollidedY;
   });
