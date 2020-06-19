@@ -6,7 +6,7 @@ import React, {
   FC,
 } from 'react';
 import PropTypes from 'prop-types';
-import { random } from 'lodash';
+import { random } from 'lodash-es';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';

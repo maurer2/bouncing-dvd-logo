@@ -1,7 +1,7 @@
 import React, {
   useState, useRef, useEffect, useCallback, FC, PropsWithChildren,
 } from 'react';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import generate from 'nanoid-generate';
 import { StyleSheetManager } from 'styled-components/macro';
 
