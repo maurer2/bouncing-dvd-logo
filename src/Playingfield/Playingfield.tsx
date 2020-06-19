@@ -23,8 +23,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
-
-  const playfieldDomElement = useRef<HTMLElement>(null);
   const playfieldBB = useRef<ClientRect>({} as ClientRect);
 
   const isColliding = useRef(false);
@@ -36,6 +34,23 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   // svg
   const width = 150;
   const height = 138; // AR 0,92
+
+  /*
+  const worldSize = useMemo(() => {
+    const { width, height } = playfieldBB.current;
+    return [width, height];
+  }, [playfieldBB.current]);
+  */
+
+  const playfieldDomRefCB = useCallback((element: HTMLElement) => {
+    if (element === null) {
+      return;
+    }
+
+    const elementBB: ClientRect = element.getBoundingClientRect();
+
+    playfieldBB.current = elementBB;
+  }, []);
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(positionY, height, playfieldBB.current.height);
@@ -106,8 +121,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   }
 
   useLayoutEffect(() => {
-    playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
-
     initPosition();
     startLoop();
 
@@ -124,7 +137,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   // console.log('change Y', (changeY.current > 0));
 
   return (
-    <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
+    <Styles.PlayingFieldWrapper ref={playfieldDomRefCB}>
       {isInit.current && (
         <>
           <Logo
