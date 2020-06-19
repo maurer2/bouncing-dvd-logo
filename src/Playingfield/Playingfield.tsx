@@ -4,6 +4,8 @@ import React, {
   useRef,
   useCallback,
   FC,
+  useLayoutEffect,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash';
@@ -38,7 +40,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(positionY, height, playfieldBB.current.height);
-  const [changeX, changeY] = useChangeDelta(isCollidingX.current, isCollidingY.current);
+  const [changeX] = useChangeDelta(2, isCollidingX.current);
+  const [changeY] = useChangeDelta(2, isCollidingY.current);
 
   // set random initial position and direction
   // useEffectOnce
@@ -61,11 +64,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
       let hasCollidedY = false;
 
       setPositionX((prevPositionX) => {
-        if (isCollidingXStart.current) {
-          hasCollidedX = true;
-        }
-
-        if (isCollidingXEnd.current) {
+        if (isCollidingXStart.current || isCollidingXEnd.current) {
           hasCollidedX = true;
         }
 
@@ -73,11 +72,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
       });
 
       setPositionY((prevPositionY) => {
-        if (isCollidingYStart.current) {
-          hasCollidedY = true;
-        }
-
-        if (isCollidingYEnd.current) {
+        if (isCollidingYStart.current || isCollidingYEnd.current) {
           hasCollidedY = true;
         }
 
@@ -111,7 +106,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     window.cancelAnimationFrame(loopTimestamp.current);
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     playfieldBB.current = playfieldDomElement.current.getBoundingClientRect();
 
     initPosition();
