@@ -5,7 +5,6 @@ import React, {
   useCallback,
   FC,
   useLayoutEffect,
-  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash';

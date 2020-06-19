@@ -1,4 +1,6 @@
-import { useRef, useEffect, MutableRefObject } from 'react';
+import {
+  useRef, useEffect, MutableRefObject, useDebugValue,
+} from 'react';
 import { random } from 'lodash';
 
 // Readonly<[ReturnType<typeof useRef>
@@ -30,6 +32,8 @@ export default function useChangeDelta(
   useEffect(() => {
     hasCollidedPrev.current = hasCollided;
   });
+
+  useDebugValue(`useChangeDelta: ${changeDelta.current}`);
 
   return [changeDelta] as const;
 }
