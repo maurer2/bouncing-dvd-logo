@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { random } from 'lodash';
+import { random } from 'lodash-es';
 
 export default function useColour(colours: string[]): Readonly<[string, () => void]> {
   const [colour, setColour] = useState(colours[0]);

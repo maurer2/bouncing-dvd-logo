@@ -1,9 +1,7 @@
 import {
   useRef, useEffect, MutableRefObject, useDebugValue,
 } from 'react';
-import { random } from 'lodash';
-
-// Readonly<[ReturnType<typeof useRef>
+import { random } from 'lodash-es';
 
 export default function useChangeDelta(
   startValue: number,
