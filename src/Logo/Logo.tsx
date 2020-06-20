@@ -1,10 +1,10 @@
 import React, {
-  useEffect, useState, useRef, useContext, useCallback, FC,
+  useEffect, useRef, useContext, FC,
 } from 'react';
 import PropTypes from 'prop-types';
-import { random } from 'lodash-es';
 
 import Store from '../Store';
+import useColour from '../Hooks/useColour';
 
 import * as Styles from './Logo.styles';
 import * as Types from './Logo.types';
@@ -19,24 +19,16 @@ const Logo: FC<Readonly<Types.GameProps>> = ({
   isPaused,
 }): JSX.Element => {
   const { colours } = useContext(Store);
-  const [colour, setColour] = useState(colours[0]);
   const prevChangeColours = useRef(false);
-
-  const setNewColour = useCallback(() => {
-    const newColours = colours.filter((colourEntry) => colourEntry !== colour);
-    const randomColourIndex = random(newColours.length - 1);
-    const newColour = newColours[randomColourIndex];
-
-    setColour(newColour);
-  }, [colour, colours]);
+  const [colour, setColour] = useColour(colours);
 
   useEffect(() => {
     if (changeColours && changeColours !== prevChangeColours.current) {
-      setNewColour();
+      setColour();
     }
 
     prevChangeColours.current = changeColours;
-  }, [changeColours, setNewColour]);
+  }, [changeColours, setColour]);
 
   return (
     <Styles.LogoElement

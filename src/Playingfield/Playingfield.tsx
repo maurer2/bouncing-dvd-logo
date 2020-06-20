@@ -4,6 +4,7 @@ import React, {
   useRef,
   useCallback,
   FC,
+  useLayoutEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash-es';
@@ -11,117 +12,93 @@ import { random } from 'lodash-es';
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
+import useChangeDelta from '../Hooks/useChangeDelta';
+import useCollisionDetection from '../Hooks/useCollisionDetection';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
-
-const isPastStartBoundary = (position) => (position <= 0);
-
-const isPastEndBoundary = (position, objectSize, playfieldSize) => {
-  const maxPositionStillInside = (playfieldSize - objectSize);
-
-  return position >= maxPositionStillInside;
-};
-
-/*
-const isCollidingWithBoundaries = (
-  positionX, positionY, width, height, playfieldWidth, playfieldHeight,
-) => {
-  const leftCheck = isPastStartBoundary(positionX);
-  const rightCheck = isPastEndBoundary(positionX, width, playfieldWidth);
-  const topCheck = isPastStartBoundary(positionY);
-  const bottomCheck = isPastEndBoundary(positionY, height, playfieldHeight);
-
-  return [leftCheck, rightCheck, topCheck, bottomCheck].some(entry => !!entry);
-};
-*/
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
-  const changeDeltaX = useRef(2); // velocity x
-  const changeDeltaY = useRef(2); // velocity y
-
-  const playfieldDomElement = useRef();
-  const playfieldBB = useRef<ClientRect>({} as ClientRect);
+  const playfieldBB = useRef<DOMRect>({} as DOMRect);
 
   const isColliding = useRef(false);
+  const isCollidingX = useRef(false);
+  const isCollidingY = useRef(false);
   const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
-  const maxRandomness = 6; // max value of deviation from correct reflection on collision
 
   // svg
-  const width = 150;
-  const height = 138; // AR 0,92
+  const widthObject = 150;
+  const heightObject = 138; // AR 0,92
 
-  // set random initial position and direction
-  function initPosition() {
-    const { width: widthBB, height: heightBB } = playfieldBB.current;
-
-    setPositionX(() => random(widthBB - width));
-    setPositionY(() => random(heightBB - height));
-
-    // initial direction
-    changeDeltaX.current = random(1) === 0 ? changeDeltaX.current * -1 : changeDeltaX.current * +1;
-    changeDeltaY.current = random(1) === 0 ? changeDeltaY.current * -1 : changeDeltaY.current * +1;
-    isInit.current = true;
-  }
-
-  function updatePosition() {
-    const { width: widthBB, height: heightBB } = playfieldBB.current;
-
-    const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
-    const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
-
-    let newChangeDeltaX = changeDeltaX.current * random(lowerRandomBound, upperRandomBound, true);
-    let newChangeDeltaY = changeDeltaY.current * random(lowerRandomBound, upperRandomBound, true);
-    let hasCollided = false;
-
-    setPositionX((prevPositionX) => {
-      if (isPastStartBoundary(prevPositionX)) {
-        newChangeDeltaX = Math.abs(changeDeltaX.current);
-        hasCollided = true;
-      }
-
-      if (isPastEndBoundary(prevPositionX, width, widthBB)) {
-        newChangeDeltaX = Math.abs(changeDeltaX.current) * -1;
-        hasCollided = true;
-      }
-
-      return Math.round(prevPositionX + newChangeDeltaX);
-    });
-
-    setPositionY((prevPositionY) => {
-      if (isPastStartBoundary(prevPositionY)) {
-        newChangeDeltaY = Math.abs(changeDeltaY.current);
-        hasCollided = true;
-      }
-
-      if (isPastEndBoundary(prevPositionY, height, heightBB)) {
-        newChangeDeltaY = Math.abs(changeDeltaY.current) * -1;
-        hasCollided = true;
-      }
-
-      return Math.round(prevPositionY + newChangeDeltaY);
-    });
-
-    if (hasCollided) {
-      changeDeltaX.current = newChangeDeltaX;
-      changeDeltaY.current = newChangeDeltaY;
+  const playfieldDomRefCB = useCallback((element: HTMLElement) => {
+    if (element === null) {
+      return;
     }
 
-    isColliding.current = hasCollided;
-  }
+    playfieldBB.current = element.getBoundingClientRect();
+  }, []);
+
+  const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
+    positionX,
+    widthObject,
+    playfieldBB.current.width
+  );
+  const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
+    positionY,
+    heightObject,
+    playfieldBB.current.height
+  );
+  const [changeX] = useChangeDelta(3, isCollidingX.current);
+  const [changeY] = useChangeDelta(3, isCollidingY.current);
+
+  // set random initial position and direction
+  // useEffectOnce
+  const initPosition = useCallback(() => {
+    if (isInit.current) {
+      return;
+    }
+
+    const { width, height } = playfieldBB.current;
+
+    setPositionX(() => random(width - widthObject));
+    setPositionY(() => random(height - heightObject));
+
+    isInit.current = true;
+  }, []);
 
   const loop = useCallback(() => {
     if (!isPausedPrevious.current) {
-      updatePosition();
+      let hasCollidedX = false;
+      let hasCollidedY = false;
+
+      setPositionX((prevPositionX) => {
+        if (isCollidingXStart.current || isCollidingXEnd.current) {
+          hasCollidedX = true;
+        }
+
+        return Math.round(prevPositionX + changeX.current);
+      });
+
+      setPositionY((prevPositionY) => {
+        if (isCollidingYStart.current || isCollidingYEnd.current) {
+          hasCollidedY = true;
+        }
+
+        return Math.round(prevPositionY + changeY.current);
+      });
+
+      isColliding.current = hasCollidedX || hasCollidedY;
+      isCollidingX.current = hasCollidedX;
+      isCollidingY.current = hasCollidedY;
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, []);
+  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY]);
 
   const startLoop = useCallback(() => {
     if (loopTimestamp.current !== 0) {
@@ -135,14 +112,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     window.cancelAnimationFrame(loopTimestamp.current);
   }
 
-  useEffect(() => {
-    playfieldBB.current = (playfieldDomElement.current as HTMLElement).getBoundingClientRect();
-
+  useLayoutEffect(() => {
     initPosition();
     startLoop();
 
     return () => stopLoop();
-  }, [startLoop]);
+  }, [initPosition, startLoop]);
 
   useEffect(() => {
     const currentPlayState = isPaused;
@@ -151,14 +126,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   }, [isPaused]);
 
   return (
-    <Styles.PlayingFieldWrapper ref={playfieldDomElement}>
+    <Styles.PlayingFieldWrapper ref={playfieldDomRefCB}>
       {isInit.current && (
         <>
           <Logo
             positionX={positionX}
             positionY={positionY}
-            width={width}
-            height={height}
+            width={widthObject}
+            height={heightObject}
             changeColours={isColliding.current}
             isPaused={isPaused}
           />
