@@ -23,7 +23,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
-  const playfieldBB = useRef<ClientRect>({} as ClientRect);
+  const playfieldBB = useRef<DOMRect>({} as DOMRect);
 
   const isColliding = useRef(false);
   const isCollidingX = useRef(false);
@@ -32,30 +32,21 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const isInit = useRef(false);
 
   // svg
-  const width = 150;
-  const height = 138; // AR 0,92
-
-  /*
-  const worldSize = useMemo(() => {
-    const { width, height } = playfieldBB.current;
-    return [width, height];
-  }, [playfieldBB.current]);
-  */
+  const widthObject = 150;
+  const heightObject = 138; // AR 0,92
 
   const playfieldDomRefCB = useCallback((element: HTMLElement) => {
     if (element === null) {
       return;
     }
 
-    const elementBB: ClientRect = element.getBoundingClientRect();
-
-    playfieldBB.current = elementBB;
+    playfieldBB.current = element.getBoundingClientRect();
   }, []);
 
-  const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, width, playfieldBB.current.width);
-  const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(positionY, height, playfieldBB.current.height);
-  const [changeX] = useChangeDelta(2, isCollidingX.current);
-  const [changeY] = useChangeDelta(2, isCollidingY.current);
+  const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(positionX, widthObject, playfieldBB.current.width);
+  const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(positionY, heightObject, playfieldBB.current.height);
+  const [changeX] = useChangeDelta(3, isCollidingX.current);
+  const [changeY] = useChangeDelta(3, isCollidingY.current);
 
   // set random initial position and direction
   // useEffectOnce
@@ -64,10 +55,10 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
       return;
     }
 
-    const { width: widthBB, height: heightBB } = playfieldBB.current;
+    const { width, height } = playfieldBB.current;
 
-    setPositionX(() => random(widthBB - width));
-    setPositionY(() => random(heightBB - height));
+    setPositionX(() => random(width - widthObject));
+    setPositionY(() => random(height - heightObject));
 
     isInit.current = true;
   }, []);
@@ -94,19 +85,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
       });
 
       isColliding.current = hasCollidedX || hasCollidedY;
-
       isCollidingX.current = hasCollidedX;
       isCollidingY.current = hasCollidedY;
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
   }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY]);
-
-  useEffect(() => {
-    if (isCollidingYStart.current || isCollidingYEnd.current || isCollidingXStart.current || isCollidingXEnd.current) {
-      // console.log('collision');
-    }
-  });
 
   const startLoop = useCallback(() => {
     if (loopTimestamp.current !== 0) {
@@ -133,9 +117,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     isPausedPrevious.current = currentPlayState;
   }, [isPaused]);
 
-  // console.log('change X', (changeX.current > 0));
-  // console.log('change Y', (changeY.current > 0));
-
   return (
     <Styles.PlayingFieldWrapper ref={playfieldDomRefCB}>
       {isInit.current && (
@@ -143,8 +124,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
           <Logo
             positionX={positionX}
             positionY={positionY}
-            width={width}
-            height={height}
+            width={widthObject}
+            height={heightObject}
             changeColours={isColliding.current}
             isPaused={isPaused}
           />
