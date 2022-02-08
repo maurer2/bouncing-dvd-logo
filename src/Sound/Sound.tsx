@@ -8,7 +8,6 @@ import Store from '../Store';
 import soundFile from './soundFile.wav';
 import * as Types from './Sound.types';
 
-
 const Sound: FC<Readonly<Types.SoundProps>> = ({ playSound }): JSX.Element => {
   const { soundIsDisabled } = useContext(Store);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);

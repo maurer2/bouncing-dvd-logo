@@ -109,6 +109,13 @@ module.exports = {
     'react/jsx-filename-extension': [1, {
       extensions: ['.js', '.jsx', '.ts', '.tsx']
     }],
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
+      },
+    ],
     // react hooks
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

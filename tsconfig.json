@@ -2,7 +2,7 @@
   "include": [
     "./src/**/*"
   ],
-  "files": ["./src/ResizeObserver.d.ts"],
+  // "files": [""],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",

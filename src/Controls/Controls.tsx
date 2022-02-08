@@ -1,4 +1,4 @@
-import React, { useContext, FC } from 'react';
+import React, { useContext, FC, MouseEvent } from 'react';
 
 import Store from '../Store';
 
@@ -10,7 +10,7 @@ import * as Types from './Controls.types';
 const Controls: FC<Readonly<Types.ControlProps>> = (): JSX.Element => {
   const { soundIsDisabled, toggleSound } = useContext(Store);
 
-  function handleClick(event) {
+  function handleClick(event: MouseEvent<HTMLButtonElement>): void {
     event.stopPropagation();
 
     toggleSound();
@@ -18,7 +18,7 @@ const Controls: FC<Readonly<Types.ControlProps>> = (): JSX.Element => {
 
   return (
     <Styles.Controls>
-      <Styles.Control onClick={handleClick}>
+      <Styles.Control onClick={(event: MouseEvent<HTMLButtonElement>) => handleClick(event)}>
         { soundIsDisabled ? <SoundOffIcon /> : <SoundOnIcon /> }
       </Styles.Control>
     </Styles.Controls>

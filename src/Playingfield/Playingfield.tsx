@@ -46,12 +46,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positionX,
     widthObject,
-    playfieldBB.current.width
+    playfieldBB.current.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positionY,
     heightObject,
-    playfieldBB.current.height
+    playfieldBB.current.height,
   );
   const [changeX] = useChangeDelta(3, isCollidingX.current);
   const [changeY] = useChangeDelta(3, isCollidingY.current);
