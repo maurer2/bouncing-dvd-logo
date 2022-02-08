@@ -1,4 +1,11 @@
 module.exports = {
+  parserOptions: {
+    ecmaVersion: 2021,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   parser: '@typescript-eslint/parser',
   extends: [
     'eslint:recommended',
@@ -110,13 +117,6 @@ module.exports = {
     'lodash/prefer-lodash-method': 'off',
     // a11y
     'jsx-a11y/media-has-caption': 'off'
-  },
-  parserOptions: {
-    ecmaVersion: 2016,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
   settings: {
     react: {

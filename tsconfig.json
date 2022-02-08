@@ -4,7 +4,7 @@
   ],
   "files": ["./src/ResizeObserver.d.ts"],
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "module": "esnext",
     "lib": [
       "dom",

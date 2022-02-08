@@ -20,8 +20,7 @@
     "lint:scripts:debug": "eslint --debug 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:scripts:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
-    "start": "BROWSER=false react-scripts start",
-    "start:dev": "BROWSER=false react-scripts start",
+    "start": "react-scripts start",
     "test": "react-scripts test"
   },
   "dependencies": {
