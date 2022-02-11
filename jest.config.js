@@ -2,11 +2,9 @@ module.exports = {
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{js,jsx}',
+    '**/*.{ts,tsx,js,jsx}',
   ],
-  snapshotSerializers: [
-    'enzyme-to-json/serializer',
-  ],
+  snapshotSerializers: [],
   moduleNameMapper: { '^lodash-es/(.*)$': '<rootDir>/node_modules/lodash/$1' },
   transformIgnorePatterns: [
     '!node_modules/',

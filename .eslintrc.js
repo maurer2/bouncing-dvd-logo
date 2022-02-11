@@ -2,9 +2,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2021,
     sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
+    ecmaFeatures: { jsx: true },
   },
   parser: '@typescript-eslint/parser',
   extends: [
@@ -31,33 +29,29 @@ module.exports = {
   },
   rules: {
     // general
-    quotes: [2, 'single', {
-      avoidEscape: true
-    }],
+    quotes: [2, 'single', { avoidEscape: true }],
     semi: ['error', 'always'],
     'comma-dangle': [2, 'always-multiline'],
     'object-curly-newline': ['error', {
       // destructuring
-      "ObjectPattern": {
-        "minProperties": 4,
-        "consistent": false,
-        "multiline": true
+      ObjectPattern: {
+        minProperties: 4,
+        consistent: false,
+        multiline: true,
       },
-      "ObjectExpression": {
-        "minProperties": 2,
-        "consistent": false,
-        "multiline": true
+      ObjectExpression: {
+        minProperties: 2,
+        consistent: false,
+        multiline: true,
       },
-      "ImportDeclaration": {
-        "minProperties": 4,
-        "consistent": false,
-        "multiline": true
+      ImportDeclaration: {
+        minProperties: 4,
+        consistent: false,
+        multiline: true,
       },
-      "ExportDeclaration": "always",
+      ExportDeclaration: 'always',
     }],
-    "object-property-newline": ["error", {
-      "allowAllPropertiesOnSameLine": false
-    }],
+    'object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
     'no-restricted-imports': [
       'error',
       {
@@ -67,9 +61,9 @@ module.exports = {
             message: 'Direct import of styled-components prohibited. Use styled-components/macro instead',
           },
           {
-            "name": 'lodash',
-            "message": 'Please use lodash-es instead of "lodash".'
-          }
+            name: 'lodash',
+            message: 'Please use lodash-es instead of "lodash".',
+          },
         ],
         patterns: [
           '!styled-components/macro',
@@ -95,7 +89,7 @@ module.exports = {
           ['builtin', 'external'],
           ['internal', 'parent'],
           ['sibling'],
-          ['index']
+          ['index'],
         ],
         'newlines-between': 'always',
       },
@@ -106,9 +100,7 @@ module.exports = {
     // react
     'react/jsx-uses-vars': 'error',
     'react/jsx-uses-react': 'error',
-    'react/jsx-filename-extension': [1, {
-      extensions: ['.js', '.jsx', '.ts', '.tsx']
-    }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/function-component-definition': [
       2,
       {
@@ -123,11 +115,7 @@ module.exports = {
     'lodash/import-scope': [2, 'member'],
     'lodash/prefer-lodash-method': 'off',
     // a11y
-    'jsx-a11y/media-has-caption': 'off'
+    'jsx-a11y/media-has-caption': 'off',
   },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
+  settings: { react: { version: 'detect' } },
 };
