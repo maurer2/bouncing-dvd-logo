@@ -118,4 +118,13 @@ module.exports = {
     'jsx-a11y/media-has-caption': 'off',
   },
   settings: { react: { version: 'detect' } },
+  overrides: [
+    {
+      files: ['**/*.spec.tsx'],
+      rules: {
+        'react/prop-types': 'off',
+        'react/jsx-props-no-spreading': 'off',
+      },
+    },
+  ],
 };
