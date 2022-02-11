@@ -19,7 +19,11 @@ const Controls: FC<Readonly<Types.ControlProps>> = (): JSX.Element => {
   return (
     <Styles.Controls data-testid="controls">
       <Styles.Control onClick={(event) => handleClick(event)} data-testid="controls-control">
-        { soundIsDisabled ? <SoundOffIcon /> : <SoundOnIcon /> }
+        {soundIsDisabled ? (
+          <SoundOffIcon data-testid="controls-icon" />
+        ) : (
+          <SoundOnIcon data-testid="controls-icon" />
+        )}
       </Styles.Control>
     </Styles.Controls>
   );

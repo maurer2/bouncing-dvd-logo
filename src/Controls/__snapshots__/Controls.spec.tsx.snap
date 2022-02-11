@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components should match snapshot 1`] = `
+<div
+  class="sc-bdvvtL eEntsn"
+  data-testid="controls"
+>
+  <button
+    class="sc-gsDKAQ rQGkY"
+    data-testid="controls-control"
+    type="button"
+  >
+    <svg
+      data-testid="controls-icon"
+    >
+      sound-off.svg
+    </svg>
+  </button>
+</div>
+`;

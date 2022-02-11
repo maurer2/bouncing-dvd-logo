@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 
@@ -11,29 +10,61 @@ import Store from '../Store';
 import Component from './Controls';
 
 describe('Components', () => {
-  const storeValues = {
+  let storeValues = {
     colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
     soundIsDisabled: true,
     toggleSound: jest.fn(),
   };
 
-  // const CustomProvider = ({ children }) => (
-  //   <Store.Provider value={storeValues}>
-  //     {children}
-  //   </Store.Provider>
-  // );
+  const StoreProvider = ({ children }) => (
+    <Store.Provider value={storeValues}>
+      {children}
+    </Store.Provider>
+  );
 
   const setup = (props) => render(
-    <Store.Provider value={storeValues}>
+    <StoreProvider key={props?.key}>
       <Component {...props} />
-    </Store.Provider>,
+    </StoreProvider>,
   );
 
   it('should render ', () => {
-    const { findByTestId } = setup({});
+    const screen = setup({});
 
-    // expect(container.innerHTML).toBe(true);
-    expect(findByTestId('controls')).toBe(true);
-    expect(findByTestId('controls')).toBeInTheDocument();
+    expect(screen.getByTestId('controls')).toBeInTheDocument();
+  });
+
+  it('should match snapshot', () => {
+    const screen = setup({});
+
+    expect(screen.container.firstChild).toMatchSnapshot();
+  });
+
+  it('should have child elements', () => {
+    const screen = setup({});
+
+    expect(screen.getByTestId('controls')).toBeTruthy();
+
+    expect(screen.getByTestId('controls-control')).toBeTruthy();
+    expect(screen.getByRole('button')).toBeTruthy();
+
+    expect(screen.getByTestId('controls-icon')).toBeTruthy();
+  });
+
+  it('should have sound off icon, when sound is disabled', () => {
+    const screen = setup({});
+
+    expect(screen.getByText('sound-off.svg')).toBeTruthy();
+  });
+
+  it('should have sound on icon, when sound is enabled', () => {
+    storeValues = {
+      ...storeValues,
+      soundIsDisabled: false,
+    };
+
+    const screen = setup({ key: 'on' });
+
+    expect(screen.getByText('sound-on.svg')).toBeTruthy();
   });
 });
