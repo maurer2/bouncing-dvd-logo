@@ -2,7 +2,7 @@
   "include": [
     "./src/**/*"
   ],
-  // "files": [""],
+  "files": [""],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",

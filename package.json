@@ -21,7 +21,7 @@
     "lint:scripts:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "start": "react-scripts start",
-    "test": "react-scripts test"
+    "test": "react-scripts test 'src/Controls/Controls.spec.tsx'"
   },
   "dependencies": {
     "@babel/core": "^7.17.2",
@@ -29,6 +29,8 @@
     "@babel/plugin-syntax-typescript": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.2",
     "@types/resize-observer-browser": "^0.1.7",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",

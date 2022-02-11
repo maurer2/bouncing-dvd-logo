@@ -23,9 +23,7 @@ const Settings: FC<PropsWithChildren<Types.SettingsProps>> = ({ children }): JSX
   }, [soundIsDisabled]);
 
   return (
-    <Store.Provider
-      value={storeValue}
-    >
+    <Store.Provider value={storeValue}>
       { children }
     </Store.Provider>
   );
