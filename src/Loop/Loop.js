@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 const Loop2 = (props) => {
   const [count, setCount] = React.useState(1);

@@ -56,10 +56,10 @@ module.exports = {
       'error',
       {
         paths: [
-          {
-            name: 'styled-components',
-            message: 'Direct import of styled-components prohibited. Use styled-components/macro instead',
-          },
+          // {
+          //   name: 'styled-components',
+          //   message: 'Direct import of styled-components prohibited. Use styled-components/macro instead',
+          // },
           {
             name: 'lodash',
             message: 'Please use lodash-es instead of "lodash".',

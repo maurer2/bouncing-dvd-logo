@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { debounce } from 'lodash-es';
 import generate from 'nanoid-generate';
-import { StyleSheetManager } from 'styled-components/macro';
+import { StyleSheetManager } from 'styled-components';
 
 import PlayField from '../Playingfield/Playingfield';
 

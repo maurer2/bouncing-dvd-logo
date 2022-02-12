@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Normalize } from 'styled-normalize';
-import { createGlobalStyle } from 'styled-components/macro';
+import { createGlobalStyle } from 'styled-components';
 
 import Settings from './Settings/Settings';
 import Game from './Game/Game';
