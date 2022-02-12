@@ -1,4 +1,4 @@
-import React, { useContext, FC, MouseEvent } from 'react';
+import React, { useContext, VFC, MouseEvent } from 'react';
 
 import Store from '../Store';
 
@@ -7,7 +7,7 @@ import { ReactComponent as SoundOffIcon } from './sound-off.svg';
 import * as Styles from './Controls.styles';
 import * as Types from './Controls.types';
 
-const Controls: FC<Readonly<Types.ControlProps>> = (): JSX.Element => {
+const Controls: VFC<Readonly<Types.ControlProps>> = (): JSX.Element => {
   const { soundIsDisabled, toggleSound } = useContext(Store);
 
   function handleClick(event: MouseEvent<HTMLButtonElement>): void {

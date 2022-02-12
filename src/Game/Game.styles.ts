@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const GameWrapper = styled.div`
   width: 100vw;

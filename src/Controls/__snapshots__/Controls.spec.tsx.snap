@@ -2,18 +2,18 @@
 
 exports[`Components should match snapshot 1`] = `
 <div
-  class="sc-bdvvtL eEntsn"
+  class="Controlsstyles__Controls-kIyccD isEcOA"
   data-testid="controls"
 >
   <button
-    class="sc-gsDKAQ rQGkY"
+    class="Controlsstyles__Control-fyrJBQ coIkqO"
     data-testid="controls-control"
     type="button"
   >
     <svg
       data-testid="controls-icon"
     >
-      sound-off.svg
+      SVG markup
     </svg>
   </button>
 </div>

@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const LogoElement = styled.figure.attrs((props) => ({ style: { transform: `translate(${Math.floor(props.positionX)}px, ${Math.floor(props.positionY)}px)` } }))`
   position: absolute;

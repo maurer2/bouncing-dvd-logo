@@ -21,20 +21,22 @@
     "lint:scripts:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "start": "react-scripts start",
-    "test": "react-scripts test 'src/Controls/Controls.spec.tsx'"
+    "test": "jest --watch"
   },
   "dependencies": {
     "@babel/core": "^7.17.2",
-    "@babel/plugin-proposal-async-generator-functions": "^7.16.8",
-    "@babel/plugin-syntax-typescript": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@jest/types": "^27.5.1",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@types/resize-observer-browser": "^0.1.7",
+    "add": "^2.0.6",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
     "babel-plugin-macros": "^3.1.0",
+    "babel-plugin-styled-components": "^2.0.2",
     "lodash-es": "^4.17.21",
     "nanoid-generate": "^1.1.0",
     "prop-types": "^15.8.1",
@@ -42,7 +44,8 @@
     "react-dom": "^17.0.2",
     "react-scripts": "^5.0.0",
     "styled-components": "^5.3.3",
-    "styled-normalize": "^8.0.7"
+    "styled-normalize": "^8.0.7",
+    "ts-node": "^10.5.0"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
