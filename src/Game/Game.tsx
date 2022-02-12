@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useEffect, useCallback, FC, PropsWithChildren,
+  useState, useRef, useEffect, useCallback, VFC, KeyboardEvent,
 } from 'react';
 import { debounce } from 'lodash-es';
 import generate from 'nanoid-generate';
@@ -10,10 +10,10 @@ import PlayField from '../Playingfield/Playingfield';
 import * as Styles from './Game.styles';
 import * as Types from './Game.types';
 
-const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): JSX.Element => {
+const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false);
-  const [keyValue, setKeyValue] = useState(() => generate.lowercase(5));
-  const wrapperDomElement = useRef(null);
+  const [keyValue, setKeyValue] = useState<string>(() => generate.lowercase(5));
+  const wrapperDomElement = useRef<HTMLElement>(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
 
@@ -32,11 +32,12 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): JSX.Element =
     }
   }));
 
-  const togglePlayState = () => setIsPaused(!isPaused);
+  const togglePlayState = () => setIsPaused((currentIsPaused) => !currentIsPaused);
   const reset = () => setKeyValue(() => generate.lowercase(5));
   const handleResize = useCallback(() => reset(), []);
 
-  const handleInput = (event) => {
+  const handleInput = (event): void => {
+  // const handleInput = (event: KeyboardEvent<HTMLDivElement>): void => {
     const pressedKey = event.key || event.keyCode;
     const observedKeys = [' ', 'k']; // " " === spacebar
 
@@ -70,8 +71,9 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): JSX.Element =
         ref={(element) => { wrapperDomElement.current = element; }}
         tabIndex="0"
         autoFocus
+        data-testid="game-wrapper"
       >
-        <PlayField isPaused={isPaused} key={keyValue} />
+        <PlayField isPaused={isPaused} key={keyValue} data-testid="game-playfield" />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

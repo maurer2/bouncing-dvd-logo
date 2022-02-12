@@ -44,14 +44,12 @@ describe('Components', () => {
 
     expect(screen.getByTestId('controls-control')).toBeTruthy();
     expect(screen.getByRole('button')).toBeTruthy();
-
-    expect(screen.getByTestId('controls-icon')).toBeTruthy();
   });
 
   it('should have sound off icon, when sound is disabled', () => {
     const screen = setup({});
 
-    expect(screen.getByText('sound-off.svg')).toBeTruthy();
+    expect(screen.getByTestId('controls-icon-off')).toBeTruthy();
   });
 
   it('should have sound on icon, when sound is enabled', () => {
@@ -62,6 +60,10 @@ describe('Components', () => {
 
     const screen = setup({ key: 'on' });
 
-    expect(screen.getByText('sound-on.svg')).toBeTruthy();
+    expect(screen.getByTestId('controls-icon-on')).toBeTruthy();
   });
+
+  it.todo('should pause on mouse click');
+  it.todo('should pause when pressing spacebar');
+  it.todo('should pause when resizing');
 });

@@ -11,7 +11,7 @@ exports[`Components should match snapshot 1`] = `
     type="button"
   >
     <svg
-      data-testid="controls-icon"
+      data-testid="controls-icon-off"
     >
       SVG markup
     </svg>

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game should match snapshot 1`] = `
+<div
+  class="Gamestyles__GameWrapper-jLsCpQ eeHOOG"
+  data-testid="game-wrapper"
+  tabindex="0"
+>
+  <div>
+    Mocked Playingfield component
+  </div>
+</div>
+`;

@@ -20,9 +20,9 @@ const Controls: VFC<Readonly<Types.ControlProps>> = (): JSX.Element => {
     <Styles.Controls data-testid="controls">
       <Styles.Control onClick={(event) => handleClick(event)} data-testid="controls-control">
         {soundIsDisabled ? (
-          <SoundOffIcon data-testid="controls-icon" />
+          <SoundOffIcon data-testid="controls-icon-off" />
         ) : (
-          <SoundOnIcon data-testid="controls-icon" />
+          <SoundOnIcon data-testid="controls-icon-on" />
         )}
       </Styles.Control>
     </Styles.Controls>
