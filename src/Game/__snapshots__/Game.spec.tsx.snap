@@ -6,8 +6,11 @@ exports[`Game should match snapshot 1`] = `
   data-testid="game-wrapper"
   tabindex="0"
 >
-  <div>
-    Mocked Playingfield component
-  </div>
+  <mocked-playingfield
+    data-testid="game-playfield"
+    ispaused="false"
+  >
+    Playingfield
+  </mocked-playingfield>
 </div>
 `;

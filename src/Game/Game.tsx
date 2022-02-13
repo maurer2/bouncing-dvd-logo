@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useEffect, useCallback, VFC, KeyboardEvent,
+  useState, useRef, useEffect, useCallback, VFC, KeyboardEvent, MouseEvent,
 } from 'react';
 import { debounce } from 'lodash-es';
 import generate from 'nanoid-generate';
@@ -33,18 +33,22 @@ const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
   }));
 
   const togglePlayState = () => setIsPaused((currentIsPaused) => !currentIsPaused);
-  const reset = () => setKeyValue(() => generate.lowercase(5));
-  const handleResize = useCallback(() => reset(), []);
+  const resetGame = () => setKeyValue(() => generate.lowercase(5));
+  const handleResize = useCallback(() => resetGame(), []);
 
-  const handleInput = (event): void => {
-  // const handleInput = (event: KeyboardEvent<HTMLDivElement>): void => {
-    const pressedKey = event.key || event.keyCode;
+  function handleClick(event: MouseEvent<HTMLDivElement>): void {
+    event.preventDefault();
+    togglePlayState();
+  }
+
+  function handleInput(event: KeyboardEvent<HTMLDivElement>): void {
+    const pressedKey = event.key;
     const observedKeys = [' ', 'k']; // " " === spacebar
 
     if (observedKeys.includes(pressedKey.toLowerCase())) {
       togglePlayState();
     }
-  };
+  }
 
   // setup resize/intersection observer
   useEffect(() => {
@@ -66,7 +70,7 @@ const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
-        onClick={togglePlayState}
+        onClick={(event) => handleClick(event)}
         onKeyPress={(event) => handleInput(event)}
         ref={(element) => { wrapperDomElement.current = element; }}
         tabIndex="0"
