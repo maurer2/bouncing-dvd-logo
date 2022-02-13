@@ -2,14 +2,25 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, act } from '@testing-library/react';
 
+import type { PlayingfieldProps } from '../Playingfield/Playingfield.types';
+
 import Component from './Game';
 
 // eslint-disable-next-line react/display-name
-jest.mock('../Playingfield/Playingfield', () => (props) => (
-  <mocked-playingfield {...props}>
-    Playingfield
-  </mocked-playingfield>
-));
+jest.mock('../Playingfield/Playingfield', () => (props: PlayingfieldProps) => {
+  const { isPaused } = props;
+  // eslint-disable-next-line react/destructuring-assignment
+  const testid = props['data-testid'];
+
+  return (
+    <div
+      data-testid={testid}
+      data-ispaused={isPaused ? 'true' : 'false'}
+    >
+      Playingfield
+    </div>
+  );
+});
 
 describe('Game', () => {
   beforeEach(() => {
@@ -55,18 +66,18 @@ describe('Game', () => {
   it('should activate sound when clicking on button when sound is disabled', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-playfield')).toHaveAttribute('ispaused', 'false');
+    expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'false');
 
     act(() => {
       fireEvent.click(screen.getByTestId('game-wrapper'));
     });
-    expect(screen.getByTestId('game-playfield')).toHaveAttribute('ispaused', 'true');
+    expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'true');
   });
 
   it('should activate sound when pressing spacebar when sound is disabled', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-playfield')).toHaveAttribute('ispaused', 'false');
+    expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'false');
 
     act(() => {
       fireEvent.keyPress(screen.getByTestId('game-wrapper'), {
@@ -75,13 +86,13 @@ describe('Game', () => {
         charCode: 32,
       });
     });
-    expect(screen.getByTestId('game-playfield')).toHaveAttribute('ispaused', 'true');
+    expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'true');
   });
 
   it('should activate sound when pressing k when sound is disabled', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-playfield')).toHaveAttribute('ispaused', 'false');
+    expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'false');
 
     act(() => {
       fireEvent.keyPress(screen.getByTestId('game-wrapper'), {
@@ -90,6 +101,6 @@ describe('Game', () => {
         charCode: 75,
       });
     });
-    expect(screen.getByTestId('game-playfield')).toHaveAttribute('ispaused', 'true');
+    expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'true');
   });
 });
