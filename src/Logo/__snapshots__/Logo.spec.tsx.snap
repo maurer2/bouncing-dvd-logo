@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logo should match snapshot 1`] = `
+.c0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  margin: 0;
+  will-change: transform;
+  opacity: 1;
+}
+
+<figure
+  class="c0"
+  data-testid="logo-element"
+  style="transform: translate(100px, 100px); color: white;"
+>
+  <svg
+    data-testid="cat-logo"
+  >
+    SVG markup
+  </svg>
+</figure>
+`;

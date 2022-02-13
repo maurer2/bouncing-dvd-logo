@@ -1,4 +1,4 @@
-export type GameProps = {
+export type LogoProps = {
   positionX: number;
   positionY: number;
   width: number;

@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, useContext, FC,
+  useEffect, useRef, useContext, VFC,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,11 @@ import * as Styles from './Logo.styles';
 import * as Types from './Logo.types';
 import { ReactComponent as CatLogo } from './cat.svg';
 
-const Logo: FC<Readonly<Types.GameProps>> = ({
+type Store = {
+  colours: string[]
+}
+
+const Logo: VFC<Readonly<Types.LogoProps>> = ({
   positionX,
   positionY,
   width,
@@ -18,7 +22,7 @@ const Logo: FC<Readonly<Types.GameProps>> = ({
   changeColours,
   isPaused,
 }): JSX.Element => {
-  const { colours } = useContext(Store);
+  const { colours } = useContext<Store>(Store); // todo replace with globally typed store
   const prevChangeColours = useRef(false);
   const [colour, setColour] = useColour(colours);
 
@@ -38,8 +42,9 @@ const Logo: FC<Readonly<Types.GameProps>> = ({
       heightValue={height}
       colourValue={colour}
       isPaused={isPaused}
+      data-testid="logo-element"
     >
-      <CatLogo />
+      <CatLogo data-testid="cat-logo" />
     </Styles.LogoElement>
   );
 };
