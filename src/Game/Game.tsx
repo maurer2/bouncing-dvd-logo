@@ -2,7 +2,7 @@ import React, {
   useState, useRef, useEffect, useCallback, VFC, KeyboardEvent, MouseEvent,
 } from 'react';
 import { debounce } from 'lodash-es';
-import generate from 'nanoid-generate';
+import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
 
 import PlayField from '../Playingfield/Playingfield';
@@ -12,7 +12,7 @@ import * as Types from './Game.types';
 
 const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false);
-  const [keyValue, setKeyValue] = useState<string>(() => generate.lowercase(5));
+  const [keyValue, setKeyValue] = useState<string>(nanoid(10));
   const wrapperDomElement = useRef<HTMLElement>(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
@@ -33,7 +33,7 @@ const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
   }));
 
   const togglePlayState = () => setIsPaused((currentIsPaused) => !currentIsPaused);
-  const resetGame = () => setKeyValue(() => generate.lowercase(5));
+  const resetGame = () => setKeyValue(() => nanoid(10));
   const handleResize = useCallback(() => resetGame(), []);
 
   function handleClick(event: MouseEvent<HTMLDivElement>): void {
