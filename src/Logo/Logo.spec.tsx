@@ -87,7 +87,7 @@ describe('Logo', () => {
     expect(getByTestId('logo-element')).toHaveStyle(`color: ${currentColour}`);
   });
 
-  const cycles = Array.from(Array(100).keys());
+  const cycles = Array.from(Array(10).keys());
   it.each(cycles)('should have a new colour after rerender/useEffect - Cycle %i', () => {
     const { rerender, getByTestId } = setup({});
     const startColour = getByTestId('logo-element').style.getPropertyValue('color');

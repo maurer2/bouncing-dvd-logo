@@ -32,6 +32,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.2",
     "@types/resize-observer-browser": "^0.1.7",
+    "@types/styled-components": "^5.1.23",
     "add": "^2.0.6",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.5.1",
