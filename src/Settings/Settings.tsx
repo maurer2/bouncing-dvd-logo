@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import Store from '../Store';
+import Store, { colours } from '../Store';
 
 import * as Types from './Settings.types';
 
@@ -12,15 +12,11 @@ const Settings: FC<PropsWithChildren<Types.SettingsProps>> = ({ children }): JSX
 
   const toggleSound = (): void => setSoundIsDisabled((prevSoundIsDisabled) => !prevSoundIsDisabled);
 
-  const storeValue = useMemo(() => {
-    const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'];
-
-    return {
-      colours,
-      soundIsDisabled,
-      toggleSound,
-    };
-  }, [soundIsDisabled]);
+  const storeValue = useMemo(() => ({
+    colours: [...colours],
+    soundIsDisabled,
+    toggleSound,
+  }), [soundIsDisabled]);
 
   return (
     <Store.Provider value={storeValue}>

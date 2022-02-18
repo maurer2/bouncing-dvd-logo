@@ -10,10 +10,6 @@ import * as Styles from './Logo.styles';
 import * as Types from './Logo.types';
 import { ReactComponent as CatLogo } from './cat.svg';
 
-type Store = {
-  colours: string[]
-}
-
 const Logo: VFC<Readonly<Types.LogoProps>> = ({
   positionX,
   positionY,
@@ -22,7 +18,7 @@ const Logo: VFC<Readonly<Types.LogoProps>> = ({
   changeColours,
   isPaused,
 }): JSX.Element => {
-  const { colours } = useContext<Store>(Store); // todo replace with globally typed store
+  const { colours } = useContext(Store);
   const prevChangeColours = useRef(false);
   const [colour, setColour] = useColour(colours);
 

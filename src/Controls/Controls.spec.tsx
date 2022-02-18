@@ -2,13 +2,13 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 
-import Store from '../Store';
+import Store, { colours } from '../Store';
 
 import Component from './Controls';
 
 describe('Components', () => {
   let storeValues = {
-    colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'],
+    colours: [...colours],
     soundIsDisabled: true,
     toggleSound: jest.fn(),
   };

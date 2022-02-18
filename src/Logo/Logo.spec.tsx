@@ -3,13 +3,17 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import 'jest-styled-components';
 
-import Store from '../Store';
+import Store, { colours } from '../Store';
 
 import Component from './Logo';
 import { LogoProps } from './Logo.types';
 
 describe('Logo', () => {
-  const storeValues = { colours: ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'] };
+  const storeValues = {
+    colours: [...colours],
+    soundIsDisabled: true,
+    toggleSound: jest.fn(),
+  };
 
   const defaultProps: LogoProps = {
     positionX: 100,
