@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Game should match snapshot 1`] = `
+exports[`Game resize should trigger key change e.g. reset 1`] = `
 <div
   class="Gamestyles__GameWrapper-jLsCpQ eeHOOG"
   data-testid="game-wrapper"
@@ -9,6 +9,23 @@ exports[`Game should match snapshot 1`] = `
   <div
     data-ispaused="false"
     data-testid="game-playfield"
+    data-testkey="key-QH7Do1dV_i"
+  >
+    Playingfield
+  </div>
+</div>
+`;
+
+exports[`Game resize should trigger key change e.g. reset 2`] = `
+<div
+  class="Gamestyles__GameWrapper-jLsCpQ eeHOOG"
+  data-testid="game-wrapper"
+  tabindex="0"
+>
+  <div
+    data-ispaused="false"
+    data-testid="game-playfield"
+    data-testkey="key-QH7Do1dV_i"
   >
     Playingfield
   </div>

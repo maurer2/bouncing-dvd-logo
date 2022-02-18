@@ -17,7 +17,7 @@ const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
 
-  const gameResizeObserver = useRef<ResizeObserver>(new window.ResizeObserver((entries) => {
+  const gameResizeObserver = useRef(new ResizeObserver((entries: ResizeObserverEntry[]) => {
     const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
 
     // ignore resize observer on dom load
@@ -63,6 +63,7 @@ const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
     };
   }, [handleResize]);
 
+  // autofocus
   useEffect(() => {
     wrapperDomElement.current.focus();
   }, []);
@@ -73,11 +74,15 @@ const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
         onClick={(event) => handleClick(event)}
         onKeyPress={(event) => handleInput(event)}
         ref={(element) => { wrapperDomElement.current = element; }}
-        tabIndex="0"
-        autoFocus
+        tabIndex={0}
         data-testid="game-wrapper"
       >
-        <PlayField isPaused={isPaused} key={keyValue} data-testid="game-playfield" />
+        <PlayField
+          isPaused={isPaused}
+          key={`key-${keyValue}`}
+          data-testid="game-playfield"
+          data-key={`key-${keyValue}`}
+        />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );
