@@ -4,7 +4,15 @@ const config: Config.InitialOptions = {
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{ts,tsx,js,jsx}',
+    '**/*.{ts,tsx}',
+    '!**/*.styles.ts',
+    '!**/*.types.ts',
+  ],
+  coveragePathIgnorePatterns: [
+    'react-app-env.d.ts',
+    'setupTests.ts',
+    'types.d.ts',
+    'jest.config.ts',
   ],
   moduleNameMapper: {
     '^lodash-es/(.*)$': '<rootDir>/node_modules/lodash/$1',
