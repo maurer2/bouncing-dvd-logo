@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+import { ReactComponent as SoundIcon } from '../assets/sound.svg';
+
+import { ControlStyleProps } from './Controls.types';
+
 export const Controls = styled.div`
   display: flex;
   position: absolute;
@@ -18,10 +22,14 @@ export const Control = styled.button.attrs(() => ({ type: 'button' }))`
   height: 5vw;
   min-width: 50px;
   min-height: 50px;
+`;
 
-  svg {
-    display: block;
-    fill: currentColor;
-    transform: rotate(45deg);
+export const Icon = styled(SoundIcon)<ControlStyleProps>`
+  display: block;
+  fill: currentColor;
+  transform: rotate(45deg);
+
+  .sound-waves {
+    ${(props) => props.status === 'inactive' && 'display: none;'}
   }
 `;

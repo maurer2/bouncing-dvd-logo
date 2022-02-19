@@ -44,15 +44,16 @@ describe('Components', () => {
 
     expect(screen.getByTestId('controls-control')).toBeTruthy();
     expect(screen.getByRole('button')).toBeTruthy();
+    expect(screen.getByTestId('controls-icon')).toBeTruthy();
   });
 
-  it('should have sound off icon, when sound is disabled', () => {
+  it('should have sound inactive icon, when sound is off', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('controls-icon-off')).toBeTruthy();
+    expect(screen.getByTestId('controls-icon')).toHaveAttribute('status', 'inactive');
   });
 
-  it('should have sound on icon, when sound is enabled', () => {
+  it('should have sound active icon, when sound is on', () => {
     storeValues = {
       ...storeValues,
       soundIsDisabled: false,
@@ -60,7 +61,7 @@ describe('Components', () => {
 
     const screen = setup({ key: 'on' });
 
-    expect(screen.getByTestId('controls-icon-on')).toBeTruthy();
+    expect(screen.getByTestId('controls-icon')).toHaveAttribute('status', 'active');
   });
 
   it.todo('should pause on mouse click');

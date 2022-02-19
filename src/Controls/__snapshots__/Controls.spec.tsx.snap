@@ -6,12 +6,14 @@ exports[`Components should match snapshot 1`] = `
   data-testid="controls"
 >
   <button
-    class="Controlsstyles__Control-fyrJBQ coIkqO"
+    class="Controlsstyles__Control-fyrJBQ faJZKw"
     data-testid="controls-control"
     type="button"
   >
     <svg
-      data-testid="controls-icon-off"
+      class="Controlsstyles__Icon-TPaBE tgLXO"
+      data-testid="controls-icon"
+      status="inactive"
     >
       SVG markup
     </svg>
