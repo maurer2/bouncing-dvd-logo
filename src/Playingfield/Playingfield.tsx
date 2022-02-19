@@ -138,7 +138,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
             isPaused={isPaused}
           />
           <Controls />
-          <Sound playSound={isColliding.current} />
+          <Sound triggerSound={isColliding.current} />
         </>
       )}
     </Styles.PlayingFieldWrapper>

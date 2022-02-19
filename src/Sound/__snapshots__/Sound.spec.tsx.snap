@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components should match snapshot when triggerSound is false 1`] = `null`;
+
+exports[`Components should match snapshot when triggerSound is true 1`] = `
+<audio
+  autoplay=""
+  data-testid="audio-tag"
+>
+  <source
+    data-testid="audio-file"
+    src=""
+    type="audio/wav"
+  />
+</audio>
+`;

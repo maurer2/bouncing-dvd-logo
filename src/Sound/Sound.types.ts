@@ -1,3 +1,3 @@
 export type SoundProps = {
-  playSound: boolean;
+  triggerSound: boolean;
 }
