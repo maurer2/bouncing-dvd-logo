@@ -1,9 +1,9 @@
 import React, { useContext, VFC, MouseEvent } from 'react';
 
 import Store from '../Store';
+import { ReactComponent as SoundOnIcon } from '../assets/sound-on.svg';
+import { ReactComponent as SoundOffIcon } from '../assets/sound-off.svg';
 
-import { ReactComponent as SoundOnIcon } from './sound-on.svg';
-import { ReactComponent as SoundOffIcon } from './sound-off.svg';
 import * as Styles from './Controls.styles';
 import * as Types from './Controls.types';
 

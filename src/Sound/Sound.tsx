@@ -4,9 +4,9 @@ import React, {
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
+import soundFile from '../assets/soundFile.wav';
 
 import * as Types from './Sound.types';
-import soundFile from './soundFile.wav';
 
 const Sound: VFC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element => {
   const { soundIsDisabled } = useContext(Store);
