@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { random } from 'lodash-es';
 
 type UseColor = [colour: string, changeColour: () => void];
 
@@ -8,7 +7,8 @@ export default function useColour(colours: string[]): Readonly<UseColor> {
 
   const changeColour = useCallback(() => {
     const newColours = colours.filter((colourEntry) => colourEntry !== colour);
-    const randomColourIndex = random(newColours.length - 1);
+
+    const randomColourIndex = Math.floor(Math.random() * newColours.length);
     const newColour = newColours[randomColourIndex];
 
     setColour(newColour);

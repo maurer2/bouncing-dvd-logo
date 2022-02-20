@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
 
-import { colours } from '../Store';
+import { colours } from '../../Store';
 
 import customHook from './useColour';
 
