@@ -3,24 +3,28 @@ import {
 } from 'react';
 import { random } from 'lodash-es';
 
+type useChangeDelta = [changeDelta: MutableRefObject<number>];
+
 export default function useChangeDelta(
   startValue: number,
   hasCollided: boolean,
-): Readonly<[MutableRefObject<number>]> {
+): Readonly<useChangeDelta> {
   const hasCollidedPrev = useRef(false);
   const changeDelta = useRef(startValue);
 
   const maxRandomness = 10; // max value of deviation from correct reflection on collision
+  // prettier-ignore
   const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
+  // prettier-ignore
   const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
 
   // init
   useEffect(() => {
-    changeDelta.current = (random(1) === 0) ? changeDelta.current * -1 : changeDelta.current * +1;
+    changeDelta.current = random(1) === 0 ? changeDelta.current * -1 : changeDelta.current * +1;
   }, []);
 
   useEffect(() => {
-    if (hasCollided && !(hasCollidedPrev.current)) {
+    if (hasCollided && !hasCollidedPrev.current) {
       const newChangeDelta = changeDelta.current * random(lowerRandomBound, upperRandomBound, true);
 
       changeDelta.current = newChangeDelta * -1;
