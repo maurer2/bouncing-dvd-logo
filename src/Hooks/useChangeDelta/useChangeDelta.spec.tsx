@@ -2,15 +2,9 @@ import { renderHook, act } from '@testing-library/react-hooks';
 
 import customHook from './useChangeDelta';
 
-type Params = [
-  startValue: number,
-  hasCollided: boolean,
-]
+type Params = [startValue: number, hasCollided: boolean];
 
-const defaultProps: Params = [
-  50,
-  false,
-];
+const defaultProps: Params = [50, false];
 
 describe('useChangeDelta', () => {
   const setup = (props: Params = defaultProps) => renderHook(() => customHook(...props));
@@ -28,10 +22,7 @@ describe('useChangeDelta', () => {
   });
 
   it('should not return the same absolute value as inputted if collision has occurred', () => {
-    const collisionProps: Params = [
-      50,
-      true,
-    ];
+    const collisionProps: Params = [50, true];
 
     const { result } = setup(collisionProps);
 
@@ -39,10 +30,7 @@ describe('useChangeDelta', () => {
   });
 
   it('returned value should not deviate more than maxRandomness/2 percentage', () => {
-    const collisionProps: Params = [
-      50,
-      true,
-    ];
+    const collisionProps: Params = [50, true];
 
     const { result } = setup(collisionProps);
 

@@ -21,7 +21,7 @@
     "lint:scripts:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "start": "react-scripts start",
-    "test": "jest --watch"
+    "test": "jest --watch 'src/Hooks/useChangeDelta/useChangeDelta.spec.tsx'"
   },
   "dependencies": {
     "@babel/core": "^7.17.2",
