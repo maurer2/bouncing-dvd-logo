@@ -13,7 +13,7 @@ import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import Controls from '../Controls/Controls';
 import useChangeDelta from '../Hooks/useChangeDelta/useChangeDelta';
-import useCollisionDetection from '../Hooks/useCollisionDetection';
+import useCollisionDetection from '../Hooks/useCollisionDetection/useCollisionDetection';
 
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
