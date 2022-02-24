@@ -2,6 +2,11 @@ import {
   useRef, useEffect, MutableRefObject, useDebugValue,
 } from 'react';
 
+type useCollisionDetection = [
+  hasCollidedWithStart: MutableRefObject<boolean>,
+  hasCollidedWithEnd: () => MutableRefObject<boolean>
+];
+
 export default function useCollisionDetection(
   position: number,
   objectSize: number,
@@ -11,16 +16,18 @@ export default function useCollisionDetection(
   const hasCollidedWithEnd = useRef(false);
 
   useEffect(() => {
-    hasCollidedWithStart.current = (position <= 0);
+    hasCollidedWithStart.current = position <= 0;
   }, [position]);
 
   useEffect(() => {
-    const maxPositionNotColliding = (worldSize - objectSize);
+    const maxPositionNotColliding = worldSize - objectSize;
 
-    hasCollidedWithEnd.current = (position > maxPositionNotColliding);
+    hasCollidedWithEnd.current = position > maxPositionNotColliding;
   }, [position, objectSize, worldSize]);
 
-  useDebugValue(`useCollisionDetection: [${hasCollidedWithStart.current}, ${hasCollidedWithEnd.current}]`);
+  useDebugValue(
+    `useCollisionDetection: [${hasCollidedWithStart.current}, ${hasCollidedWithEnd.current}]`,
+  );
 
   return [hasCollidedWithStart, hasCollidedWithEnd] as const;
 }
