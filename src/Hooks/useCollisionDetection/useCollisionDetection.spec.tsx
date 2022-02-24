@@ -64,12 +64,20 @@ describe('useCollisionDetection', () => {
     expect(result.current[1].current).toBe(true);
   });
 
-  it.skip('should return positive collisionWithEnd when position is larger than world size - object size', () => {
+  it('should return positive collisionWithEnd when position is larger than world size - object size', () => {
+    const props: Params = [801, 200, 1000];
+
+    const { result } = setup(props);
+
+    expect(result.current[1].current).toBe(true);
+  });
+
+  it('should return negative collisionWithEnd when position is equal to world size - object size', () => {
     const props: Params = [800, 200, 1000];
 
     const { result } = setup(props);
 
-    expect(result.current[0].current).toBe(true);
+    expect(result.current[1].current).toBe(false);
   });
 
   it('should return false collisionWithEnd when position is as smaller than world size - object size', () => {
@@ -77,6 +85,6 @@ describe('useCollisionDetection', () => {
 
     const { result } = setup(props);
 
-    expect(result.current[0].current).toBe(false);
+    expect(result.current[1].current).toBe(false);
   });
 });
