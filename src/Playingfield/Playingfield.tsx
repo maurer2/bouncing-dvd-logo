@@ -3,7 +3,7 @@ import React, {
   useState,
   useRef,
   useCallback,
-  FC,
+  VFC,
   useLayoutEffect,
 } from 'react';
 import PropTypes from 'prop-types';
@@ -18,7 +18,7 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
+const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -108,7 +108,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
     loopTimestamp.current = window.requestAnimationFrame(loop);
   }, [loop]);
 
-  function stopLoop() {
+  function stopLoop(): void {
     window.cancelAnimationFrame(loopTimestamp.current);
   }
 
@@ -120,13 +120,15 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
   }, [initPosition, startLoop]);
 
   useEffect(() => {
-    const currentPlayState = isPaused;
-
-    isPausedPrevious.current = currentPlayState;
+    isPausedPrevious.current = isPaused;
   }, [isPaused]);
 
   return (
-    <Styles.PlayingFieldWrapper ref={playfieldDomRefCB}>
+    <Styles.PlayingFieldWrapper
+      ref={playfieldDomRefCB}
+      data-testid="playfingfield"
+      data-status={isPaused ? 'inactive' : 'active'}
+    >
       {isInit.current && (
         <>
           <Logo
