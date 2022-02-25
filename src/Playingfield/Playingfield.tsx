@@ -5,6 +5,7 @@ import React, {
   useCallback,
   VFC,
   useLayoutEffect,
+  useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash-es';
@@ -31,9 +32,7 @@ const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX
   const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
 
-  // svg
-  const widthObject = 150;
-  const heightObject = 138; // AR 0,92
+  const logoObject: Types.LogoObject = useMemo(() => [150, 138], []);
 
   const playfieldDomRefCB = useCallback((element: HTMLElement) => {
     if (element === null) {
@@ -45,12 +44,12 @@ const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positionX,
-    widthObject,
+    logoObject[0],
     playfieldBB.current.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positionY,
-    heightObject,
+    logoObject[1],
     playfieldBB.current.height,
   );
   const [changeX] = useChangeDelta(3, isCollidingX.current);
@@ -65,11 +64,11 @@ const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX
 
     const { width, height } = playfieldBB.current;
 
-    setPositionX(() => random(width - widthObject));
-    setPositionY(() => random(height - heightObject));
+    setPositionX(() => random(width - logoObject[0]));
+    setPositionY(() => random(height - logoObject[1]));
 
     isInit.current = true;
-  }, []);
+  }, [logoObject]);
 
   const loop = useCallback(() => {
     if (!isPausedPrevious.current) {
@@ -134,8 +133,8 @@ const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX
           <Logo
             positionX={positionX}
             positionY={positionY}
-            width={widthObject}
-            height={heightObject}
+            width={logoObject[0]}
+            height={logoObject[1]}
             changeColours={isColliding.current}
             isPaused={isPaused}
           />
