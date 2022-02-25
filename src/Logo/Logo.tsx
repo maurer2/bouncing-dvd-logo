@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
-import useColour from '../Hooks/useColour/useColour';
+import useColour from '../Hooks/useColour';
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
 
 import * as Styles from './Logo.styles';
