@@ -7,8 +7,12 @@ export type LogoProps = {
   isPaused: boolean;
 }
 
-export type LogoStyleProps = Pick<LogoProps, 'positionX' | 'positionY' | 'isPaused'> & {
-  colourValue: string,
-  widthValue: number,
-  heightValue: number;
+// todo replace with mapped types and key remapping to prefix values with $ for transient props
+export type LogoStyleProps = {
+  $positionX: LogoProps['positionX'];
+  $positionY: LogoProps['positionY'];
+  $isPaused: LogoProps['isPaused'];
+  $colourValue: string,
+  $widthValue: number,
+  $heightValue: number;
 }

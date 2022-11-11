@@ -32,12 +32,12 @@ const Logo: VFC<Readonly<Types.LogoProps>> = ({
 
   return (
     <Styles.LogoElement
-      positionX={positionX}
-      positionY={positionY}
-      widthValue={width}
-      heightValue={height}
-      colourValue={colour}
-      isPaused={isPaused}
+      $positionX={positionX}
+      $positionY={positionY}
+      $widthValue={width}
+      $heightValue={height}
+      $colourValue={colour}
+      $isPaused={isPaused}
       data-testid="logo-element"
     >
       <CatLogo data-testid="cat-logo" />
