@@ -34,9 +34,9 @@ const Logo: VFC<Readonly<Types.LogoProps>> = ({
     <Styles.LogoElement
       $positionX={positionX}
       $positionY={positionY}
-      $widthValue={width}
-      $heightValue={height}
-      $colourValue={colour}
+      $width={width}
+      $height={height}
+      $colour={colour}
       $isPaused={isPaused}
       data-testid="logo-element"
     >

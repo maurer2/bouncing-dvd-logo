@@ -1,3 +1,5 @@
+import type { StoreType } from '../Store';
+
 export type LogoProps = {
   positionX: number;
   positionY: number;
@@ -5,14 +7,12 @@ export type LogoProps = {
   height: number;
   changeColours: boolean;
   isPaused: boolean;
-}
+};
 
-// todo replace with mapped types and key remapping to prefix values with $ for transient props
 export type LogoStyleProps = {
-  $positionX: LogoProps['positionX'];
-  $positionY: LogoProps['positionY'];
-  $isPaused: LogoProps['isPaused'];
-  $colourValue: string,
-  $widthValue: number,
-  $heightValue: number;
-}
+  // from parent props
+  [K in keyof Pick<LogoProps, 'positionX' | 'positionY' | 'width' | 'height' | 'isPaused'> as `$${K}`]: LogoProps[K]
+} & {
+  // from context
+  $colour: StoreType['colours'][number],
+};

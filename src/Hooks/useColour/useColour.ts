@@ -1,9 +1,11 @@
 import { useState, useCallback } from 'react';
 
-type UseColor = [colour: string, changeColour: () => void];
+import type { StoreType } from '../../Store';
 
-export default function useColour(colours: string[]): Readonly<UseColor> {
-  const [colour, setColour] = useState(colours[0]);
+import type { UseColor } from './useColor.types';
+
+export default function useColour(colours: StoreType['colours']): Readonly<UseColor> {
+  const [colour, setColour] = useState<StoreType['colours'][number]>(colours[0]);
 
   const changeColour = useCallback(() => {
     const newColours = colours.filter((colourEntry) => colourEntry !== colour);
