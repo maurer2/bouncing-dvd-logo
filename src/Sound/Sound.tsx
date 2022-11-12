@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useRef, useContext, VFC,
+  useState, useEffect, useRef, useContext, FC,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,7 +8,7 @@ import soundFile from '../assets/soundFile.wav';
 
 import * as Types from './Sound.types';
 
-const Sound: VFC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element => {
+const Sound: FC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element => {
   const { soundIsDisabled } = useContext(Store);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);

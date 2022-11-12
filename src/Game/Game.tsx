@@ -1,5 +1,5 @@
 import React, {
-  useState, useRef, useEffect, useCallback, VFC, KeyboardEvent, MouseEvent,
+  useState, useRef, useEffect, useCallback, FC, KeyboardEvent, MouseEvent,
 } from 'react';
 import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
@@ -10,7 +10,7 @@ import PlayField from '../Playingfield/Playingfield';
 import * as Styles from './Game.styles';
 import * as Types from './Game.types';
 
-const Game: VFC<Readonly<Types.GameProps>> = (): JSX.Element => {
+const Game: FC<Readonly<Types.GameProps>> = (): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false);
   const [keyValue, setKeyValue] = useState<string>(nanoid(10));
   const wrapperDomElement = useRef<HTMLElement>(null);

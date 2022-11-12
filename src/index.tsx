@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Normalize } from 'styled-normalize';
 import { createGlobalStyle } from 'styled-components';
 
@@ -46,4 +46,11 @@ const App = () => (
   </Settings>
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+
+if (!container) {
+  throw new Error('root element not found');
+}
+
+const root = createRoot(container);
+root.render(<App />);

@@ -26,6 +26,6 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "noEmit": true,
-    "strictNullChecks": false
+    "strictNullChecks": false,
   }
 }

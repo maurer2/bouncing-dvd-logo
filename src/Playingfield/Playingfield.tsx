@@ -3,7 +3,7 @@ import React, {
   useState,
   useRef,
   useCallback,
-  VFC,
+  FC,
   useLayoutEffect,
   useMemo,
 } from 'react';
@@ -19,7 +19,7 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
 
-const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -72,28 +72,12 @@ const PlayingField: VFC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX
 
   const loop = useCallback(() => {
     if (!isPausedPrevious.current) {
-      let hasCollidedX = false;
-      let hasCollidedY = false;
+      setPositionX((prevPositionX: number) => Math.round(prevPositionX + changeX.current));
+      setPositionY((prevPositionY: number) => Math.round(prevPositionY + changeY.current));
 
-      setPositionX((prevPositionX) => {
-        if (isCollidingXStart.current || isCollidingXEnd.current) {
-          hasCollidedX = true;
-        }
-
-        return Math.round(prevPositionX + changeX.current);
-      });
-
-      setPositionY((prevPositionY) => {
-        if (isCollidingYStart.current || isCollidingYEnd.current) {
-          hasCollidedY = true;
-        }
-
-        return Math.round(prevPositionY + changeY.current);
-      });
-
-      isColliding.current = hasCollidedX || hasCollidedY;
-      isCollidingX.current = hasCollidedX;
-      isCollidingY.current = hasCollidedY;
+      isCollidingX.current = isCollidingXStart.current || isCollidingXEnd.current;
+      isCollidingY.current = isCollidingYStart.current || isCollidingYEnd.current;
+      isColliding.current = isCollidingX.current || isCollidingY.current;
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);

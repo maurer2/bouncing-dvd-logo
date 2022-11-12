@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, useContext, VFC,
+  useEffect, useRef, useContext, FC,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,7 @@ import { ReactComponent as CatLogo } from '../assets/cat.svg';
 import * as Styles from './Logo.styles';
 import * as Types from './Logo.types';
 
-const Logo: VFC<Readonly<Types.LogoProps>> = ({
+const Logo: FC<Readonly<Types.LogoProps>> = ({
   positionX,
   positionY,
   width,
