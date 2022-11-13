@@ -1,20 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Normalize } from 'styled-normalize';
 import { createGlobalStyle } from 'styled-components';
+import 'modern-normalize/modern-normalize.css';
 
 import Settings from './Settings/Settings';
 import Game from './Game/Game';
 
 const GlobalStyles = createGlobalStyle`
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
-
   html {
-    box-sizing: border-box;
     font-size: 16px;
     font-family:
       -apple-system,
@@ -40,7 +33,6 @@ const GlobalStyles = createGlobalStyle`
 
 const App = () => (
   <Settings>
-    <Normalize />
     <GlobalStyles />
     <Game />
   </Settings>
