@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback, useLayoutEffect, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
 import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash-es';
@@ -12,6 +12,8 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 
+const logoObject: Types.LogoObject = [150, 138];
+
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): ReactElement => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
@@ -24,8 +26,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): Reac
   const isCollidingY = useRef(false);
   const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
-
-  const logoObject: Types.LogoObject = useMemo(() => [150, 138], []);
 
   const playingfieldDomRefCB = useCallback((element: HTMLElement) => {
     if (!element) {
@@ -60,7 +60,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): Reac
     setPositionY(() => random(height - logoObject[1]));
 
     isInit.current = true;
-  }, [logoObject]);
+  }, []);
 
   const loop = useCallback(() => {
     if (!isPausedPrevious.current) {

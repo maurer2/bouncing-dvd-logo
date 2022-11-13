@@ -1,5 +1,5 @@
-import type { FC, KeyboardEvent, MouseEvent, ReactElement } from 'react';
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import type { FC, KeyboardEvent, MouseEvent, ReactElement, ReducerWithoutAction , PropsWithChildren } from 'react';
+import React, { useRef, useEffect, useReducer } from 'react';
 import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
@@ -9,9 +9,15 @@ import PlayingField from '../Playingfield/Playingfield';
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
 
-const Game: FC<Readonly<Types.GameProps>> = (): ReactElement => {
-  const [isPaused, setIsPaused] = useState(false);
-  const [keyValue, setKeyValue] = useState<string>(nanoid(10));
+const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
+  const [isPaused, setIsPaused] = useReducer<ReducerWithoutAction<boolean>>(
+    (currentIsPaused) => !currentIsPaused,
+    false,
+  );
+  const [keyValue, setKeyValue] = useReducer<ReducerWithoutAction<string>>(
+    () => nanoid(10),
+    nanoid(10),
+  )
   const wrapperDomElement = useRef<HTMLElement>(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
@@ -33,13 +39,9 @@ const Game: FC<Readonly<Types.GameProps>> = (): ReactElement => {
     }),
   );
 
-  const togglePlayState = () => setIsPaused((currentIsPaused) => !currentIsPaused);
-  const resetGame = () => setKeyValue(() => nanoid(10));
-  const handleResize = useCallback(() => resetGame(), []);
-
   function handleClick(event: MouseEvent<HTMLDivElement>): void {
     event.preventDefault();
-    togglePlayState();
+    setIsPaused();
   }
 
   function handleInput(event: KeyboardEvent<HTMLDivElement>): void {
@@ -47,22 +49,22 @@ const Game: FC<Readonly<Types.GameProps>> = (): ReactElement => {
     const observedKeys = [' ', 'k']; // " " === spacebar
 
     if (observedKeys.includes(pressedKey.toLowerCase())) {
-      togglePlayState();
+      setIsPaused();
     }
   }
 
   // setup resize/intersection observer
   useEffect(() => {
-    debouncedResizeHandler.current = debounce(handleResize, 300);
+    debouncedResizeHandler.current = debounce(setKeyValue, 300);
 
-    const currentResizeObserver = gameResizeObserver.current;
+    const currentResizeObserver: ResizeObserver = gameResizeObserver.current;
 
     currentResizeObserver.observe(wrapperDomElement.current);
 
     return () => {
       currentResizeObserver.unobserve(wrapperDomElement.current);
     };
-  }, [handleResize]);
+  }, []);
 
   // autofocus
   useEffect(() => {

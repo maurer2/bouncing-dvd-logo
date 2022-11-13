@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 
 export type GameProps = {
-  children?: ReactNode;
+  children?: PropsWithChildren['children'];
 };
