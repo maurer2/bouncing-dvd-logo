@@ -1,12 +1,10 @@
 import React, { useMemo, useReducer } from 'react';
-import type {
-  FC, PropsWithChildren, ReactElement, ReducerWithoutAction,
-} from 'react';
+import type { FC, PropsWithChildren, ReactElement, ReducerWithoutAction } from 'react';
 import PropTypes from 'prop-types';
 
 import Store, { colours } from '../Store';
 
-import * as Types from './Settings.types';
+import type * as Types from './Settings.types';
 
 const Settings: FC<PropsWithChildren<Types.SettingsProps>> = ({ children }): ReactElement => {
   const [soundIsDisabled, toggleSound] = useReducer<ReducerWithoutAction<boolean>>(

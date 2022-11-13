@@ -1,6 +1,4 @@
-import React, {
-  useEffect, useState, useRef, useCallback, useLayoutEffect, useMemo,
-} from 'react';
+import React, { useEffect, useState, useRef, useCallback, useLayoutEffect, useMemo } from 'react';
 import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash-es';
@@ -12,7 +10,7 @@ import useChangeDelta from '../Hooks/useChangeDelta';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 
 import * as Styles from './Playingfield.styles';
-import * as Types from './Playingfield.types';
+import type * as Types from './Playingfield.types';
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): ReactElement => {
   const [positionX, setPositionX] = useState(0);

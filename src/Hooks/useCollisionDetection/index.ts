@@ -1,3 +1,1 @@
-export {
-  default,
-} from './useCollisionDetection';
+export { default } from './useCollisionDetection';

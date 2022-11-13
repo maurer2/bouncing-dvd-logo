@@ -4,7 +4,7 @@ import type { FC, MouseEvent, ReactElement } from 'react';
 import Store from '../Store';
 
 import * as Styles from './Controls.styles';
-import * as Types from './Controls.types';
+import type * as Types from './Controls.types';
 
 const Controls: FC<Readonly<Types.ControlProps>> = (): ReactElement => {
   const { soundIsDisabled, toggleSound } = useContext(Store);

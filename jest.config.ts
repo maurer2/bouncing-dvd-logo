@@ -3,11 +3,7 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
   verbose: true,
   collectCoverage: true,
-  collectCoverageFrom: [
-    '**/*.{ts,tsx}',
-    '!**/*.styles.ts',
-    '!**/*.types.ts',
-  ],
+  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/*.styles.ts', '!**/*.types.ts'],
   coveragePathIgnorePatterns: [
     'react-app-env.d.ts',
     'setupTests.ts',

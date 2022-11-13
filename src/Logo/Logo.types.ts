@@ -14,5 +14,5 @@ export type LogoStyleProps = {
   [K in keyof Pick<LogoProps, 'positionX' | 'positionY' | 'width' | 'height' | 'isPaused'> as `$${K}`]: LogoProps[K]
 } & {
   // from context
-  $colour: StoreType['colours'][number],
+  $colour: StoreType['colours'][number];
 };

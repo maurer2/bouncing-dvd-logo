@@ -41,7 +41,13 @@ global.ResizeObserver = require('resize-observer-polyfill');
 
 describe('Game', () => {
   const defaultProps = {};
-  const setup = (props) => render(<Component {...defaultProps} {...props} />);
+  const setup = (props) =>
+    render(
+      <Component
+        {...defaultProps}
+        {...props}
+      />,
+    );
 
   const testWidth = 1280;
 
@@ -60,13 +66,13 @@ describe('Game', () => {
   it.skip('resize should trigger key change e.g. reset', async () => {
     const screen = setup({});
 
-    const keyBeforeResize = screen.getByTestId('game-playfield').getAttribute('data-testkey');
+    // const keyBeforeResize = screen.getByTestId('game-playfield').getAttribute('data-testkey');
     // expect(screen.container.firstChild).toMatchSnapshot();
 
     window.innerWidth = testWidth;
     expect(windowResizeHandler).toHaveBeenCalled();
 
-    const keyAfterResize = screen.getByTestId('game-playfield').getAttribute('data-testkey');
+    // const keyAfterResize = screen.getByTestId('game-playfield').getAttribute('data-testkey');
     expect(screen.container.firstChild).toMatchSnapshot();
     // expect(keyBeforeResize).not.toEqual(keyAfterResize);
   });

@@ -1,11 +1,5 @@
-export {
-  default,
-} from './Store';
+export { default } from './Store';
 
-export {
-  colours,
-} from './Store';
+export { colours } from './Store';
 
-export type {
-  Colours, StoreType,
-} from './types';
+export type { Colours, StoreType } from './types';

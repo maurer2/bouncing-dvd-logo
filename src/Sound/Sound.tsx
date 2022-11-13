@@ -1,13 +1,11 @@
-import React, {
-  useState, useEffect, useRef, useContext,
-} from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
 import soundFile from '../assets/soundFile.wav';
 
-import * as Types from './Sound.types';
+import type * as Types from './Sound.types';
 
 const Sound: FC<Readonly<Types.SoundProps>> = ({ shouldTriggerSound }): ReactElement => {
   const { soundIsDisabled } = useContext(Store);

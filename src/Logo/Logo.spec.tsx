@@ -6,7 +6,7 @@ import 'jest-styled-components';
 import Store, { colours } from '../Store';
 
 import Component from './Logo';
-import { LogoProps } from './Logo.types';
+import type { LogoProps } from './Logo.types';
 
 describe('Logo', () => {
   const storeValues = {
@@ -33,11 +33,15 @@ describe('Logo', () => {
     <Store.Provider value={storeValues}>{children}</Store.Provider>
   );
 
-  const setup = (props) => render(
-    <StoreProvider key={props?.key}>
-      <Component {...defaultProps} {...props} />
-    </StoreProvider>,
-  );
+  const setup = (props) =>
+    render(
+      <StoreProvider key={props?.key}>
+        <Component
+          {...defaultProps}
+          {...props}
+        />
+      </StoreProvider>,
+    );
 
   it('should render ', () => {
     const screen = setup({});
@@ -73,7 +77,10 @@ describe('Logo', () => {
 
     rerender(
       <StoreProvider>
-        <Component {...defaultProps} {...triggerColourChangeProp} />
+        <Component
+          {...defaultProps}
+          {...triggerColourChangeProp}
+        />
       </StoreProvider>,
     );
 
@@ -98,7 +105,10 @@ describe('Logo', () => {
 
     rerender(
       <StoreProvider>
-        <Component {...defaultProps} {...triggerColourChangeProp} />
+        <Component
+          {...defaultProps}
+          {...triggerColourChangeProp}
+        />
       </StoreProvider>,
     );
 

@@ -14,16 +14,15 @@ describe('Components', () => {
   };
 
   const StoreProvider = ({ children }) => (
-    <Store.Provider value={storeValues}>
-      {children}
-    </Store.Provider>
+    <Store.Provider value={storeValues}>{children}</Store.Provider>
   );
 
-  const setup = (props) => render(
-    <StoreProvider key={props?.key}>
-      <Component {...props} />
-    </StoreProvider>,
-  );
+  const setup = (props) =>
+    render(
+      <StoreProvider key={props?.key}>
+        <Component {...props} />
+      </StoreProvider>,
+    );
 
   it('should render ', () => {
     const screen = setup({});

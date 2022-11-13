@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 export type SettingsProps = {
   children?: PropsWithChildren['children']; // workaround to avoid empty object

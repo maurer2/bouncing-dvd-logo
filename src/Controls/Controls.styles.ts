@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { ReactComponent as SoundIcon } from '../assets/sound.svg';
 
-import { ControlStyleProps } from './Controls.types';
+import type { ControlStyleProps } from './Controls.types';
 
 export const Controls = styled.div`
   display: flex;

@@ -6,7 +6,7 @@ The usual bouncing dvd logo just with a cat.
 
 https://maurer2.github.io/bouncing-dvd-logo/
 
-![Screenshot animated](screenshot.gif "Screenshot")
+![Screenshot animated](screenshot.gif 'Screenshot')
 
 ### Start
 

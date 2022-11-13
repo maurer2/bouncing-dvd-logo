@@ -14,17 +14,19 @@ describe('Components', () => {
   };
 
   const StoreProvider = ({ children }) => (
-    <Store.Provider value={storeValues}>
-      {children}
-    </Store.Provider>
+    <Store.Provider value={storeValues}>{children}</Store.Provider>
   );
 
   const defaultProps = { triggerSound: false };
-  const setup = (props) => render(
-    <StoreProvider key={props?.key}>
-      <Component {...defaultProps} {...props} />
-    </StoreProvider>,
-  );
+  const setup = (props) =>
+    render(
+      <StoreProvider key={props?.key}>
+        <Component
+          {...defaultProps}
+          {...props}
+        />
+      </StoreProvider>,
+    );
 
   it('should not render when triggerSound is false', () => {
     const screen = setup({});
@@ -41,7 +43,7 @@ describe('Components', () => {
   });
 
   it('should match snapshot when triggerSound is false', () => {
-    const screen = setup({ });
+    const screen = setup({});
 
     expect(screen.container.firstChild).toMatchSnapshot();
   });

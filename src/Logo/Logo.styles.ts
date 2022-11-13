@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { LogoStyleProps } from './Logo.types';
+import type { LogoStyleProps } from './Logo.types';
 
 export const LogoElement = styled.figure.attrs<LogoStyleProps>((props) => ({
   style: {

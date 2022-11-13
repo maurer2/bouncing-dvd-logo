@@ -1,6 +1,6 @@
 module.exports = {
   parserOptions: {
-    ecmaVersion: 2021,
+    ecmaVersion: 2022,
     sourceType: 'module',
     ecmaFeatures: { jsx: true },
   },
@@ -8,6 +8,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'airbnb',
+    'airbnb-typescript',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/errors',
@@ -15,13 +16,9 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:lodash/recommended',
     'plugin:react/recommended',
+    'prettier',
   ],
-  plugins: [
-    'react',
-    'react-hooks',
-    '@typescript-eslint',
-    'lodash',
-  ],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'lodash'],
   env: {
     jest: true,
     browser: true,
@@ -29,29 +26,6 @@ module.exports = {
   },
   rules: {
     // general
-    quotes: [2, 'single', { avoidEscape: true }],
-    semi: ['error', 'always'],
-    'comma-dangle': [2, 'always-multiline'],
-    'object-curly-newline': ['error', {
-      // destructuring
-      ObjectPattern: {
-        minProperties: 4,
-        consistent: false,
-        multiline: true,
-      },
-      ObjectExpression: {
-        minProperties: 2,
-        consistent: false,
-        multiline: true,
-      },
-      ImportDeclaration: {
-        minProperties: 4,
-        consistent: false,
-        multiline: true,
-      },
-      ExportDeclaration: 'always',
-    }],
-    'object-property-newline': ['error', { allowAllPropertiesOnSameLine: false }],
     'no-restricted-imports': [
       'error',
       {
@@ -79,18 +53,14 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: [
-          ['builtin', 'external'],
-          ['internal', 'parent'],
-          ['sibling'],
-          ['index'],
-        ],
+        groups: [['builtin', 'external'], ['internal', 'parent'], ['sibling'], ['index']],
         'newlines-between': 'always',
       },
     ],
     'no-useless-constructor': 'off',
     // typescript
     '@typescript-eslint/no-useless-constructor': 'error',
+    '@typescript-eslint/consistent-type-imports': 'warn',
     // react
     'react/jsx-uses-vars': 'error',
     'react/jsx-uses-react': 'error',
@@ -112,6 +82,9 @@ module.exports = {
     'jsx-a11y/media-has-caption': 'off',
   },
   settings: { react: { version: 'detect' } },
+  parserOptions: {
+    project: './tsconfig.json',
+  },
   overrides: [
     {
       files: ['**/*.spec.tsx'],

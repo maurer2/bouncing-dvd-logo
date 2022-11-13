@@ -1,14 +1,13 @@
-import React, {
-  useState, useRef, useEffect, useCallback, FC, KeyboardEvent, MouseEvent, ReactElement,
-} from 'react';
+import type { FC, KeyboardEvent, MouseEvent, ReactElement } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
 
-import PlayField from '../Playingfield/Playingfield';
+import PlayingField from '../Playingfield/Playingfield';
 
 import * as Styles from './Game.styles';
-import * as Types from './Game.types';
+import type * as Types from './Game.types';
 
 const Game: FC<Readonly<Types.GameProps>> = (): ReactElement => {
   const [isPaused, setIsPaused] = useState(false);
@@ -17,20 +16,22 @@ const Game: FC<Readonly<Types.GameProps>> = (): ReactElement => {
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce>>(null);
 
-  const gameResizeObserver = useRef(new ResizeObserver((entries: ResizeObserverEntry[]) => {
-    const gameHasResized = entries.some((entry) => (entry.target === wrapperDomElement.current));
+  const gameResizeObserver = useRef(
+    new ResizeObserver((entries: ResizeObserverEntry[]) => {
+      const gameHasResized = entries.some((entry) => entry.target === wrapperDomElement.current);
 
-    // ignore resize observer on dom load
-    if (isInitialResize.current) {
-      isInitialResize.current = false;
+      // ignore resize observer on dom load
+      if (isInitialResize.current) {
+        isInitialResize.current = false;
 
-      return;
-    }
+        return;
+      }
 
-    if (gameHasResized) {
-      debouncedResizeHandler.current();
-    }
-  }));
+      if (gameHasResized) {
+        debouncedResizeHandler.current();
+      }
+    }),
+  );
 
   const togglePlayState = () => setIsPaused((currentIsPaused) => !currentIsPaused);
   const resetGame = () => setKeyValue(() => nanoid(10));
@@ -73,11 +74,13 @@ const Game: FC<Readonly<Types.GameProps>> = (): ReactElement => {
       <Styles.GameWrapper
         onClick={(event) => handleClick(event)}
         onKeyPress={(event) => handleInput(event)}
-        ref={(element) => { wrapperDomElement.current = element; }}
+        ref={(element) => {
+          wrapperDomElement.current = element;
+        }}
         tabIndex={0}
         data-testid="game-wrapper"
       >
-        <PlayField
+        <PlayingField
           isPaused={isPaused}
           key={`key-${keyValue}`}
           data-testid="game-playfield"

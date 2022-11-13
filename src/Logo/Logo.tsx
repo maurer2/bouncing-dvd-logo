@@ -1,6 +1,5 @@
-import React, {
-  useEffect, useRef, useContext, FC, ReactElement,
-} from 'react';
+import type { FC, ReactElement } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
@@ -8,7 +7,7 @@ import useColour from '../Hooks/useColour';
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
 
 import * as Styles from './Logo.styles';
-import * as Types from './Logo.types';
+import type * as Types from './Logo.types';
 
 const Logo: FC<Readonly<Types.LogoProps>> = ({
   positionX,

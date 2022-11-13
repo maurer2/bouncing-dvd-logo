@@ -1,4 +1,4 @@
-import { colours } from './Store';
+import type { colours } from './Store';
 
 export type Colours = typeof colours[number];
 

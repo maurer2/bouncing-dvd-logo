@@ -1,3 +1,1 @@
-export {
-  default,
-} from './useChangeDelta';
+export { default } from './useChangeDelta';
