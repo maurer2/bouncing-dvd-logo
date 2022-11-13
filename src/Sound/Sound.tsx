@@ -1,6 +1,7 @@
 import React, {
-  useState, useEffect, useRef, useContext, FC,
+  useState, useEffect, useRef, useContext,
 } from 'react';
+import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 
 import Store from '../Store';
@@ -8,7 +9,7 @@ import soundFile from '../assets/soundFile.wav';
 
 import * as Types from './Sound.types';
 
-const Sound: FC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element => {
+const Sound: FC<Readonly<Types.SoundProps>> = ({ shouldTriggerSound }): ReactElement => {
   const { soundIsDisabled } = useContext(Store);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
@@ -19,7 +20,7 @@ const Sound: FC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element =>
     }
 
     // do not trigger new sound start while previous sound is playing
-    if (triggerSound && triggerSound !== prevPlaySound.current) {
+    if (shouldTriggerSound && shouldTriggerSound !== prevPlaySound.current) {
       setSoundIsPlaying(true);
 
       window.setTimeout(() => {
@@ -27,15 +28,18 @@ const Sound: FC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element =>
       }, 800);
     }
 
-    prevPlaySound.current = triggerSound;
-  }, [triggerSound, soundIsDisabled]);
+    prevPlaySound.current = shouldTriggerSound;
+  }, [shouldTriggerSound, soundIsDisabled]);
 
   if (soundIsDisabled || !soundIsPlaying) {
     return null;
   }
 
   return (
-    <audio autoPlay data-testid="audio-tag">
+    <audio
+      autoPlay
+      data-testid="audio-tag"
+    >
       <source
         src={soundFile}
         type="audio/wav"
@@ -47,6 +51,6 @@ const Sound: FC<Readonly<Types.SoundProps>> = ({ triggerSound }): JSX.Element =>
 
 const { bool } = PropTypes;
 
-Sound.propTypes = { triggerSound: bool.isRequired };
+Sound.propTypes = { shouldTriggerSound: bool.isRequired };
 
 export default Sound;

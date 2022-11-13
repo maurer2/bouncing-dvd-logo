@@ -1,12 +1,7 @@
 import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  FC,
-  useLayoutEffect,
-  useMemo,
+  useEffect, useState, useRef, useCallback, useLayoutEffect, useMemo,
 } from 'react';
+import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { random } from 'lodash-es';
 
@@ -19,12 +14,12 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import * as Types from './Playingfield.types';
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.Element => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): ReactElement => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
   const loopTimestamp = useRef(0);
-  const playfieldBB = useRef<DOMRect>({} as DOMRect);
+  const playingfieldBB = useRef<DOMRect>({} as DOMRect);
 
   const isColliding = useRef(false);
   const isCollidingX = useRef(false);
@@ -34,35 +29,34 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
   const logoObject: Types.LogoObject = useMemo(() => [150, 138], []);
 
-  const playfieldDomRefCB = useCallback((element: HTMLElement) => {
-    if (element === null) {
+  const playingfieldDomRefCB = useCallback((element: HTMLElement) => {
+    if (!element) {
       return;
     }
 
-    playfieldBB.current = element.getBoundingClientRect();
+    playingfieldBB.current = element.getBoundingClientRect();
   }, []);
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positionX,
     logoObject[0],
-    playfieldBB.current.width,
+    playingfieldBB.current.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positionY,
     logoObject[1],
-    playfieldBB.current.height,
+    playingfieldBB.current.height,
   );
   const [changeX] = useChangeDelta(3, isCollidingX.current);
   const [changeY] = useChangeDelta(3, isCollidingY.current);
 
   // set random initial position and direction
-  // useEffectOnce
   const initPosition = useCallback(() => {
     if (isInit.current) {
       return;
     }
 
-    const { width, height } = playfieldBB.current;
+    const { width, height } = playingfieldBB.current;
 
     setPositionX(() => random(width - logoObject[0]));
     setPositionY(() => random(height - logoObject[1]));
@@ -108,7 +102,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
 
   return (
     <Styles.PlayingFieldWrapper
-      ref={playfieldDomRefCB}
+      ref={playingfieldDomRefCB}
       data-testid="playfingfield"
       data-status={isPaused ? 'inactive' : 'active'}
     >
@@ -123,7 +117,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): JSX.
             isPaused={isPaused}
           />
           <Controls />
-          <Sound triggerSound={isColliding.current} />
+          <Sound shouldTriggerSound={isColliding.current} />
         </>
       )}
     </Styles.PlayingFieldWrapper>

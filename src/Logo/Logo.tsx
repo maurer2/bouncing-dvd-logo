@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, useContext, FC,
+  useEffect, useRef, useContext, FC, ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
 
@@ -17,7 +17,7 @@ const Logo: FC<Readonly<Types.LogoProps>> = ({
   height,
   changeColours,
   isPaused,
-}): JSX.Element => {
+}): ReactElement => {
   const { colours } = useContext(Store);
   const prevChangeColours = useRef(false);
   const [colour, setColour] = useColour(colours);

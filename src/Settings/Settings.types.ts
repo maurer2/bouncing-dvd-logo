@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 
 export type SettingsProps = {
-  children?: ReactNode
-}
+  children?: PropsWithChildren['children']; // workaround to avoid empty object
+};

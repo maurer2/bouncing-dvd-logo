@@ -1,7 +1,7 @@
 export type ControlProps = {
-  children?: never
-}
+  children?: never;
+};
 
 export type ControlStyleProps = {
-  status: 'active' | 'inactive'
-}
+  status: 'active' | 'inactive';
+};

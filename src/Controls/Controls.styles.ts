@@ -30,6 +30,6 @@ export const Icon = styled(SoundIcon)<ControlStyleProps>`
   transform: rotate(45deg);
 
   .sound-waves {
-    ${(props) => props.status === 'inactive' && 'display: none;'}
+    ${({ status }: ControlStyleProps) => status === 'inactive' && 'display: none;'}
   }
 `;

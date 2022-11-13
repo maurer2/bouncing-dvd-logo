@@ -1,6 +1,6 @@
 import type { StoreType } from '../../Store';
 
-export type UseColor = [
+export type UseColour = [
   colour: StoreType['colours'][number],
   changeColour: () => void
 ];

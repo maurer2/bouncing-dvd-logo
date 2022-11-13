@@ -2,9 +2,9 @@ import { useState, useCallback } from 'react';
 
 import type { StoreType } from '../../Store';
 
-import type { UseColor } from './useColor.types';
+import type { UseColour } from './useColor.types';
 
-export default function useColour(colours: StoreType['colours']): Readonly<UseColor> {
+export default function useColour(colours: StoreType['colours']): Readonly<UseColour> {
   const [colour, setColour] = useState<StoreType['colours'][number]>(colours[0]);
 
   const changeColour = useCallback(() => {
