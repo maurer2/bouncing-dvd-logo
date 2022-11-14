@@ -88,3 +88,6 @@ yarn-error.log*
 
 # vscode
 .vscode
+
+#vite
+/dist
