@@ -22,6 +22,7 @@
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "start": "react-scripts start",
     "test": "jest --watch 'src/Hooks/useChangeDelta/useChangeDelta.spec.tsx'",
+    "test:components": "playwright test -c playwright-ct.config.ts 'src/Controls/test.spec.tsx'",
     "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
     "ts-node": "^10.9.1"
   },
   "devDependencies": {
+    "@playwright/experimental-ct-react": "^1.27.1",
     "@types/jest": "^27.5.2",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^17.0.45",
