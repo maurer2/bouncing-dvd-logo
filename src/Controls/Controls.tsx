@@ -19,7 +19,7 @@ const Controls: FC<Readonly<Types.ControlProps>> = (): ReactElement => {
     <Styles.Controls data-testid="controls">
       <Styles.Control
         onClick={handleClick}
-        data-testid="controls-control"
+        data-testid="controls-button"
       >
         <Styles.Icon
           status={soundIsDisabled ? 'inactive' : 'active'}

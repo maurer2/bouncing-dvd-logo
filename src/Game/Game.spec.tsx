@@ -134,4 +134,7 @@ describe('Game', () => {
     });
     expect(screen.getByTestId('game-playfield')).toHaveAttribute('data-ispaused', 'true');
   });
+
+  it.todo('should pause when pressing spacebar');
+  it.todo('should pause when resizing');
 });
