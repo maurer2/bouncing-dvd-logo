@@ -9,19 +9,17 @@ import Component from './Playingfield';
 import type { PlayingfieldProps } from './Playingfield.types';
 
 let mockRandom = 10;
-jest.mock('lodash-es', () => ({ random: jest.fn().mockImplementation(() => mockRandom) }));
+vi.mock('lodash-es', () => ({ random: vi.fn().mockImplementation(() => mockRandom) }));
 
 describe('Playingfield', () => {
   beforeEach(() => {
-    // mockRandom = jest.spyOn(global.Math, 'random');
-    // mockRandom.mockReturnValue(0.123456);
     mockRandom = 10;
   });
 
   const storeValues = {
     colours: [...colours],
     soundIsDisabled: true,
-    toggleSound: jest.fn(),
+    toggleSound: vi.fn(),
   };
 
   const defaultProps: PlayingfieldProps = { isPaused: false };

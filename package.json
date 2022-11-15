@@ -17,7 +17,7 @@
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "start": "vite",
     "test": "jest --watch 'src/Hooks/useChangeDelta/useChangeDelta.spec.tsx'",
-    "test:vitest": "vitest --coverage './src/Game/Game.spec.tsx'",
+    "test:vitest": "vitest --coverage './src/Playingfield/Playingfield.spec'",
     "test:types": "tsc --noEmit --skipLibCheck",
     "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'"
   },
