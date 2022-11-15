@@ -89,5 +89,6 @@ yarn-error.log*
 # vscode
 .vscode
 
-#vite
+# vite
 /dist
+/statistics
