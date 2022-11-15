@@ -1,7 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import 'jest-styled-components';
 
 import Store, { colours } from '../Store';
 
@@ -12,7 +11,7 @@ describe('Logo', () => {
   const storeValues = {
     colours: [...colours],
     soundIsDisabled: true,
-    toggleSound: jest.fn(),
+    toggleSound: vi.fn(),
   };
 
   const defaultProps: LogoProps = {
@@ -98,7 +97,7 @@ describe('Logo', () => {
     expect(getByTestId('logo-element')).toHaveStyle(`color: ${currentColour}`);
   });
 
-  const cycles = Array.from(Array(10).keys());
+  const cycles: number[] = Array.from(Array(10).keys());
   it.each(cycles)('should have a new colour after rerender/useEffect - Cycle %i', () => {
     const { rerender, getByTestId } = setup({});
     const startColour = getByTestId('logo-element').style.getPropertyValue('color');

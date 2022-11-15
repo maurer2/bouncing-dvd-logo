@@ -81,6 +81,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         }}
         tabIndex={0}
         data-testid="game-wrapper"
+        data-ispaused={isPaused}
       >
         <PlayingField
           isPaused={isPaused}
