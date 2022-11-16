@@ -1,0 +1,40 @@
+// Vitest Snapshot v1
+
+exports[`Components > should match snapshot 1`] = `
+<button
+  class="sc-fHcixP hlckCR"
+  data-testid="soundtrigger"
+  type="button"
+>
+  <svg
+    class="sc-gOuMvY eSpHRb"
+    data-testid="soundtrigger-icon"
+    status="inactive"
+    viewBox="0 0 75 75"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g
+      fill="none"
+      stroke="#fff"
+      stroke-width="5"
+    >
+      <path
+        class="sound-waves"
+        d="M27.152 49a19.5 19.5 0 010-21.4m-7.1 28.5a30 30 0 010-35.6m-6.5 42.1a38.8 38.8 0 010-48.6"
+        stroke-linecap="round"
+      />
+      <path
+        class="speaker"
+        d="M36.5 62.75l17.154-14.837h16.235V28.82H53.9L36.5 13.769V62.75z"
+        stroke-linejoin="round"
+      />
+    </g>
+  </svg>
+  <span
+    class="sc-imgDtR goxJSV"
+    data-testid="soundtrigger-text"
+  >
+    Enable Sound
+  </span>
+</button>
+`;
