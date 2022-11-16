@@ -10,7 +10,7 @@ import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
 
-import Controls from '../Controls/Controls';
+import SoundTrigger from '../SoundTrigger/SoundTrigger';
 import PlayingField from '../Playingfield/Playingfield';
 
 import * as Styles from './Game.styles';
@@ -89,7 +89,6 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         ref={wrapperDomElement}
         tabIndex={0}
         data-testid="game-wrapper"
-        data-ispaused={isPaused}
       >
         <PlayingField
           isPaused={isPaused}
@@ -105,7 +104,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         >
           {isPaused ? 'Unpause' : 'Pause'}
         </Styles.PauseButton>
-        <Controls />
+        <SoundTrigger />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );
