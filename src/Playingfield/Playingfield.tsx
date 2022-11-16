@@ -5,7 +5,6 @@ import { random } from 'lodash-es';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
-import Controls from '../Controls/Controls';
 import useChangeDelta from '../Hooks/useChangeDelta';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 
@@ -114,7 +113,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): Reac
             changeColours={isColliding.current}
             isPaused={isPaused}
           />
-          <Controls />
           <Sound shouldTriggerSound={isColliding.current} />
         </>
       )}

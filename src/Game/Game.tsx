@@ -10,6 +10,7 @@ import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
 
+import Controls from '../Controls/Controls';
 import PlayingField from '../Playingfield/Playingfield';
 
 import * as Styles from './Game.styles';
@@ -77,6 +78,11 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     };
   }, []);
 
+  // autofocus
+  useEffect(() => {
+    wrapperDomElement.current.focus();
+  }, []);
+
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
@@ -88,16 +94,18 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         <PlayingField
           isPaused={isPaused}
           key={`key-${keyValue}`}
-          data-testid="game-playfield"
+          data-testid="game-playingfield"
           data-key={`key-${keyValue}`}
         />
         <Styles.PauseButton
           tabIndex={-1}
           onClick={handleClick}
           onKeyPress={(event) => handleInput(event)}
+          data-testid="game-pausebutton"
         >
           {isPaused ? 'Unpause' : 'Pause'}
         </Styles.PauseButton>
+        <Controls />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

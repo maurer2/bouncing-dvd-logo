@@ -51,6 +51,7 @@ describe('Game', () => {
 
     expect(screen.getByTestId('game-wrapper')).toBeTruthy();
     expect(screen.getByTestId('playfingfield')).toBeTruthy();
+    expect(screen.getByTestId('game-pausebutton')).toBeTruthy();
   });
 
   it('should have set focus on game wrapper if supported by browser', () => {
@@ -62,34 +63,47 @@ describe('Game', () => {
   it('should not be paused by default', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'false');
+    expect(screen.getByText('Pause')).toBeInTheDocument();
+    expect(screen.queryByText('Unpause')).not.toBeInTheDocument();
   });
 
-  it('should pause when clicking on game wrapper', async () => {
+  it('should pause when clicking on game when in non pause mode', async () => {
     const screen = setup();
 
-    expect(screen.queryByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'false');
+    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
 
-    await fireEvent.click(screen.getByTestId('game-wrapper'));
-    expect(screen.getByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'true');
+    await fireEvent.click(screen.getByTestId('game-pausebutton'));
+    // await userEvent.click(screen.getByTestId('game-pausebutton'));
+    expect(screen.queryByText('Unpause')).toBeInTheDocument();
   });
 
-  it('should activate sound when pressing spacebar when sound is disabled', async () => {
-    const screen = setup({});
+  it('should unpause when clicking on game when in pause mode', async () => {
+    const screen = setup();
 
-    expect(screen.getByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'false');
+    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
 
-    await fireEvent.keyPress(screen.getByTestId('game-wrapper'), { charCode: 32 });
-    expect(screen.getByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'true');
+    await fireEvent.click(screen.getByTestId('game-pausebutton'));
+    await fireEvent.click(screen.getByTestId('game-pausebutton'));
+    // await userEvent.click(screen.getByTestId('game-pausebutton'));
+    expect(screen.queryByText('Pause')).toBeInTheDocument();
   });
 
-  it('should activate sound when pressing k when sound is disabled', async () => {
+  it('should pause when pressing spacebar when in non-pause mode', async () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'false');
+    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
 
-    await fireEvent.keyPress(screen.getByTestId('game-wrapper'), { charCode: 75 });
-    expect(screen.getByTestId('game-wrapper')).toHaveAttribute('data-ispaused', 'true');
+    await fireEvent.keyPress(screen.getByTestId('game-pausebutton'), { charCode: 32 });
+    expect(screen.queryByText('Unpause')).toBeInTheDocument();
+  });
+
+  it('should pause when pressing k when in non-pause mode', async () => {
+    const screen = setup({});
+
+    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
+
+    await fireEvent.keyPress(screen.getByTestId('game-pausebutton'), { charCode: 75 });
+    expect(screen.queryByText('Unpause')).toBeInTheDocument();
   });
 
   it.skip('resize should trigger key change e.g. reset', async () => {
