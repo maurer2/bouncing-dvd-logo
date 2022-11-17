@@ -1,0 +1,45 @@
+import type { colours } from './const';
+import type {
+  START_GAME,
+  RESET_GAME,
+  TRIGGER_COLLISION,
+  TOGGLE_PLAY_STATE,
+  TOGGLE_SOUND,
+} from './actionTypes';
+
+// store
+export type Position = [x: number, y: number];
+export type Colour = typeof colours[number];
+
+export type Store = {
+  lastPosition: Position | null;
+  currentColour: Colour;
+  previousColour: Colour | null;
+  isPaused: boolean;
+  soundIsDisabled: boolean;
+  collisionCount: number;
+};
+
+// action types
+export type StartGameAction = {
+  type: typeof START_GAME;
+};
+export type ResetGameAction = {
+  type: typeof RESET_GAME;
+};
+export type TriggerCollisionAction = {
+  type: typeof TRIGGER_COLLISION;
+  payload: Position;
+};
+export type TogglePlayStateAction = {
+  type: typeof TOGGLE_PLAY_STATE;
+};
+export type ToggleSoundAction = {
+  type: typeof TOGGLE_SOUND;
+};
+export type Action =
+  | StartGameAction
+  | ResetGameAction
+  | TriggerCollisionAction
+  | TogglePlayStateAction
+  | ToggleSoundAction;
