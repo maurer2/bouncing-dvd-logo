@@ -5,8 +5,7 @@ import type { Store as StoreRedux } from 'redux';
 import type { Store, Action } from './types';
 import reducers from './reducers';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// https://www.freecodecamp.org/news/how-to-use-redux-in-your-react-typescript-app/
 const store: StoreRedux<Store, Action> & {
   dispatch: (action: Action) => Action;
 } = createStore(reducers, applyMiddleware(logger));

@@ -7,10 +7,11 @@ import type {
   TOGGLE_SOUND,
 } from './actionTypes';
 
+import type store from '.';
+
 // store
 export type Position = [x: number, y: number];
 export type Colour = typeof colours[number];
-
 export type Store = {
   lastPosition: Position | null;
   currentColour: Colour;
@@ -19,6 +20,8 @@ export type Store = {
   soundIsDisabled: boolean;
   collisionCount: number;
 };
+export type RootState = Store;
+export type Dispatch = typeof store.dispatch;
 
 // action types
 export type StartGameAction = {

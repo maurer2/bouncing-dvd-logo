@@ -5,7 +5,12 @@ import { initialState } from './store';
 const reducers = (state: Store = initialState, action: Action): Store => {
   const { type } = action;
   switch (type) {
-    case 'START_GAME':
+    case 'START_GAME': {
+      return {
+        ...state,
+        isPaused: false,
+      };
+    }
     case 'RESET_GAME':
     case 'TOGGLE_PLAY_STATE':
     case 'TOGGLE_SOUND':

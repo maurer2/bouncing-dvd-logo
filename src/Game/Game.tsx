@@ -9,14 +9,19 @@ import React, { useRef, useEffect, useReducer } from 'react';
 import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import SoundTrigger from '../SoundTrigger/SoundTrigger';
 import PlayingField from '../Playingfield/Playingfield';
+import { startGame } from '../Store2/actionCreators';
+import type { Dispatch } from '../Store2/types';
 
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
 
+
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
+  const dispatch: Dispatch = useDispatch();
   const [isPaused, setIsPaused] = useReducer<ReducerWithoutAction<boolean>>(
     (currentIsPaused) => !currentIsPaused,
     false,
@@ -61,12 +66,12 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     }
   }
 
-  // setup resize/intersection observer
+  // setup resize observer
   useEffect(() => {
     debouncedResizeHandler.current = debounce(setKeyValue, 300);
 
     const currentResizeObserver: ResizeObserver = gameResizeObserver.current;
-    const currentDomElement = wrapperDomElement.current;
+    const currentDomElement: HTMLElement = wrapperDomElement.current;
 
     if (!currentDomElement) {
       return undefined;
@@ -77,6 +82,11 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
       currentResizeObserver.unobserve(currentDomElement);
     };
   }, []);
+
+  // init redux
+  useEffect(() => {
+    dispatch(startGame());
+  }, [dispatch]);
 
   // autofocus
   useEffect(() => {
