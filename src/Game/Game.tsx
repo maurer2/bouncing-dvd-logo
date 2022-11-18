@@ -14,16 +14,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import SoundTrigger from '../SoundTrigger/SoundTrigger';
 import PlayingField from '../Playingfield/Playingfield';
 import { startGame, toggleSound } from '../Store2/actionCreators';
-import type { Dispatch, RootState } from '../Store2/types';
+import type { Dispatch } from '../Store2/types';
+import { getSoundState } from '../Store2/selectors'
 
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
 
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
-  // eslint-disable-next-line react-redux/useSelector-prefer-selectors
-  const soundIsDisabled = useSelector((state: RootState) => state.soundIsDisabled);
-  const [isPaused, setIsPaused] = useReducer<ReducerWithoutAction<boolean>>(
+  const soundIsDisabled = useSelector(getSoundState);
+  const [isPaused, toggleIsPaused] = useReducer<ReducerWithoutAction<boolean>>(
     (currentIsPaused) => !currentIsPaused,
     false,
   );
@@ -55,15 +55,14 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   );
 
   const handleClick = (): void => {
-    setIsPaused();
+    toggleIsPaused();
   };
 
   function handleInput(event: KeyboardEvent<HTMLButtonElement>): void {
-    const pressedKey = event.key;
     const observedKeys = [' ', 'k']; // " " === spacebar
 
-    if (observedKeys.includes(pressedKey.toLowerCase())) {
-      setIsPaused();
+    if (observedKeys.includes(event.key.toLowerCase())) {
+      toggleIsPaused();
     }
   }
 

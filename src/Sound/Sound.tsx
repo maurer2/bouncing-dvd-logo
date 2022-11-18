@@ -3,14 +3,13 @@ import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import type { RootState } from '../Store2/types';
 import soundFile from '../assets/soundFile.wav';
+import { getSoundState } from '../Store2/selectors'
 
 import type * as Types from './Sound.types';
 
 const Sound: FC<Readonly<Types.SoundProps>> = ({ shouldTriggerSound }): ReactElement => {
-  // eslint-disable-next-line react-redux/useSelector-prefer-selectors
-  const soundIsDisabled = useSelector((state: RootState) => state.soundIsDisabled);
+  const soundIsDisabled = useSelector(getSoundState);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
 
