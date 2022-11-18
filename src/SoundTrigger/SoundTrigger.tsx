@@ -1,14 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import type { FC, MouseEvent, ReactElement } from 'react';
-
-import Store from '../Store';
 
 import * as Styles from './SoundTrigger.styles';
 import type * as Types from './SoundTrigger.types';
 
-const SoundTrigger: FC<Readonly<Types.SoundTriggerProps>> = (): ReactElement => {
-  const { soundIsDisabled, toggleSound } = useContext(Store);
-
+const SoundTrigger: FC<Readonly<Types.SoundTriggerProps>> = ({soundIsDisabled, toggleSound}): ReactElement => {
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     toggleSound();

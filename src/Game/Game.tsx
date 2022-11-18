@@ -5,23 +5,24 @@ import type {
   ReducerWithoutAction,
   PropsWithChildren,
 } from 'react';
-import React, { useRef, useEffect, useReducer } from 'react';
+import React, { useRef, useEffect, useReducer, useCallback } from 'react';
 import { debounce } from 'lodash-es';
 import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import SoundTrigger from '../SoundTrigger/SoundTrigger';
 import PlayingField from '../Playingfield/Playingfield';
-import { startGame } from '../Store2/actionCreators';
-import type { Dispatch } from '../Store2/types';
+import { startGame, toggleSound } from '../Store2/actionCreators';
+import type { Dispatch, RootState } from '../Store2/types';
 
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
 
-
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
+  // eslint-disable-next-line react-redux/useSelector-prefer-selectors
+  const soundIsDisabled = useSelector((state: RootState) => state.soundIsDisabled);
   const [isPaused, setIsPaused] = useReducer<ReducerWithoutAction<boolean>>(
     (currentIsPaused) => !currentIsPaused,
     false,
@@ -93,6 +94,10 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     wrapperDomElement.current.focus();
   }, []);
 
+  const toggleSoundCB = useCallback(() => {
+    dispatch(toggleSound());
+  }, [dispatch]);
+
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
@@ -114,7 +119,10 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         >
           {isPaused ? 'Unpause' : 'Pause'}
         </Styles.PauseButton>
-        <SoundTrigger />
+        <SoundTrigger
+          soundIsDisabled={soundIsDisabled}
+          toggleSound={toggleSoundCB}
+        />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

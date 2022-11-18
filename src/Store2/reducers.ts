@@ -11,9 +11,22 @@ const reducers = (state: Store = initialState, action: Action): Store => {
         isPaused: false,
       };
     }
-    case 'RESET_GAME':
-    case 'TOGGLE_PLAY_STATE':
-    case 'TOGGLE_SOUND':
+    case 'RESET_GAME': {
+      return {
+        ...state,
+      };
+    }
+    case 'TOGGLE_PLAY_STATE': {
+      return {
+        ...state,
+      };
+    }
+    case 'TOGGLE_SOUND': {
+      return {
+        ...state,
+        soundIsDisabled: !state.soundIsDisabled,
+      };
+    }
     case 'TRIGGER_COLLISION':
     default: {
       return {
