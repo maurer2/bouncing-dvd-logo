@@ -13,9 +13,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SoundTrigger from '../SoundTrigger/SoundTrigger';
 import PlayingField from '../Playingfield/Playingfield';
-import { startGame, toggleSound } from '../Store2/actionCreators';
+import { startGame, toggleSound, togglePlayState } from '../Store2/actionCreators';
 import type { Dispatch } from '../Store2/types';
-import { getSoundState } from '../Store2/selectors'
+import { getSoundState, getPlayState } from '../Store2/selectors'
 
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
@@ -23,10 +23,7 @@ import type * as Types from './Game.types';
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
   const soundIsDisabled = useSelector(getSoundState);
-  const [isPaused, toggleIsPaused] = useReducer<ReducerWithoutAction<boolean>>(
-    (currentIsPaused) => !currentIsPaused,
-    false,
-  );
+  const isPaused = useSelector(getPlayState)
   const [keyValue, setKeyValue] = useReducer<ReducerWithoutAction<string>>(
     () => nanoid(10),
     nanoid(10),
@@ -55,14 +52,14 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   );
 
   const handleClick = (): void => {
-    toggleIsPaused();
+    dispatch(togglePlayState());
   };
 
   function handleInput(event: KeyboardEvent<HTMLButtonElement>): void {
     const observedKeys = [' ', 'k']; // " " === spacebar
 
     if (observedKeys.includes(event.key.toLowerCase())) {
-      toggleIsPaused();
+      dispatch(togglePlayState());
     }
   }
 
@@ -84,9 +81,9 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   }, []);
 
   // init redux
-  useEffect(() => {
-    dispatch(startGame());
-  }, [dispatch]);
+  // useEffect(() => {
+    // dispatch(startGame());
+  // }, [dispatch]);
 
   // autofocus
   useEffect(() => {
