@@ -26,10 +26,10 @@ export function resetGame(): ResetGameAction {
   };
 }
 
-export function triggerCollision(position: Position): TriggerCollisionAction {
+export function triggerCollision(/* position: Position */): TriggerCollisionAction {
   return {
     type: TRIGGER_COLLISION,
-    payload: position,
+   // payload: position,
   };
 }
 

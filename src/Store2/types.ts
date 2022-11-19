@@ -32,7 +32,7 @@ export type ResetGameAction = {
 };
 export type TriggerCollisionAction = {
   type: typeof TRIGGER_COLLISION;
-  payload: Position;
+  // payload: Position;
 };
 export type TogglePlayStateAction = {
   type: typeof TOGGLE_PLAY_STATE;

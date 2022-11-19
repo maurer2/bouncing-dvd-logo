@@ -13,7 +13,7 @@ import type * as Types from './Playingfield.types';
 
 const logoObject: Types.LogoObject = [150, 138];
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): ReactElement => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, triggerCollision }): ReactElement => {
   const [positionX, setPositionX] = useState(0);
   const [positionY, setPositionY] = useState(0);
 
@@ -26,7 +26,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): Reac
   const isPausedPrevious = useRef(false);
   const isInit = useRef(false);
 
-  const playingfieldDomRefCB = useCallback((element: HTMLElement) => {
+  const playingfieldDomElement = useCallback((element: HTMLElement) => {
     if (!element) {
       return;
     }
@@ -69,10 +69,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): Reac
       isCollidingX.current = isCollidingXStart.current || isCollidingXEnd.current;
       isCollidingY.current = isCollidingYStart.current || isCollidingYEnd.current;
       isColliding.current = isCollidingX.current || isCollidingY.current;
+
+      if (isCollidingX.current || isCollidingY.current) {
+        triggerCollision();
+      }
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY]);
+  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY, triggerCollision]);
 
   const startLoop = useCallback(() => {
     if (loopTimestamp.current !== 0) {
@@ -99,7 +103,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused }): Reac
 
   return (
     <Styles.PlayingFieldWrapper
-      ref={playingfieldDomRefCB}
+      ref={playingfieldDomElement}
       data-testid="playfingfield"
       data-status={isPaused ? 'inactive' : 'active'}
     >

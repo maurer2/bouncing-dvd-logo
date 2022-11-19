@@ -13,9 +13,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SoundTrigger from '../SoundTrigger/SoundTrigger';
 import PlayingField from '../Playingfield/Playingfield';
-import { startGame, toggleSound, togglePlayState } from '../Store2/actionCreators';
-import type { Dispatch } from '../Store2/types';
+import { startGame, toggleSound, togglePlayState, triggerCollision } from '../Store2/actionCreators';
 import { getSoundState, getPlayState } from '../Store2/selectors'
+import type { Dispatch } from '../Store2/types';
 
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
@@ -94,6 +94,10 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     dispatch(toggleSound());
   }, [dispatch]);
 
+  const triggerCollisionCB = useCallback(() => {
+    dispatch(triggerCollision());
+  }, [dispatch]);
+
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
@@ -103,6 +107,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
       >
         <PlayingField
           isPaused={isPaused}
+          triggerCollision={triggerCollisionCB}
           key={`key-${keyValue}`}
           data-testid="game-playingfield"
           data-key={`key-${keyValue}`}
