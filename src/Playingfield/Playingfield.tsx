@@ -1,21 +1,28 @@
 import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
 import type { FC, ReactElement } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import useChangeDelta from '../Hooks/useChangeDelta';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
+import { getSoundState, getPlayState } from '../Store2/selectors'
+import type { Dispatch } from '../Store2/types';
+import { pauseGame } from '../Store2/actionCreators';
+
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 
 const logoObject: Types.LogoObject = [150, 138];
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, triggerCollision }): ReactElement => {
-  const [positionX, setPositionX] = useState(0);
-  const [positionY, setPositionY] = useState(0);
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision }): ReactElement => {
+  const [positionX, setPositionX] = useState(50);
+  const [positionY, setPositionY] = useState(50);
+  const isPaused = useSelector(getPlayState)
+  const dispatch: Dispatch = useDispatch();
 
   const loopTimestamp = useRef(0);
   const playingfieldBB = useRef<DOMRect>({} as DOMRect);
@@ -23,8 +30,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, trigger
   const isColliding = useRef(false);
   const isCollidingX = useRef(false);
   const isCollidingY = useRef(false);
-  const isPausedPrevious = useRef(false);
-  const isInit = useRef(false);
 
   const playingfieldDomElement = useCallback((element: HTMLElement) => {
     if (!element) {
@@ -44,70 +49,36 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, trigger
     logoObject[1],
     playingfieldBB.current.height,
   );
-  const [changeX] = useChangeDelta(3, isCollidingX.current);
-  const [changeY] = useChangeDelta(3, isCollidingY.current);
-
-  // set random initial position and direction
-  const initPosition = useCallback(() => {
-    if (isInit.current) {
-      return;
-    }
-
-    const { width, height } = playingfieldBB.current;
-
-    setPositionX(() => random(width - logoObject[0]));
-    setPositionY(() => random(height - logoObject[1]));
-
-    isInit.current = true;
-  }, []);
-
   const loop = useCallback(() => {
-    if (!isPausedPrevious.current) {
-      setPositionX((prevPositionX: number) => Math.round(prevPositionX + changeX.current));
-      setPositionY((prevPositionY: number) => Math.round(prevPositionY + changeY.current));
+    if (!isPaused) {
+      setPositionX((prevPositionX: number) => Math.round(prevPositionX + 1));
+      setPositionY((prevPositionY: number) => Math.round(prevPositionY + 1));
 
-      isCollidingX.current = isCollidingXStart.current || isCollidingXEnd.current;
-      isCollidingY.current = isCollidingYStart.current || isCollidingYEnd.current;
-      isColliding.current = isCollidingX.current || isCollidingY.current;
-
-      if (isCollidingX.current || isCollidingY.current) {
-        triggerCollision();
-      }
+      console.log(isCollidingXStart, isCollidingXEnd);
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY, triggerCollision]);
-
-  const startLoop = useCallback(() => {
-    if (loopTimestamp.current !== 0) {
-      return;
-    }
-
-    loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [loop]);
-
-  function stopLoop(): void {
-    window.cancelAnimationFrame(loopTimestamp.current);
-  }
+  }, [isPaused]);
 
   useLayoutEffect(() => {
-    initPosition();
-    startLoop();
+    loopTimestamp.current = window.requestAnimationFrame(loop);
 
-    return () => stopLoop();
-  }, [initPosition, startLoop]);
+    return () => {
+      window.cancelAnimationFrame(loopTimestamp.current);
+    };
+  }, [loop]);
 
-  useEffect(() => {
-    isPausedPrevious.current = isPaused;
-  }, [isPaused]);
+  function handleClick() {
+    dispatch(pauseGame([positionX, positionY]));
+  }
 
   return (
     <Styles.PlayingFieldWrapper
       ref={playingfieldDomElement}
       data-testid="playfingfield"
-      data-status={isPaused ? 'inactive' : 'active'}
+      // eslint-disable-next-line react/jsx-no-bind
+      onClick={handleClick}
     >
-      {isInit.current && (
         <>
           <Logo
             positionX={positionX}
@@ -115,17 +86,16 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, trigger
             width={logoObject[0]}
             height={logoObject[1]}
             changeColours={isColliding.current}
-            isPaused={isPaused}
+            isPaused={false}
           />
           <Sound shouldTriggerSound={isColliding.current} />
         </>
-      )}
     </Styles.PlayingFieldWrapper>
   );
 };
 
 const { bool } = PropTypes;
 
-PlayingField.propTypes = { isPaused: bool.isRequired };
+PlayingField.propTypes = { };
 
 export default PlayingField;

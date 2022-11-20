@@ -21,4 +21,5 @@ export const PauseButton = styled.button`
   outline: none;
   text-indent: 9999px;
   overflow: hidden;
+  pointer-events: none;
 `;

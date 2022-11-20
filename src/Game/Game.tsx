@@ -52,7 +52,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   );
 
   const handleClick = (): void => {
-    dispatch(togglePlayState());
+    // dispatch(togglePlayState());
   };
 
   function handleInput(event: KeyboardEvent<HTMLButtonElement>): void {
@@ -106,20 +106,20 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         data-testid="game-wrapper"
       >
         <PlayingField
-          isPaused={isPaused}
+          // isPaused={isPaused}
           triggerCollision={triggerCollisionCB}
           key={`key-${keyValue}`}
           data-testid="game-playingfield"
           data-key={`key-${keyValue}`}
         />
-        <Styles.PauseButton
+        {/* <Styles.PauseButton
           tabIndex={-1}
           onClick={handleClick}
           onKeyPress={(event) => handleInput(event)}
           data-testid="game-pausebutton"
         >
           {isPaused ? 'Unpause' : 'Pause'}
-        </Styles.PauseButton>
+        </Styles.PauseButton> */}
         <SoundTrigger
           soundIsDisabled={soundIsDisabled}
           toggleSound={toggleSoundCB}

@@ -1,6 +1,7 @@
 import type { colours } from './const';
 import type {
   START_GAME,
+  PAUSE_GAME,
   RESET_GAME,
   TRIGGER_COLLISION,
   TOGGLE_PLAY_STATE,
@@ -27,6 +28,10 @@ export type Dispatch = typeof store.dispatch;
 export type StartGameAction = {
   type: typeof START_GAME;
 };
+export type PauseGameAction = {
+  type: typeof PAUSE_GAME;
+  payload: Position;
+};
 export type ResetGameAction = {
   type: typeof RESET_GAME;
 };
@@ -42,6 +47,7 @@ export type ToggleSoundAction = {
 };
 export type Action =
   | StartGameAction
+  | PauseGameAction
   | ResetGameAction
   | TriggerCollisionAction
   | TogglePlayStateAction

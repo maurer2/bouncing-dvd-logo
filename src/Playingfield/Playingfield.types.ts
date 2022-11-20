@@ -1,5 +1,5 @@
 export type PlayingfieldProps = {
-  isPaused: boolean;
+  // isPaused: boolean;
   triggerCollision: () => void;
 };
 

@@ -1,6 +1,7 @@
 import type {
   Position,
   StartGameAction,
+  PauseGameAction,
   ResetGameAction,
   TriggerCollisionAction,
   TogglePlayStateAction,
@@ -8,6 +9,7 @@ import type {
 } from './types';
 import {
   START_GAME,
+  PAUSE_GAME,
   RESET_GAME,
   TRIGGER_COLLISION,
   TOGGLE_PLAY_STATE,
@@ -17,6 +19,13 @@ import {
 export function startGame(): StartGameAction {
   return {
     type: START_GAME,
+  };
+}
+
+export function pauseGame(position: Position): PauseGameAction {
+  return {
+    type: PAUSE_GAME,
+    payload: position,
   };
 }
 
