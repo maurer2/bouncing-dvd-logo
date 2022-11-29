@@ -45,7 +45,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^6.0.0-beta.5",
+    "styled-components": "^6.0.0-beta.6",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
     "vite": "^3.2.3",
