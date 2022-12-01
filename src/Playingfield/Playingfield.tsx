@@ -1,14 +1,22 @@
-import React, { useEffect, useState, useRef, useCallback, useLayoutEffect, useReducer } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useCallback,
+  useLayoutEffect,
+  useReducer,
+} from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
 import { useDispatch, useSelector } from 'react-redux';
+import { produce } from 'immer';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import useChangeDelta from '../Hooks/useChangeDelta';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
-import { getSoundState, getPlayState } from '../Store2/selectors'
+import { getSoundState, getPlayState } from '../Store2/selectors';
 import type { Dispatch } from '../Store2/types';
 import { pauseGame } from '../Store2/actionCreators';
 
@@ -17,59 +25,53 @@ import type * as Types from './Playingfield.types';
 
 const logoObject: Types.LogoObject = [150, 138];
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision }): ReactElement => {
-  const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>((state, action) => {
-    // todo union types
-    switch (action.type) {
-      case 'TRIGGER_NEXT_POSITION': {
-        const newPositions = {
-          ...state,
-          positionX: {
-            ...state.positionX,
-            value: state.positionX.value + state.positionX.velocity,
-          },
-          positionY: {
-            ...state.positionY,
-            value: state.positionY.value + state.positionY.velocity,
-          }
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
+  triggerCollision,
+}): ReactElement => {
+  const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>(
+    produce((state, action) => {
+      // todo union types
+      switch (action.type) {
+        case 'TRIGGER_NEXT_POSITION': {
+          const newDraft = state;
+
+          newDraft.positionX.value += state.positionX.velocity;
+          newDraft.positionY.value += state.positionY.velocity;
+
+          return newDraft;
         }
-        return newPositions;
-      }
-      case 'TRIGGER_X_COLLISION': {
-        const newPositions = {
-          ...state,
-          positionX: {
-            ...state.positionX,
-            value: state.positionX.value + (state.positionX.velocity * -1),
-            velocity: state.positionX.velocity * -1,
-          },
+        case 'TRIGGER_X_COLLISION': {
+          const newDraft = state;
+
+          newDraft.positionX.value += state.positionX.velocity * -1;
+          newDraft.positionX.velocity *= -1;
+
+          return newDraft;
         }
-        return newPositions;
-      }
-      case 'TRIGGER_Y_COLLISION': {
-        const newPositions = {
-          ...state,
-          positionY: {
-            ...state.positionY,
-            value: state.positionY.value + (state.positionY.velocity * -1),
-            velocity: state.positionY.velocity * -1,
-          },
+        case 'TRIGGER_Y_COLLISION': {
+          const newDraft = state;
+
+          newDraft.positionY.value += state.positionY.velocity * -1;
+          newDraft.positionY.velocity *= -1;
+
+          return newDraft;
         }
-        return newPositions
+        default: {
+          return state;
+        }
       }
-      default:
-        return state;
-    }
-  }, {
-    positionX: {
-      value: 50,
-      velocity: 4,
+    }),
+    {
+      positionX: {
+        value: 50,
+        velocity: 8,
+      },
+      positionY: {
+        value: 50,
+        velocity: 2,
+      },
     },
-    positionY: {
-      value: 50,
-      velocity: 2,
-    }
-  });
+  );
 
   const loopTimestamp = useRef(0);
   const playingfieldBB = useRef<DOMRect>({} as DOMRect);
@@ -109,7 +111,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision 
         });
       }
 
-      if (!isCollidingXStart.current && !isCollidingXEnd.current && !isCollidingYStart.current && !isCollidingYEnd.current) {
+      if (
+        !isCollidingXStart.current &&
+        !isCollidingXEnd.current &&
+        !isCollidingYStart.current &&
+        !isCollidingYEnd.current
+      ) {
         dispatchLocal({
           type: 'TRIGGER_NEXT_POSITION',
         });
@@ -138,25 +145,25 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision 
       // eslint-disable-next-line react/jsx-no-bind
       onClick={handleClick}
     >
-        <>
-          <Logo
-            positionX={Math.round(positions.positionX.value)}
-            positionY={Math.round(positions.positionY.value)}
-            width={logoObject[0]}
-            height={logoObject[1]}
-            // changeColours={isColliding.current}
-            changeColours={false}
-            isPaused={false}
-          />
-          {/* <Sound shouldTriggerSound={isColliding.current} /> */}
-          <Sound shouldTriggerSound={false} />
-        </>
+      <>
+        <Logo
+          positionX={Math.round(positions.positionX.value)}
+          positionY={Math.round(positions.positionY.value)}
+          width={logoObject[0]}
+          height={logoObject[1]}
+          // changeColours={isColliding.current}
+          changeColours={false}
+          isPaused={false}
+        />
+        {/* <Sound shouldTriggerSound={isColliding.current} /> */}
+        <Sound shouldTriggerSound={false} />
+      </>
     </Styles.PlayingFieldWrapper>
   );
 };
 
 const { bool } = PropTypes;
 
-PlayingField.propTypes = { };
+PlayingField.propTypes = {};
 
 export default PlayingField;
