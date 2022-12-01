@@ -37,27 +37,24 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
 
           newDraft.positionX.value += state.positionX.velocity;
           newDraft.positionY.value += state.positionY.velocity;
-
-          return newDraft;
+          break;
         }
         case 'TRIGGER_X_COLLISION': {
           const newDraft = state;
 
           newDraft.positionX.value += state.positionX.velocity * -1;
           newDraft.positionX.velocity *= -1;
-
-          return newDraft;
+          break;
         }
         case 'TRIGGER_Y_COLLISION': {
           const newDraft = state;
 
           newDraft.positionY.value += state.positionY.velocity * -1;
           newDraft.positionY.velocity *= -1;
-
-          return newDraft;
+          break;
         }
         default: {
-          return state;
+          break
         }
       }
     }),
@@ -151,12 +148,10 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
           positionY={Math.round(positions.positionY.value)}
           width={logoObject[0]}
           height={logoObject[1]}
-          // changeColours={isColliding.current}
-          changeColours={false}
+          changeColours={isCollidingXStart.current || isCollidingXEnd.current || isCollidingYStart.current|| isCollidingYEnd.current}
           isPaused={false}
         />
-        {/* <Sound shouldTriggerSound={isColliding.current} /> */}
-        <Sound shouldTriggerSound={false} />
+        <Sound shouldTriggerSound={isCollidingXStart.current || isCollidingXEnd.current || isCollidingYStart.current|| isCollidingYEnd.current} />
       </>
     </Styles.PlayingFieldWrapper>
   );
