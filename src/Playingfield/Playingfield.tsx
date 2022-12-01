@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
-import type { FC, ReactElement } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useLayoutEffect, useReducer } from 'react';
+import type { FC, ReactElement, Reducer } from 'react';
 import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,24 +12,70 @@ import { getSoundState, getPlayState } from '../Store2/selectors'
 import type { Dispatch } from '../Store2/types';
 import { pauseGame } from '../Store2/actionCreators';
 
-
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 
 const logoObject: Types.LogoObject = [150, 138];
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision }): ReactElement => {
-  const [positionX, setPositionX] = useState(50);
-  const [positionY, setPositionY] = useState(50);
-  const isPaused = useSelector(getPlayState)
-  const dispatch: Dispatch = useDispatch();
+  const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>((state, action) => {
+    // todo union types
+    switch (action.type) {
+      case 'TRIGGER_NEXT_POSITION': {
+        const newPositions = {
+          ...state,
+          positionX: {
+            ...state.positionX,
+            value: state.positionX.value + state.positionX.velocity,
+          },
+          positionY: {
+            ...state.positionY,
+            value: state.positionY.value + state.positionY.velocity,
+          }
+        }
+        return newPositions;
+      }
+      case 'TRIGGER_X_COLLISION': {
+        const newPositions = {
+          ...state,
+          positionX: {
+            ...state.positionX,
+            value: state.positionX.value + (state.positionX.velocity * -1),
+            velocity: state.positionX.velocity * -1,
+          },
+        }
+        return newPositions;
+      }
+      case 'TRIGGER_Y_COLLISION': {
+        const newPositions = {
+          ...state,
+          positionY: {
+            ...state.positionY,
+            value: state.positionY.value + (state.positionY.velocity * -1),
+            velocity: state.positionY.velocity * -1,
+          },
+        }
+        return newPositions
+      }
+      default:
+        return state;
+    }
+  }, {
+    positionX: {
+      value: 50,
+      velocity: 4,
+    },
+    positionY: {
+      value: 50,
+      velocity: 2,
+    }
+  });
 
   const loopTimestamp = useRef(0);
   const playingfieldBB = useRef<DOMRect>({} as DOMRect);
 
-  const isColliding = useRef(false);
-  const isCollidingX = useRef(false);
-  const isCollidingY = useRef(false);
+  const isPaused = useSelector(getPlayState);
+  const dispatch: Dispatch = useDispatch();
 
   const playingfieldDomElement = useCallback((element: HTMLElement) => {
     if (!element) {
@@ -40,25 +86,38 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision 
   }, []);
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
-    positionX,
+    positions.positionX.value,
     logoObject[0],
     playingfieldBB.current.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
-    positionY,
+    positions.positionY.value,
     logoObject[1],
     playingfieldBB.current.height,
   );
   const loop = useCallback(() => {
     if (!isPaused) {
-      setPositionX((prevPositionX: number) => Math.round(prevPositionX + 1));
-      setPositionY((prevPositionY: number) => Math.round(prevPositionY + 1));
+      if (isCollidingXStart.current || isCollidingXEnd.current) {
+        dispatchLocal({
+          type: 'TRIGGER_X_COLLISION',
+        });
+      }
 
-      console.log(isCollidingXStart, isCollidingXEnd);
+      if (isCollidingYStart.current || isCollidingYEnd.current) {
+        dispatchLocal({
+          type: 'TRIGGER_Y_COLLISION',
+        });
+      }
+
+      if (!isCollidingXStart.current && !isCollidingXEnd.current && !isCollidingYStart.current && !isCollidingYEnd.current) {
+        dispatchLocal({
+          type: 'TRIGGER_NEXT_POSITION',
+        });
+      }
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isPaused]);
+  }, [isPaused, isCollidingXStart, isCollidingYStart, isCollidingXEnd, isCollidingYEnd]);
 
   useLayoutEffect(() => {
     loopTimestamp.current = window.requestAnimationFrame(loop);
@@ -69,7 +128,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision 
   }, [loop]);
 
   function handleClick() {
-    dispatch(pauseGame([positionX, positionY]));
+    dispatch(pauseGame([positions.positionX.value, positions.positionY.value]));
   }
 
   return (
@@ -81,14 +140,16 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ triggerCollision 
     >
         <>
           <Logo
-            positionX={positionX}
-            positionY={positionY}
+            positionX={Math.round(positions.positionX.value)}
+            positionY={Math.round(positions.positionY.value)}
             width={logoObject[0]}
             height={logoObject[1]}
-            changeColours={isColliding.current}
+            // changeColours={isColliding.current}
+            changeColours={false}
             isPaused={false}
           />
-          <Sound shouldTriggerSound={isColliding.current} />
+          {/* <Sound shouldTriggerSound={isColliding.current} /> */}
+          <Sound shouldTriggerSound={false} />
         </>
     </Styles.PlayingFieldWrapper>
   );
