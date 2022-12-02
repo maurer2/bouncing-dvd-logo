@@ -12,6 +12,13 @@ const reducers = (state: Store = initialState, action: Action): Store => {
         isPaused: false,
       };
     }
+    case 'PAUSE_GAME': {
+      return {
+        ...state,
+        isPaused: !state.isPaused,
+        lastPosition: action.payload,
+      };
+    }
     case 'RESET_GAME': {
       return {
         ...state,

@@ -1,30 +1,87 @@
-import React, { useEffect, useState, useRef, useCallback, useLayoutEffect } from 'react';
-import type { FC, ReactElement } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef, useCallback, useLayoutEffect, useReducer } from 'react';
+import type { FC, ReactElement, Reducer } from 'react';
+import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
+import { useDispatch, useSelector } from 'react-redux';
+import { produce } from 'immer';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
-import useChangeDelta from '../Hooks/useChangeDelta';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
+import { getSoundState, getPlayState } from '../Store2/selectors';
+import type { Dispatch } from '../Store2/types';
+import { pauseGame } from '../Store2/actionCreators';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 
 const logoObject: Types.LogoObject = [150, 138];
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, triggerCollision }): ReactElement => {
-  const [positionX, setPositionX] = useState(0);
-  const [positionY, setPositionY] = useState(0);
+const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): number => {
+  // prettier-ignore
+  const upperRandomBound = 0 + ((maxRandomness / 2) / 100);
+  // prettier-ignore
+  const lowerRandomBound = 0 - ((maxRandomness / 2) / 100);
+
+  const randomValueInRange = random(lowerRandomBound, upperRandomBound, true);
+
+  return Math.sign(currentRandomNess) === 1
+    ? currentRandomNess + randomValueInRange
+    : currentRandomNess - randomValueInRange;
+};
+
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
+  triggerCollision,
+}): ReactElement => {
+  const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>(
+    produce((state, action) => {
+      // todo union types
+      switch (action.type) {
+        case 'TRIGGER_NEXT_POSITION': {
+          const newDraft = state;
+
+          newDraft.positionX.value += state.positionX.velocity;
+          newDraft.positionY.value += state.positionY.velocity;
+          break;
+        }
+        case 'TRIGGER_X_COLLISION': {
+          const newDraft = state;
+
+          newDraft.positionX.value += state.positionX.velocity * -1;
+          newDraft.positionX.velocity *= -1;
+          break;
+        }
+        case 'TRIGGER_Y_COLLISION': {
+          const newDraft = state;
+
+          newDraft.positionY.value += state.positionY.velocity * -1;
+          newDraft.positionY.velocity *= -1;
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }),
+    {
+      positionX: {
+        value: 50,
+        velocity: 8,
+        randomness: 0,
+      },
+      positionY: {
+        value: 50,
+        velocity: 2,
+        randomness: 0,
+      },
+    },
+  );
 
   const loopTimestamp = useRef(0);
   const playingfieldBB = useRef<DOMRect>({} as DOMRect);
 
-  const isColliding = useRef(false);
-  const isCollidingX = useRef(false);
-  const isCollidingY = useRef(false);
-  const isPausedPrevious = useRef(false);
-  const isInit = useRef(false);
+  const isPaused = useSelector(getPlayState);
+  const dispatch: Dispatch = useDispatch();
 
   const playingfieldDomElement = useCallback((element: HTMLElement) => {
     if (!element) {
@@ -35,97 +92,93 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, trigger
   }, []);
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
-    positionX,
+    positions.positionX.value,
     logoObject[0],
     playingfieldBB.current.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
-    positionY,
+    positions.positionY.value,
     logoObject[1],
     playingfieldBB.current.height,
   );
-  const [changeX] = useChangeDelta(3, isCollidingX.current);
-  const [changeY] = useChangeDelta(3, isCollidingY.current);
-
-  // set random initial position and direction
-  const initPosition = useCallback(() => {
-    if (isInit.current) {
-      return;
-    }
-
-    const { width, height } = playingfieldBB.current;
-
-    setPositionX(() => random(width - logoObject[0]));
-    setPositionY(() => random(height - logoObject[1]));
-
-    isInit.current = true;
-  }, []);
-
   const loop = useCallback(() => {
-    if (!isPausedPrevious.current) {
-      setPositionX((prevPositionX: number) => Math.round(prevPositionX + changeX.current));
-      setPositionY((prevPositionY: number) => Math.round(prevPositionY + changeY.current));
+    if (!isPaused) {
+      if (isCollidingXStart.current || isCollidingXEnd.current) {
+        dispatchLocal({
+          type: 'TRIGGER_X_COLLISION',
+        });
+      }
 
-      isCollidingX.current = isCollidingXStart.current || isCollidingXEnd.current;
-      isCollidingY.current = isCollidingYStart.current || isCollidingYEnd.current;
-      isColliding.current = isCollidingX.current || isCollidingY.current;
+      if (isCollidingYStart.current || isCollidingYEnd.current) {
+        dispatchLocal({
+          type: 'TRIGGER_Y_COLLISION',
+        });
+      }
 
-      if (isCollidingX.current || isCollidingY.current) {
-        triggerCollision();
+      if (
+        !isCollidingXStart.current &&
+        !isCollidingXEnd.current &&
+        !isCollidingYStart.current &&
+        !isCollidingYEnd.current
+      ) {
+        dispatchLocal({
+          type: 'TRIGGER_NEXT_POSITION',
+        });
       }
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isCollidingXStart, isCollidingXEnd, isCollidingYStart, isCollidingYEnd, changeX, changeY, triggerCollision]);
-
-  const startLoop = useCallback(() => {
-    if (loopTimestamp.current !== 0) {
-      return;
-    }
-
-    loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [loop]);
-
-  function stopLoop(): void {
-    window.cancelAnimationFrame(loopTimestamp.current);
-  }
+  }, [isPaused, isCollidingXStart, isCollidingYStart, isCollidingXEnd, isCollidingYEnd]);
 
   useLayoutEffect(() => {
-    initPosition();
-    startLoop();
+    loopTimestamp.current = window.requestAnimationFrame(loop);
 
-    return () => stopLoop();
-  }, [initPosition, startLoop]);
+    return () => {
+      window.cancelAnimationFrame(loopTimestamp.current);
+    };
+  }, [loop]);
 
-  useEffect(() => {
-    isPausedPrevious.current = isPaused;
-  }, [isPaused]);
+  function handleClick() {
+    dispatch(pauseGame([positions.positionX.value, positions.positionY.value]));
+  }
 
   return (
     <Styles.PlayingFieldWrapper
       ref={playingfieldDomElement}
       data-testid="playfingfield"
-      data-status={isPaused ? 'inactive' : 'active'}
+      // eslint-disable-next-line react/jsx-no-bind
+      onClick={handleClick}
     >
-      {isInit.current && (
-        <>
-          <Logo
-            positionX={positionX}
-            positionY={positionY}
-            width={logoObject[0]}
-            height={logoObject[1]}
-            changeColours={isColliding.current}
-            isPaused={isPaused}
-          />
-          <Sound shouldTriggerSound={isColliding.current} />
-        </>
-      )}
+      <>
+        <Logo
+          positionX={Math.round(positions.positionX.value)}
+          positionY={Math.round(positions.positionY.value)}
+          width={logoObject[0]}
+          height={logoObject[1]}
+          changeColours={
+            isCollidingXStart.current ||
+            isCollidingXEnd.current ||
+            isCollidingYStart.current ||
+            isCollidingYEnd.current
+          }
+          isPaused={isPaused}
+        />
+        {/* todo: move to parent */}
+        <Sound
+          shouldTriggerSound={
+            isCollidingXStart.current ||
+            isCollidingXEnd.current ||
+            isCollidingYStart.current ||
+            isCollidingYEnd.current
+          }
+        />
+      </>
     </Styles.PlayingFieldWrapper>
   );
 };
 
 const { bool } = PropTypes;
 
-PlayingField.propTypes = { isPaused: bool.isRequired };
+PlayingField.propTypes = {};
 
 export default PlayingField;
