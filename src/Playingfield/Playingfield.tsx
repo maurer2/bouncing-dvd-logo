@@ -1,11 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-  useLayoutEffect,
-  useReducer,
-} from 'react';
+import React, { useRef, useCallback, useLayoutEffect, useReducer } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
@@ -14,7 +7,6 @@ import { produce } from 'immer';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
-import useChangeDelta from '../Hooks/useChangeDelta';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 import { getSoundState, getPlayState } from '../Store2/selectors';
 import type { Dispatch } from '../Store2/types';
@@ -24,6 +16,19 @@ import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 
 const logoObject: Types.LogoObject = [150, 138];
+
+const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): number => {
+  // prettier-ignore
+  const upperRandomBound = 0 + ((maxRandomness / 2) / 100);
+  // prettier-ignore
+  const lowerRandomBound = 0 - ((maxRandomness / 2) / 100);
+
+  const randomValueInRange = random(lowerRandomBound, upperRandomBound, true);
+
+  return Math.sign(currentRandomNess) === 1
+    ? currentRandomNess + randomValueInRange
+    : currentRandomNess - randomValueInRange;
+};
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
   triggerCollision,
@@ -54,7 +59,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
           break;
         }
         default: {
-          break
+          break;
         }
       }
     }),
@@ -62,10 +67,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       positionX: {
         value: 50,
         velocity: 8,
+        randomness: 0,
       },
       positionY: {
         value: 50,
         velocity: 2,
+        randomness: 0,
       },
     },
   );
@@ -148,10 +155,23 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
           positionY={Math.round(positions.positionY.value)}
           width={logoObject[0]}
           height={logoObject[1]}
-          changeColours={isCollidingXStart.current || isCollidingXEnd.current || isCollidingYStart.current|| isCollidingYEnd.current}
-          isPaused={false}
+          changeColours={
+            isCollidingXStart.current ||
+            isCollidingXEnd.current ||
+            isCollidingYStart.current ||
+            isCollidingYEnd.current
+          }
+          isPaused={isPaused}
         />
-        <Sound shouldTriggerSound={isCollidingXStart.current || isCollidingXEnd.current || isCollidingYStart.current|| isCollidingYEnd.current} />
+        {/* todo: move to parent */}
+        <Sound
+          shouldTriggerSound={
+            isCollidingXStart.current ||
+            isCollidingXEnd.current ||
+            isCollidingYStart.current ||
+            isCollidingYEnd.current
+          }
+        />
       </>
     </Styles.PlayingFieldWrapper>
   );
