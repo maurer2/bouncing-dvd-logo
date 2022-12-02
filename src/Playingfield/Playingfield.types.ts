@@ -1,6 +1,5 @@
 export type PlayingfieldProps = {
-  // isPaused: boolean;
-  triggerCollision: () => void;
+  isPaused: boolean;
 };
 
 export type LogoObject = [width: number, height: number];

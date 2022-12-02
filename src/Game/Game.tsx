@@ -53,12 +53,11 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   );
 
   const handleClick = (): void => {
-    // dispatch(togglePlayState());
+    dispatch(togglePlayState());
   };
 
   function handleInput(event: KeyboardEvent<HTMLButtonElement>): void {
     event.preventDefault();
-
     const observedKeys = [' ', 'k']; // " " === spacebar
 
     if (observedKeys.includes(event.key.toLowerCase())) {
@@ -79,6 +78,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     currentResizeObserver.observe(currentDomElement);
 
     return () => {
+      console.log('cleanup');
       currentResizeObserver.unobserve(currentDomElement);
     };
   }, []);
@@ -108,21 +108,19 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         data-testid="game-wrapper"
       >
         <PlayingField
-          // isPaused={isPaused}
-          triggerCollision={triggerCollisionCB}
+          isPaused={isPaused}
           key={`key-${keyValue}`}
           data-testid="game-playingfield"
           data-key={`key-${keyValue}`}
         />
-        {/* <Styles.PauseButton
+        <Styles.PauseButton
           tabIndex={0}
           onClick={handleClick}
-          onKeyDown={(event) => handleInput(event)}
+          onKeyUp={(event) => handleInput(event)}
           ref={pauseButtonDomElement}
           data-testid="game-pausebutton"
-        >
-          {isPaused ? 'Unpause' : 'Pause'}
-        </Styles.PauseButton> */}
+          aria-label={isPaused ? 'Unpause' : 'Pause'}
+        />
         <SoundTrigger
           soundIsDisabled={soundIsDisabled}
           toggleSound={toggleSoundCB}

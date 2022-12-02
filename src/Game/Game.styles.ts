@@ -19,7 +19,5 @@ export const PauseButton = styled.button`
   padding: 0;
   border: 0;
   outline: none;
-  text-indent: 9999px;
   overflow: hidden;
-  pointer-events: none;
 `;
