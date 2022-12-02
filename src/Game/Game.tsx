@@ -29,6 +29,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     nanoid(10),
   );
   const wrapperDomElement = useRef<HTMLDivElement>(null);
+  const pauseButtonDomElement = useRef<HTMLButtonElement>(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce> | null>(null);
 
@@ -56,6 +57,8 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   };
 
   function handleInput(event: KeyboardEvent<HTMLButtonElement>): void {
+    event.preventDefault();
+
     const observedKeys = [' ', 'k']; // " " === spacebar
 
     if (observedKeys.includes(event.key.toLowerCase())) {
@@ -87,7 +90,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
 
   // autofocus
   useEffect(() => {
-    wrapperDomElement.current.focus();
+    pauseButtonDomElement?.current?.focus();
   }, []);
 
   const toggleSoundCB = useCallback(() => {
@@ -102,7 +105,6 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper
         ref={wrapperDomElement}
-        tabIndex={0}
         data-testid="game-wrapper"
       >
         <PlayingField
@@ -113,9 +115,10 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
           data-key={`key-${keyValue}`}
         />
         {/* <Styles.PauseButton
-          tabIndex={-1}
+          tabIndex={0}
           onClick={handleClick}
-          onKeyPress={(event) => handleInput(event)}
+          onKeyDown={(event) => handleInput(event)}
+          ref={pauseButtonDomElement}
           data-testid="game-pausebutton"
         >
           {isPaused ? 'Unpause' : 'Pause'}

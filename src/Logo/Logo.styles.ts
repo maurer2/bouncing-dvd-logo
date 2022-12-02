@@ -15,5 +15,6 @@ export const LogoElement = styled.figure.attrs<LogoStyleProps>((props) => ({
   height: ${(props) => `${props.$height}px`};
   margin: 0;
   will-change: translate;
+  contain: strict;
   opacity: ${({ $isPaused }) => ($isPaused ? '0.25' : '1')};
 `;
