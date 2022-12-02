@@ -18,6 +18,7 @@ export type Store = {
   currentColour: Colour;
   previousColour: Colour | null;
   isPaused: boolean;
+  // isColliding: boolean;
   soundIsDisabled: boolean;
   collisionCount: number;
 };

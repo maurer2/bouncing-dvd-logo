@@ -2,15 +2,11 @@ import React, { useRef, useCallback, useLayoutEffect, useReducer } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
-import { useDispatch, useSelector } from 'react-redux';
 import { produce } from 'immer';
 
 import Logo from '../Logo/Logo';
 import Sound from '../Sound/Sound';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
-import { getSoundState, getPlayState } from '../Store2/selectors';
-import type { Dispatch } from '../Store2/types';
-import { pauseGame } from '../Store2/actionCreators';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
@@ -30,7 +26,7 @@ const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): 
     : currentRandomNess - randomValueInRange;
 };
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused}): ReturnType<FC> => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, triggerCollision }): ReturnType<FC> => {
   const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>(
     produce((state, action) => {
       // todo union types
@@ -78,9 +74,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused}): Retur
   const loopTimestamp = useRef(0);
   const playingfieldBB = useRef<DOMRect>({} as DOMRect);
 
-  // const isPaused = useSelector(getPlayState);
-  const dispatch: Dispatch = useDispatch();
-
   const playingfieldDomElement = useCallback((element: HTMLElement) => {
     if (!element) {
       return;
@@ -105,12 +98,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused}): Retur
         dispatchLocal({
           type: 'TRIGGER_X_COLLISION',
         });
+        triggerCollision();
       }
 
       if (isCollidingYStart.current || isCollidingYEnd.current) {
         dispatchLocal({
           type: 'TRIGGER_Y_COLLISION',
         });
+        triggerCollision();
       }
 
       if (
@@ -135,10 +130,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused}): Retur
       window.cancelAnimationFrame(loopTimestamp.current);
     };
   }, [loop]);
-
-  function handleClick() {
-    dispatch(pauseGame([positions.positionX.value, positions.positionY.value]));
-  }
 
   return (
     <Styles.PlayingFieldWrapper
