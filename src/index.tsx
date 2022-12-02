@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
 import { Provider } from 'react-redux';
@@ -34,12 +34,14 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const App = () => (
-  <Provider store={store}>
-    <Settings>
-      <GlobalStyles />
-      <Game />
-    </Settings>
-  </Provider>
+  <StrictMode>
+    <Provider store={store}>
+      <Settings>
+        <GlobalStyles />
+        <Game />
+      </Settings>
+    </Provider>
+  </StrictMode>
 );
 
 const container = document.getElementById('root');
