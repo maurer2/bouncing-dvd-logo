@@ -5,7 +5,6 @@ import { random } from 'lodash-es';
 import { produce } from 'immer';
 
 import Logo from '../Logo/Logo';
-import Sound from '../Sound/Sound';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 
 import * as Styles from './Playingfield.styles';
@@ -124,7 +123,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isPaused, isCollidingXStart, isCollidingYStart, isCollidingXEnd, isCollidingYEnd, triggerCollision]);
+  }, [
+    isPaused,
+    isCollidingXStart,
+    isCollidingYStart,
+    isCollidingXEnd,
+    isCollidingYEnd,
+    triggerCollision,
+  ]);
 
   useLayoutEffect(() => {
     loopTimestamp.current = window.requestAnimationFrame(loop);
@@ -139,30 +145,19 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       ref={playingfieldDomElement}
       data-testid="playfingfield"
     >
-      <>
-        <Logo
-          positionX={Math.round(positions.positionX.value)}
-          positionY={Math.round(positions.positionY.value)}
-          width={logoObject[0]}
-          height={logoObject[1]}
-          changeColours={
-            isCollidingXStart.current ||
-            isCollidingXEnd.current ||
-            isCollidingYStart.current ||
-            isCollidingYEnd.current
-          }
-          isPaused={isPaused}
-        />
-        {/* todo: move to parent */}
-        <Sound
-          shouldTriggerSound={
-            isCollidingXStart.current ||
-            isCollidingXEnd.current ||
-            isCollidingYStart.current ||
-            isCollidingYEnd.current
-          }
-        />
-      </>
+      <Logo
+        positionX={Math.round(positions.positionX.value)}
+        positionY={Math.round(positions.positionY.value)}
+        width={logoObject[0]}
+        height={logoObject[1]}
+        changeColours={
+          isCollidingXStart.current ||
+          isCollidingXEnd.current ||
+          isCollidingYStart.current ||
+          isCollidingYEnd.current
+        }
+        isPaused={isPaused}
+      />
     </Styles.PlayingFieldWrapper>
   );
 };

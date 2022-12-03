@@ -1,23 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 import soundFile from '../assets/soundFile.wav';
-import { getSoundState } from '../Store2/selectors'
 
 import type * as Types from './Sound.types';
 
 const Sound: FC<Readonly<Types.SoundProps>> = ({ shouldTriggerSound }): ReactElement => {
-  const soundIsDisabled = useSelector(getSoundState);
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const prevPlaySound = useRef(false);
 
   useEffect(() => {
-    if (soundIsDisabled) {
-      return;
-    }
-
     // do not trigger new sound start while previous sound is playing
     if (shouldTriggerSound && shouldTriggerSound !== prevPlaySound.current) {
       setSoundIsPlaying(true);
@@ -28,9 +21,9 @@ const Sound: FC<Readonly<Types.SoundProps>> = ({ shouldTriggerSound }): ReactEle
     }
 
     prevPlaySound.current = shouldTriggerSound;
-  }, [shouldTriggerSound, soundIsDisabled]);
+  }, [shouldTriggerSound]);
 
-  if (soundIsDisabled || !soundIsPlaying) {
+  if (!soundIsPlaying) {
     return null;
   }
 

@@ -22,6 +22,7 @@ import {
 } from '../Store2/actionCreators';
 import { getSoundState, getPlayState, getIsPlayingSoundState } from '../Store2/selectors';
 import type { Dispatch } from '../Store2/types';
+import Sound from '../Sound/Sound';
 
 import * as Styles from './Game.styles';
 import type * as Types from './Game.types';
@@ -107,7 +108,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     // todo replace with redux thunk
     setTimeout(() => {
       dispatch(triggerCollisionEnd());
-    }, 1000);
+    }, 800);
   }, [dispatch]);
 
   return (
@@ -135,7 +136,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
           soundIsDisabled={soundIsDisabled}
           toggleSound={toggleSoundCB}
         />
-        <button>{String(isPlayingSound)}</button>
+        <Sound shouldTriggerSound={isPlayingSound} />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );
