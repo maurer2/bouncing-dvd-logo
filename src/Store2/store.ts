@@ -6,7 +6,7 @@ export const initialState: Store = {
   currentColour: colours[0],
   previousColour: null,
   isPaused: false,
-  // isColliding: false,
+  isPlayingSound: false,
   soundIsDisabled: true,
   collisionCount: 0,
 };

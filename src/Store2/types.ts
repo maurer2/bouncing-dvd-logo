@@ -6,6 +6,7 @@ import type {
   TRIGGER_COLLISION,
   TOGGLE_PLAY_STATE,
   TOGGLE_SOUND,
+  TRIGGER_COLLISION_END,
 } from './actionTypes';
 
 import type store from '.';
@@ -18,7 +19,7 @@ export type Store = {
   currentColour: Colour;
   previousColour: Colour | null;
   isPaused: boolean;
-  // isColliding: boolean;
+  isPlayingSound: boolean;
   soundIsDisabled: boolean;
   collisionCount: number;
 };
@@ -38,7 +39,6 @@ export type ResetGameAction = {
 };
 export type TriggerCollisionAction = {
   type: typeof TRIGGER_COLLISION;
-  // payload: Position;
 };
 export type TogglePlayStateAction = {
   type: typeof TOGGLE_PLAY_STATE;
@@ -46,10 +46,14 @@ export type TogglePlayStateAction = {
 export type ToggleSoundAction = {
   type: typeof TOGGLE_SOUND;
 };
+export type TriggerCollisionActionEnd = {
+  type: typeof TRIGGER_COLLISION_END;
+};
 export type Action =
   | StartGameAction
   | PauseGameAction
   | ResetGameAction
   | TriggerCollisionAction
   | TogglePlayStateAction
-  | ToggleSoundAction;
+  | ToggleSoundAction
+  | TriggerCollisionActionEnd;

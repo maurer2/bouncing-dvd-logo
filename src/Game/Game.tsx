@@ -13,8 +13,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SoundToggle from '../SoundToggle/SoundToggle';
 import PlayingField from '../Playingfield/Playingfield';
-import { startGame, toggleSound, togglePlayState, triggerCollision } from '../Store2/actionCreators';
-import { getSoundState, getPlayState } from '../Store2/selectors'
+import {
+  startGame,
+  toggleSound,
+  togglePlayState,
+  triggerCollision,
+  triggerCollisionEnd,
+} from '../Store2/actionCreators';
+import { getSoundState, getPlayState, getIsPlayingSoundState } from '../Store2/selectors';
 import type { Dispatch } from '../Store2/types';
 
 import * as Styles from './Game.styles';
@@ -23,7 +29,8 @@ import type * as Types from './Game.types';
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
   const soundIsDisabled = useSelector(getSoundState);
-  const isPaused = useSelector(getPlayState)
+  const isPaused = useSelector(getPlayState);
+  const isPlayingSound = useSelector(getIsPlayingSoundState);
   const [keyValue, setKeyValue] = useReducer<ReducerWithoutAction<string>>(
     () => nanoid(10),
     nanoid(10),
@@ -32,7 +39,6 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   const pauseButtonDomElement = useRef<HTMLButtonElement>(null);
   const isInitialResize = useRef(true);
   const debouncedResizeHandler = useRef<ReturnType<typeof debounce> | null>(null);
-
   const gameResizeObserver = useRef(
     new ResizeObserver((entries: ResizeObserverEntry[]) => {
       const gameHasResized: boolean = entries.some(
@@ -62,7 +68,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     if (observedKeys.includes(event.key.toLowerCase())) {
       dispatch(togglePlayState());
     }
-  }
+  };
 
   // setup resize observer
   useEffect(() => {
@@ -81,9 +87,9 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     };
   }, []);
 
-  // init redux
+  // init
   // useEffect(() => {
-    // dispatch(startGame());
+  // dispatch(startGame());
   // }, [dispatch]);
 
   // autofocus
@@ -97,6 +103,11 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
 
   const triggerCollisionCB = useCallback(() => {
     dispatch(triggerCollision());
+
+    // todo replace with redux thunk
+    setTimeout(() => {
+      dispatch(triggerCollisionEnd());
+    }, 1000);
   }, [dispatch]);
 
   return (
@@ -117,13 +128,14 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
           onClick={handleClick}
           onKeyUp={handleInput}
           ref={pauseButtonDomElement}
-          data-testid="game-pausebutton"
           aria-label={isPaused ? 'Unpause' : 'Pause'}
+          data-testid="game-pausebutton"
         />
         <SoundToggle
           soundIsDisabled={soundIsDisabled}
           toggleSound={toggleSoundCB}
         />
+        <button>{String(isPlayingSound)}</button>
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

@@ -1,3 +1,11 @@
+import { TRIGGER_COLLISION_END ,
+  START_GAME,
+  PAUSE_GAME,
+  RESET_GAME,
+  TRIGGER_COLLISION,
+  TOGGLE_PLAY_STATE,
+  TOGGLE_SOUND,
+} from './actionTypes';
 import type {
   Position,
   StartGameAction,
@@ -6,15 +14,8 @@ import type {
   TriggerCollisionAction,
   TogglePlayStateAction,
   ToggleSoundAction,
+  TriggerCollisionActionEnd
 } from './types';
-import {
-  START_GAME,
-  PAUSE_GAME,
-  RESET_GAME,
-  TRIGGER_COLLISION,
-  TOGGLE_PLAY_STATE,
-  TOGGLE_SOUND,
-} from './actionTypes';
 
 export function startGame(): StartGameAction {
   return {
@@ -35,7 +36,7 @@ export function resetGame(): ResetGameAction {
   };
 }
 
-export function triggerCollision(/* position: Position */): TriggerCollisionAction {
+export function triggerCollision(): TriggerCollisionAction {
   return {
     type: TRIGGER_COLLISION,
   };
@@ -50,5 +51,12 @@ export function togglePlayState(): TogglePlayStateAction {
 export function toggleSound(): ToggleSoundAction {
   return {
     type: TOGGLE_SOUND,
+  };
+}
+
+// temp
+export function triggerCollisionEnd(): TriggerCollisionActionEnd {
+  return {
+    type: TRIGGER_COLLISION_END,
   };
 }

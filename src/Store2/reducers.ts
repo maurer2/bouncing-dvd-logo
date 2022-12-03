@@ -46,6 +46,12 @@ const reducers = (state: Store = initialState, action: Action): Store => {
       return {
         ...state,
         collisionCount: state.collisionCount + 1,
+        isPlayingSound: !state.soundIsDisabled,
+    };
+    case 'TRIGGER_COLLISION_END':
+      return {
+        ...state,
+        isPlayingSound: false,
       };
     default: {
       return {

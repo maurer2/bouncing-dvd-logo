@@ -26,7 +26,10 @@ const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): 
     : currentRandomNess - randomValueInRange;
 };
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, triggerCollision }): ReturnType<FC> => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
+  isPaused,
+  triggerCollision,
+}): ReactElement => {
   const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>(
     produce((state, action) => {
       // todo union types
@@ -121,7 +124,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({ isPaused, trigger
     }
 
     loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [isPaused, isCollidingXStart, isCollidingYStart, isCollidingXEnd, isCollidingYEnd]);
+  }, [isPaused, isCollidingXStart, isCollidingYStart, isCollidingXEnd, isCollidingYEnd, triggerCollision]);
 
   useLayoutEffect(() => {
     loopTimestamp.current = window.requestAnimationFrame(loop);
