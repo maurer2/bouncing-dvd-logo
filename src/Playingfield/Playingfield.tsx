@@ -1,6 +1,5 @@
 import React, { useRef, useCallback, useLayoutEffect, useReducer } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
-import PropTypes, { func } from 'prop-types';
 import { random } from 'lodash-es';
 import { produce } from 'immer';
 
@@ -161,9 +160,5 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
     </Styles.PlayingFieldWrapper>
   );
 };
-
-const { bool } = PropTypes;
-
-PlayingField.propTypes = {};
 
 export default PlayingField;

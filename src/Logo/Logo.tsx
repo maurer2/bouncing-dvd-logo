@@ -1,6 +1,5 @@
 import type { FC, ReactElement } from 'react';
 import React, { useEffect, useRef, useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import Store from '../Store';
 import useColour from '../Hooks/useColour';
@@ -42,17 +41,6 @@ const Logo: FC<Readonly<Types.LogoProps>> = ({
       <CatLogo data-testid="cat-logo" />
     </Styles.LogoElement>
   );
-};
-
-const { number, bool } = PropTypes;
-
-Logo.propTypes = {
-  positionX: number.isRequired,
-  positionY: number.isRequired,
-  width: number.isRequired,
-  height: number.isRequired,
-  changeColours: bool.isRequired,
-  isPaused: bool.isRequired,
 };
 
 export default Logo;

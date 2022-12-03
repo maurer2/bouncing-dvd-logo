@@ -1,6 +1,5 @@
 import React, { useMemo, useReducer } from 'react';
 import type { FC, PropsWithChildren, ReactElement, ReducerWithoutAction } from 'react';
-import PropTypes from 'prop-types';
 
 import Store, { colours } from '../Store';
 
@@ -23,9 +22,5 @@ const Settings: FC<PropsWithChildren<Types.SettingsProps>> = ({ children }): Rea
 
   return <Store.Provider value={storeValue}>{children}</Store.Provider>;
 };
-
-const { node, arrayOf, oneOfType } = PropTypes;
-
-Settings.propTypes = { children: oneOfType([arrayOf(node), node]).isRequired };
 
 export default Settings;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { FC, ReactElement } from 'react';
-import PropTypes from 'prop-types';
 
 import soundFile from '../assets/soundFile.wav';
 
@@ -40,9 +39,5 @@ const Sound: FC<Readonly<Types.SoundProps>> = ({ shouldTriggerSound }): ReactEle
     </audio>
   );
 };
-
-const { bool } = PropTypes;
-
-Sound.propTypes = { shouldTriggerSound: bool.isRequired };
 
 export default Sound;
