@@ -1,11 +1,11 @@
 import type { RootState } from '../Store2/types';
 
-export type SoundTriggerProps = {
+export type SoundToggleProps = {
   children?: never;
   soundIsDisabled: RootState['soundIsDisabled'];
   toggleSound: () => void;
 };
 
-export type SoundTriggerStyleProps = {
-  status: 'active' | 'inactive';
+export type SoundToggleStyleProps = {
+  $status: 'active' | 'inactive';
 };

@@ -6,8 +6,8 @@ import userEvent from '@testing-library/user-event'
 import Store, { colours } from '../Store';
 import type { StoreType } from '../Store';
 
-import Component from './SoundTrigger';
-import type * as Types from './SoundTrigger.types';
+import Component from './SoundToggle';
+import type * as Types from './SoundToggle.types';
 
 describe('Components', () => {
   let storeValues: StoreType;
@@ -24,7 +24,7 @@ describe('Components', () => {
     <Store.Provider value={storeValues}>{children}</Store.Provider>
   );
 
-  const setup = (props?: Types.SoundTriggerProps, key = 'key') =>
+  const setup = (props?: Types.SoundToggleProps, key = 'key') =>
     render(
       <StoreProvider key={key}>
         <Component {...props} />

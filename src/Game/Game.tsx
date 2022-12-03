@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid';
 import { StyleSheetManager } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
-import SoundTrigger from '../SoundTrigger/SoundTrigger';
+import SoundToggle from '../SoundToggle/SoundToggle';
 import PlayingField from '../Playingfield/Playingfield';
 import { startGame, toggleSound, togglePlayState, triggerCollision } from '../Store2/actionCreators';
 import { getSoundState, getPlayState } from '../Store2/selectors'
@@ -55,7 +55,6 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   const handleClick = (): void => {
     dispatch(togglePlayState());
   };
-
   const handleInput = (event: KeyboardEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     const observedKeys = [' ', 'k']; // " " === spacebar
@@ -121,7 +120,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
           data-testid="game-pausebutton"
           aria-label={isPaused ? 'Unpause' : 'Pause'}
         />
-        <SoundTrigger
+        <SoundToggle
           soundIsDisabled={soundIsDisabled}
           toggleSound={toggleSoundCB}
         />
