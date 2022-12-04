@@ -4,8 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Provider } from 'react-redux';
 import 'modern-normalize/modern-normalize.css';
 
-import store from './Store2';
-import Settings from './Settings/Settings';
+import store from './Store';
 import Game from './Game/Game';
 
 const GlobalStyles = createGlobalStyle`
@@ -36,10 +35,8 @@ const GlobalStyles = createGlobalStyle`
 const App = () => (
   <StrictMode>
     <Provider store={store}>
-      <Settings>
-        <GlobalStyles />
-        <Game />
-      </Settings>
+      <GlobalStyles />
+      <Game />
     </Provider>
   </StrictMode>
 );

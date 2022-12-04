@@ -1,4 +1,4 @@
-import type { Colour } from '../Store2/types';
+import type { Colour } from '../Store/types';
 
 export type PlayingfieldProps = {
   isPaused: boolean;

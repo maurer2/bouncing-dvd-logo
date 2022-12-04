@@ -19,14 +19,14 @@ import {
   togglePlayState,
   triggerCollision,
   triggerCollisionEnd,
-} from '../Store2/actionCreators';
+} from '../Store/actionCreators';
 import {
   getSoundState,
   getPlayState,
   getIsPlayingSoundState,
   getCurrentColour,
-} from '../Store2/selectors';
-import type { Dispatch, Colour } from '../Store2/types';
+} from '../Store/selectors';
+import type { Dispatch, Colour } from '../Store/types';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
 
 import * as Styles from './Game.styles';
