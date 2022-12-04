@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import Component from './SoundPlayer';
 import type { SoundPlayerProps } from './SoundPlayer.types';
 
-const mockPlay = vi.spyOn(window.HTMLAudioElement.prototype, 'play').mockImplementation(() => Promise<void>);
+const mockPlay = vi.spyOn(window.HTMLAudioElement.prototype, 'play').mockImplementation(() => Promise.resolve());
 
 describe('Components', () => {
   const defaultProps: SoundPlayerProps = { shouldTriggerSound: false };

@@ -1,5 +1,5 @@
 import type { Store, Action } from './types';
-import { initialState } from './store';
+import { initialState } from './Store';
 import { colours } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/default-param-last

@@ -1,3 +1,3 @@
-import type { StoreType } from '../../Store';
+import type { Colour } from '../../Store/types';
 
-export type UseColour = [colour: StoreType['colours'][number], changeColour: () => void];
+export type UseColour = [colour: string, changeColour: () => void];

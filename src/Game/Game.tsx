@@ -84,7 +84,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
     debouncedResizeHandler.current = debounce(setKeyValue, 300);
 
     const currentResizeObserver: ResizeObserver = gameResizeObserver.current;
-    const currentDomElement: HTMLElement = wrapperDomElement.current;
+    const currentDomElement: HTMLElement | null = wrapperDomElement.current;
 
     if (!currentDomElement) {
       return undefined;
