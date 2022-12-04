@@ -2,7 +2,7 @@ import type { Store } from './types';
 import { colours } from './constants';
 
 export const initialState: Store = {
-  lastPosition: [0, 0],
+  lastPosition: null,
   colours: {
     current: colours[0],
     previous: null,

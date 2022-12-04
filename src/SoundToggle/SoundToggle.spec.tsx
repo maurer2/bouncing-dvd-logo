@@ -1,94 +1,70 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
-
-import Store, { colours } from '../Store';
-import type { StoreType } from '../Store';
+import userEvent from '@testing-library/user-event';
 
 import Component from './SoundToggle';
-import type * as Types from './SoundToggle.types';
+import type { SoundToggleProps } from './SoundToggle.types';
 
 describe('Components', () => {
-  let storeValues: StoreType;
-
-  beforeEach(() => {
-    storeValues = {
-      colours: [...colours],
-      soundIsDisabled: true,
-      toggleSound: vi.fn(),
-    };
-  });
-
-  const StoreProvider = ({ children }) => (
-    <Store.Provider value={storeValues}>{children}</Store.Provider>
-  );
-
-  const setup = (props?: Types.SoundToggleProps, key = 'key') =>
+  const defaultProps: SoundToggleProps = {
+    soundIsDisabled: true,
+    toggleSound: vi.fn(),
+  };
+  const setup = (props: Partial<SoundToggleProps> = {}) =>
     render(
-      <StoreProvider key={key}>
-        <Component {...props} />
-      </StoreProvider>,
+      <Component
+        {...defaultProps}
+        {...props}
+      />,
     );
 
   it('should render', () => {
-    const screen = setup();
+    const screen = setup({});
 
     expect(screen.getByTestId('soundtrigger')).toBeInTheDocument();
   });
 
   it.skip('should match snapshot', () => {
-    const screen = setup();
+    const screen = setup({});
 
     expect(screen.container.firstChild).toMatchSnapshot();
   });
 
   it('should have child elements', () => {
-    const screen = setup();
+    const screen = setup({});
 
     expect(screen.getByTestId('soundtrigger')).toBeTruthy();
     expect(screen.getByTestId('soundtrigger-icon')).toBeTruthy();
-    expect(screen.getByTestId('soundtrigger-text')).toBeTruthy();
   });
 
   it('should have "Enable sound" text when sound is off', () => {
-    const screen = setup();
+    const screen = setup({});
 
-    expect(screen.getByText('Enable sound')).toBeInTheDocument();
+    expect(screen.getByLabelText('Enable sound')).toBeInTheDocument();
   });
 
   it('should have "Disable sound" text when sound is off', () => {
-    storeValues = {
-      ...storeValues,
+    const screen = setup({
       soundIsDisabled: false,
-    };
+    });
 
-    const screen = setup(undefined, 'on');
-    expect(screen.getByText('Disable sound')).toBeInTheDocument();
+    expect(screen.getByLabelText('Disable sound')).toBeInTheDocument();
   });
 
   it('should trigger sound toggle function on click, when sound is off', async () => {
-    storeValues = {
-      ...storeValues,
-      soundIsDisabled: false,
-    };
+    const screen = setup({});
 
-    const toggleSoundSpy = vi.spyOn(storeValues, 'toggleSound')
-    const screen = setup();
-
-    await userEvent.click(screen.getByTestId('soundtrigger'))
-    expect(toggleSoundSpy).toHaveBeenCalled();
+    await userEvent.click(screen.getByTestId('soundtrigger'));
+    expect(defaultProps.toggleSound).toHaveBeenCalled();
   });
 
   it('should trigger sound toggle function on click, when sound is on', async () => {
-    storeValues = {
-      ...storeValues,
-    };
+    const screen = setup({
+      soundIsDisabled: false,
+    });
 
-    const toggleSoundSpy = vi.spyOn(storeValues, 'toggleSound')
-    const screen = setup();
-
-    await userEvent.click(screen.getByTestId('soundtrigger'))
-    expect(toggleSoundSpy).toHaveBeenCalled();
+    await userEvent.click(screen.getByTestId('soundtrigger'));
+    expect(defaultProps.toggleSound).toHaveBeenCalled();
   });
 });

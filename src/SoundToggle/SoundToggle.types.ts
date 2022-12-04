@@ -1,8 +1,6 @@
-import type { RootState } from '../Store/types';
-
 export type SoundToggleProps = {
   children?: never;
-  soundIsDisabled: RootState['isSoundDisabled'];
+  soundIsDisabled: boolean;
   toggleSound: () => void;
 };
 

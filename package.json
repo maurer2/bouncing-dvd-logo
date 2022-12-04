@@ -16,10 +16,10 @@
     "lint:scripts:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "start": "vite",
-    "test": "jest --watch 'src/Hooks/useChangeDelta/useChangeDelta.spec.tsx'",
-    "test:vitest": "vitest --coverage",
+    "test": "vitest -w",
     "test:types": "tsc --noEmit --skipLibCheck",
-    "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'"
+    "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'",
+    "bundle-analyzer": "yarn build"
   },
   "dependencies": {
     "@babel/core": "^7.20.2",
@@ -60,7 +60,7 @@
     "vite": "^3.2.3",
     "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "^3.5.2",
-    "vitest": "^0.25.2"
+    "vitest": "^0.25.3"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",
