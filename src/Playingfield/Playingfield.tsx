@@ -9,7 +9,7 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 
-const logoObject: Types.LogoObject = [150, 138];
+const logoDimensions: Types.LogoDimensions = [150, 138];
 
 const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): number => {
   // prettier-ignore
@@ -27,6 +27,7 @@ const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
   isPaused,
   triggerCollision,
+  currentColor,
 }): ReactElement => {
   const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>(
     produce((state, action) => {
@@ -85,12 +86,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
-    logoObject[0],
+    logoDimensions[0],
     playingfieldBB.current.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
-    logoObject[1],
+    logoDimensions[1],
     playingfieldBB.current.height,
   );
   const loop = useCallback(() => {
@@ -145,16 +146,11 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       data-testid="playfingfield"
     >
       <Logo
-        positionX={Math.round(positions.positionX.value)}
-        positionY={Math.round(positions.positionY.value)}
-        width={logoObject[0]}
-        height={logoObject[1]}
-        changeColours={
-          isCollidingXStart.current ||
-          isCollidingXEnd.current ||
-          isCollidingYStart.current ||
-          isCollidingYEnd.current
-        }
+        positionX={positions.positionX.value}
+        positionY={positions.positionY.value}
+        width={logoDimensions[0]}
+        height={logoDimensions[1]}
+        currentColour={currentColor}
         isPaused={isPaused}
       />
     </Styles.PlayingFieldWrapper>

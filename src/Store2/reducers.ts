@@ -1,11 +1,10 @@
 import type { Store, Action } from './types';
 import { initialState } from './store';
-import { colours } from './const';
+import { colours } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/default-param-last
 const reducers = (state: Store = initialState, action: Action): Store => {
-  const { type } = action;
-  switch (type) {
+  switch (action.type) {
     case 'START_GAME': {
       return {
         ...state,
@@ -23,7 +22,11 @@ const reducers = (state: Store = initialState, action: Action): Store => {
       return {
         ...state,
         collisionCount: 0,
-        currentColour: colours[0],
+        colours: {
+          current: colours[0],
+          previous: null,
+          available: colours,
+        },
         isPaused: true,
       };
     }
@@ -41,12 +44,15 @@ const reducers = (state: Store = initialState, action: Action): Store => {
       };
     }
     case 'TRIGGER_COLLISION':
-      // todo set new colour
-      // todo store last colour
       return {
         ...state,
-        collisionCount: state.collisionCount + 1,
         isPlayingSound: !state.soundIsDisabled,
+        collisionCount: state.collisionCount + 1,
+        colours: {
+          ...state.colours,
+          current: action.payload,
+          previous: state.colours.current,
+        }
     };
     case 'TRIGGER_COLLISION_END':
       return {

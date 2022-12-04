@@ -1,10 +1,13 @@
 import type { Store } from './types';
-import { colours } from './const';
+import { colours } from './constants';
 
 export const initialState: Store = {
   lastPosition: [0, 0],
-  currentColour: colours[0],
-  previousColour: null,
+  colours: {
+    current: colours[0],
+    previous: null,
+    available: colours,
+  },
   isPaused: false,
   isPlayingSound: false,
   soundIsDisabled: true,

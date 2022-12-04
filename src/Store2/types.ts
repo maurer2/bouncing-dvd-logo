@@ -1,4 +1,4 @@
-import type { colours } from './const';
+import type { colours } from './constants';
 import type {
   START_GAME,
   PAUSE_GAME,
@@ -16,8 +16,11 @@ export type Position = [x: number, y: number];
 export type Colour = typeof colours[number];
 export type Store = {
   lastPosition: Position | null;
-  currentColour: Colour;
-  previousColour: Colour | null;
+  colours: {
+    current: Colour,
+    previous: Colour | null,
+    available: ReadonlyArray<Colour>,
+  },
   isPaused: boolean;
   isPlayingSound: boolean;
   soundIsDisabled: boolean;
@@ -39,6 +42,7 @@ export type ResetGameAction = {
 };
 export type TriggerCollisionAction = {
   type: typeof TRIGGER_COLLISION;
+  payload: Colour;
 };
 export type TogglePlayStateAction = {
   type: typeof TOGGLE_PLAY_STATE;

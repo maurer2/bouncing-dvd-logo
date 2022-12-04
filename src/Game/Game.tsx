@@ -20,8 +20,13 @@ import {
   triggerCollision,
   triggerCollisionEnd,
 } from '../Store2/actionCreators';
-import { getSoundState, getPlayState, getIsPlayingSoundState } from '../Store2/selectors';
-import type { Dispatch } from '../Store2/types';
+import {
+  getSoundState,
+  getPlayState,
+  getIsPlayingSoundState,
+  getCurrentColour,
+} from '../Store2/selectors';
+import type { Dispatch, Colour } from '../Store2/types';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
 
 import * as Styles from './Game.styles';
@@ -29,9 +34,12 @@ import type * as Types from './Game.types';
 
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
-  const soundIsDisabled = useSelector(getSoundState);
-  const isPaused = useSelector(getPlayState);
-  const isPlayingSound = useSelector(getIsPlayingSoundState);
+  const soundIsDisabled: boolean = useSelector(getSoundState);
+  const isPaused: boolean = useSelector(getPlayState);
+  const isPlayingSound: boolean = useSelector(getIsPlayingSoundState);
+  const currentColor: Colour = useSelector(getCurrentColour);
+
+  // todo replace with restoring via "lostPosition" information
   const [keyValue, setKeyValue] = useReducer<ReducerWithoutAction<string>>(
     () => nanoid(10),
     nanoid(10),
@@ -120,6 +128,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
         <PlayingField
           isPaused={isPaused}
           triggerCollision={triggerCollisionCB}
+          currentColor={currentColor}
           key={`key-${keyValue}`}
           data-testid="game-playingfield"
           data-key={`key-${keyValue}`}

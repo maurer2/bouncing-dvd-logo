@@ -1,4 +1,5 @@
-import { TRIGGER_COLLISION_END ,
+import {
+  TRIGGER_COLLISION_END,
   START_GAME,
   PAUSE_GAME,
   RESET_GAME,
@@ -14,8 +15,10 @@ import type {
   TriggerCollisionAction,
   TogglePlayStateAction,
   ToggleSoundAction,
-  TriggerCollisionActionEnd
+  TriggerCollisionActionEnd,
 } from './types';
+
+import store from '.';
 
 export function startGame(): StartGameAction {
   return {
@@ -37,8 +40,15 @@ export function resetGame(): ResetGameAction {
 }
 
 export function triggerCollision(): TriggerCollisionAction {
+  const { current, available } = store.getState().colours;
+
+  const coloursWithoutCurrent = available.filter((colour) => colour !== current);
+  const randomColourIndex = Math.floor(Math.random() * coloursWithoutCurrent.length);
+  const newColour = coloursWithoutCurrent[randomColourIndex];
+
   return {
     type: TRIGGER_COLLISION,
+    payload: newColour,
   };
 }
 
