@@ -74,25 +74,21 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
   );
 
   const loopTimestamp = useRef(0);
-  const playingfieldBB = useRef<DOMRect>({} as DOMRect);
+  const playingfieldBB = useRef<DOMRect | null>(null);
 
-  const playingfieldDomElement = useCallback((element: HTMLElement) => {
-    if (!element) {
-      return;
-    }
-
-    playingfieldBB.current = element.getBoundingClientRect();
+  const playingfieldDomElement = useCallback((element: HTMLDivElement) => {
+    playingfieldBB.current = element?.getBoundingClientRect();
   }, []);
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
     logoDimensions[0],
-    playingfieldBB.current.width,
+    playingfieldBB.current?.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
     logoDimensions[1],
-    playingfieldBB.current.height,
+    playingfieldBB.current?.height,
   );
   const loop = useCallback(() => {
     if (!isPaused) {
