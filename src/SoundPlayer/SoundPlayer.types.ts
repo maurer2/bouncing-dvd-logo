@@ -1,3 +1,3 @@
-export type SoundProps = {
+export type SoundPlayerProps = {
   shouldTriggerSound: boolean;
 };

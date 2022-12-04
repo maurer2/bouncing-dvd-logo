@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 
 import Store, { colours } from '../Store';
 
-import Component from './Sound';
+import Component from './SoundPlayer';
 
 describe('Components', () => {
   const storeValues = {

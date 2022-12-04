@@ -8,7 +8,7 @@ const SoundToggle: FC<Readonly<Types.SoundToggleProps>> = ({
   soundIsDisabled,
   toggleSound,
 }): ReactElement => {
-  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
     toggleSound();
   };
@@ -16,12 +16,12 @@ const SoundToggle: FC<Readonly<Types.SoundToggleProps>> = ({
   return (
     <Styles.SoundToggle
       onClick={handleClick}
+      aria-label={soundIsDisabled ? 'Enable sound' : 'Disable sound'}
       data-testid="soundtrigger"
     >
       <Styles.SoundToggleIcon
         $status={soundIsDisabled ? 'inactive' : 'active'}
         data-testid="soundtrigger-icon"
-        aria-label={soundIsDisabled ? 'Enable sound' : 'Disable sound'}
       />
     </Styles.SoundToggle>
   );
