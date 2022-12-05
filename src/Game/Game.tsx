@@ -1,13 +1,5 @@
-import type {
-  FC,
-  KeyboardEvent,
-  ReactElement,
-  ReducerWithoutAction,
-  PropsWithChildren,
-} from 'react';
-import React, { useRef, useEffect, useReducer, useCallback } from 'react';
-import { debounce } from 'lodash-es';
-import { nanoid } from 'nanoid';
+import type { FC, KeyboardEvent, ReactElement, PropsWithChildren } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { StyleSheetManager } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -38,34 +30,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   const isPaused: boolean = useSelector(getPlayState);
   const isPlayingSound: boolean = useSelector(getIsPlayingSoundState);
   const currentColor: Colour = useSelector(getCurrentColour);
-
-  // todo replace with restoring via "lostPosition" information
-  const [keyValue, setKeyValue] = useReducer<ReducerWithoutAction<string>>(
-    () => nanoid(10),
-    nanoid(10),
-  );
-  const wrapperDomElement = useRef<HTMLDivElement>(null);
   const pauseButtonDomElement = useRef<HTMLButtonElement>(null);
-  const isInitialResize = useRef(true);
-  const debouncedResizeHandler = useRef<ReturnType<typeof debounce> | null>(null);
-  const gameResizeObserver = useRef(
-    new ResizeObserver((entries: ResizeObserverEntry[]) => {
-      const gameHasResized: boolean = entries.some(
-        (entry) => entry.target === wrapperDomElement.current,
-      );
-
-      // ignore resize observer on dom load
-      if (isInitialResize.current) {
-        isInitialResize.current = false;
-
-        return;
-      }
-
-      if (gameHasResized && debouncedResizeHandler.current) {
-        debouncedResizeHandler.current();
-      }
-    }),
-  );
 
   const handleClick = (): void => {
     dispatch(togglePlayState());
@@ -78,23 +43,6 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
       dispatch(togglePlayState());
     }
   };
-
-  // setup resize observer
-  useEffect(() => {
-    debouncedResizeHandler.current = debounce(setKeyValue, 300);
-
-    const currentResizeObserver: ResizeObserver = gameResizeObserver.current;
-    const currentDomElement: HTMLElement | null = wrapperDomElement.current;
-
-    if (!currentDomElement) {
-      return undefined;
-    }
-    currentResizeObserver.observe(currentDomElement);
-
-    return () => {
-      currentResizeObserver.unobserve(currentDomElement);
-    };
-  }, []);
 
   // init
   // useEffect(() => {
@@ -121,17 +69,12 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
 
   return (
     <StyleSheetManager disableVendorPrefixes>
-      <Styles.GameWrapper
-        ref={wrapperDomElement}
-        data-testid="game-wrapper"
-      >
+      <Styles.GameWrapper data-testid="game-wrapper">
         <PlayingField
           isPaused={isPaused}
           triggerCollision={triggerCollisionCB}
           currentColor={currentColor}
-          key={`key-${keyValue}`}
           data-testid="game-playingfield"
-          data-key={`key-${keyValue}`}
         />
         <Styles.PauseButton
           tabIndex={0}

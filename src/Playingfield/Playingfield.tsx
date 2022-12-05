@@ -1,10 +1,12 @@
-import React, { useRef, useCallback, useLayoutEffect, useReducer } from 'react';
+import React, { useRef, useCallback, useLayoutEffect, useReducer, useMemo, useEffect } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import { random } from 'lodash-es';
 import { produce } from 'immer';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
+import type { Dispatch } from '../Store/types';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
@@ -72,24 +74,41 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       },
     },
   );
-
   const loopTimestamp = useRef(0);
-  const playingfieldBB = useRef<DOMRect | null>(null);
-
-  const playingfieldDomElement = useCallback((element: HTMLDivElement) => {
-    playingfieldBB.current = element?.getBoundingClientRect();
-  }, []);
-
+  const playingfieldDomElement = useRef<HTMLDivElement | null>(null);
+  const playingfieldBoundingBox = useRef<DOMRect | null>(null);
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
     logoDimensions[0],
-    playingfieldBB.current?.width,
+    playingfieldBoundingBox.current?.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
     logoDimensions[1],
-    playingfieldBB.current?.height,
+    playingfieldBoundingBox.current?.height,
   );
+
+  const gameResizeObserver = useRef(
+    new ResizeObserver((entries) => {
+      const { contentRect } = entries[0];
+      playingfieldBoundingBox.current = contentRect;
+    }),
+  );
+  useEffect(() => {
+    const currentResizeObserver: ResizeObserver = gameResizeObserver.current;
+    const currentPlayingfieldDomElement = playingfieldDomElement.current;
+
+    if (currentPlayingfieldDomElement) {
+      currentResizeObserver.observe(currentPlayingfieldDomElement);
+    }
+
+    return () => {
+      if (currentPlayingfieldDomElement) {
+        currentResizeObserver.unobserve(currentPlayingfieldDomElement);
+      }
+    };
+  }, []);
+
   const loop = useCallback(() => {
     if (!isPaused) {
       if (isCollidingXStart.current || isCollidingXEnd.current) {
