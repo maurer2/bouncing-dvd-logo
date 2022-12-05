@@ -31,7 +31,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
   triggerCollision,
   currentColor,
 }): ReactElement => {
-  const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, any>>(
+  const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, Types.ReducerAction>>(
     produce((state, action) => {
       // todo union types
       switch (action.type) {

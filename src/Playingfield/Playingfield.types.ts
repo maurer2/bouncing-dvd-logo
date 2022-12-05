@@ -18,3 +18,17 @@ export type ReducerState = {
   positionX: PositionAndVelocity;
   positionY: PositionAndVelocity;
 };
+
+export type TriggerNextPosition = {
+  type: 'TRIGGER_NEXT_POSITION';
+};
+
+export type TriggerXCollision = {
+  type: 'TRIGGER_X_COLLISION'
+};
+
+export type TriggerYCollision = {
+  type: 'TRIGGER_Y_COLLISION'
+};
+
+export type ReducerAction = TriggerNextPosition | TriggerXCollision | TriggerYCollision
