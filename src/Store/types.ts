@@ -7,6 +7,7 @@ import type {
   TOGGLE_PLAY_STATE,
   TOGGLE_SOUND,
   TRIGGER_COLLISION_END,
+  SET_LAST_POSITION,
 } from './actionTypes';
 
 import type store from '.';
@@ -17,10 +18,10 @@ export type Colour = typeof colours[number];
 export type Store = {
   lastPosition: Position | null;
   colours: {
-    current: Colour,
-    previous: Colour | null,
-    available: ReadonlyArray<Colour>,
-  },
+    current: Colour;
+    previous: Colour | null;
+    available: ReadonlyArray<Colour>;
+  };
   isPaused: boolean;
   isPlayingSound: boolean;
   soundIsDisabled: boolean;
@@ -53,6 +54,10 @@ export type ToggleSoundAction = {
 export type TriggerCollisionActionEnd = {
   type: typeof TRIGGER_COLLISION_END;
 };
+export type SetLastPositionAction = {
+  type: typeof SET_LAST_POSITION;
+  payload: Position;
+};
 export type Action =
   | StartGameAction
   | PauseGameAction
@@ -60,4 +65,5 @@ export type Action =
   | TriggerCollisionAction
   | TogglePlayStateAction
   | ToggleSoundAction
-  | TriggerCollisionActionEnd;
+  | TriggerCollisionActionEnd
+  | SetLastPositionAction;

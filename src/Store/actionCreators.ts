@@ -6,6 +6,7 @@ import {
   TRIGGER_COLLISION,
   TOGGLE_PLAY_STATE,
   TOGGLE_SOUND,
+  SET_LAST_POSITION,
 } from './actionTypes';
 import type {
   Position,
@@ -16,6 +17,7 @@ import type {
   TogglePlayStateAction,
   ToggleSoundAction,
   TriggerCollisionActionEnd,
+  SetLastPositionAction
 } from './types';
 
 import store from '.';
@@ -68,5 +70,12 @@ export function toggleSound(): ToggleSoundAction {
 export function triggerCollisionEnd(): TriggerCollisionActionEnd {
   return {
     type: TRIGGER_COLLISION_END,
+  };
+}
+
+export function setLastPosition(position: Position): SetLastPositionAction {
+  return {
+    type: SET_LAST_POSITION,
+    payload: position,
   };
 }

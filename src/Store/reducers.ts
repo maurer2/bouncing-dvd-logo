@@ -59,6 +59,11 @@ const reducers = (state: Store = initialState, action: Action): Store => {
         ...state,
         isPlayingSound: false,
       };
+    case 'SET_LAST_POSITION':
+      return {
+        ...state,
+        lastPosition: action.payload,
+      };
     default: {
       return {
         ...state,

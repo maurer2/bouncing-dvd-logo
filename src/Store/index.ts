@@ -12,8 +12,8 @@ const store: StoreRedux<Store, Action> & {
 } = createStore(
   reducers,
   composeWithDevTools(
-    // applyMiddleware(logger), // breaks vitest
-    applyMiddleware(),
+    applyMiddleware(logger), // breaks vitest
+    // applyMiddleware(),
   )
 );
 

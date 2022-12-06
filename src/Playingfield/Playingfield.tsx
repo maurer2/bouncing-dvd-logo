@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 import type { Dispatch, Colour } from '../Store/types';
-import { startGame, triggerCollision, triggerCollisionEnd } from '../Store/actionCreators';
+import { startGame, triggerCollision, triggerCollisionEnd, setLastPosition } from '../Store/actionCreators';
 import { getPlayState, getIsPlayingSoundState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
@@ -84,13 +84,17 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     };
   }, []);
 
-  const onCollision = useCallback(() => {
+  const triggerHasCollided = useCallback(() => {
     dispatch(triggerCollision());
     // todo replace with redux thunk
     setTimeout(() => {
       dispatch(triggerCollisionEnd());
     }, 800);
   }, [dispatch]);
+
+  const updateLastPosition = useCallback(() => {
+    dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
+  }, [dispatch, positions.positionX.value, positions.positionY.value]);
 
   useEffect(() => {
     const width = playingfieldBoundingBox.current?.width;
@@ -117,14 +121,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
         dispatchLocal({
           type: 'TRIGGER_X_COLLISION',
         });
-        onCollision();
+        triggerHasCollided();
       }
 
       if (isCollidingYStart.current || isCollidingYEnd.current) {
         dispatchLocal({
           type: 'TRIGGER_Y_COLLISION',
         });
-        onCollision();
+        triggerHasCollided();
       }
 
       if (
@@ -136,6 +140,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
         dispatchLocal({
           type: 'TRIGGER_NEXT_POSITION',
         });
+        // todo trigger only on pause
+        updateLastPosition();
       }
     }
 
@@ -146,7 +152,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     isCollidingYStart,
     isCollidingXEnd,
     isCollidingYEnd,
-    onCollision,
+    triggerHasCollided,
+    updateLastPosition,
   ]);
 
   useLayoutEffect(() => {
