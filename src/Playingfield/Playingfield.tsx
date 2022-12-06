@@ -33,8 +33,15 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
 }): ReactElement => {
   const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, Types.ReducerAction>>(
     produce((state, action) => {
-      // todo union types
       switch (action.type) {
+        case 'TRIGGER_INITIAL_POSITION': {
+          const newDraft = state;
+
+          newDraft.positionX.value = (action.payload.width / 2) - logoDimensions[0] / 2;
+          newDraft.positionY.value = action.payload.height / 2 - logoDimensions[1] / 2;
+
+          break
+        }
         case 'TRIGGER_NEXT_POSITION': {
           const newDraft = state;
 
@@ -63,13 +70,13 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
     }),
     {
       positionX: {
-        value: 50,
-        velocity: 8,
+        value: 1,
+        velocity: 4,
         randomness: 0,
       },
       positionY: {
-        value: 50,
-        velocity: 2,
+        value: 1,
+        velocity: 4,
         randomness: 0,
       },
     },
@@ -108,6 +115,22 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       }
     };
   }, []);
+
+  useEffect(() => {
+    const width = playingfieldBoundingBox.current?.width;
+    const height = playingfieldBoundingBox.current?.height;
+
+    // todo 0 falsy
+    if (width && height) {
+      dispatchLocal({
+        type: 'TRIGGER_INITIAL_POSITION',
+        payload: {
+          width,
+          height,
+        }
+      });
+    }
+  }, [playingfieldBoundingBox.current?.width, playingfieldBoundingBox.current?.height])
 
   const loop = useCallback(() => {
     if (!isPaused) {

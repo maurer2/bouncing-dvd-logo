@@ -19,16 +19,25 @@ export type ReducerState = {
   positionY: PositionAndVelocity;
 };
 
+export type TriggerInitialPosition = {
+  type: 'TRIGGER_INITIAL_POSITION';
+  payload: Pick<DOMRect, 'width' | 'height'>
+};
+
 export type TriggerNextPosition = {
   type: 'TRIGGER_NEXT_POSITION';
 };
 
 export type TriggerXCollision = {
-  type: 'TRIGGER_X_COLLISION'
+  type: 'TRIGGER_X_COLLISION';
 };
 
 export type TriggerYCollision = {
-  type: 'TRIGGER_Y_COLLISION'
+  type: 'TRIGGER_Y_COLLISION';
 };
 
-export type ReducerAction = TriggerNextPosition | TriggerXCollision | TriggerYCollision
+export type ReducerAction =
+  | TriggerInitialPosition
+  | TriggerNextPosition
+  | TriggerXCollision
+  | TriggerYCollision;
