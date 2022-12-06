@@ -1,10 +1,4 @@
-import type { Colour } from '../Store/types';
-
-export type PlayingfieldProps = {
-  isPaused: boolean;
-  triggerCollision: () => void;
-  currentColor: Colour;
-};
+export type PlayingfieldProps = Record<string, never>;
 
 export type LogoDimensions = [width: number, height: number];
 
@@ -21,7 +15,10 @@ export type ReducerState = {
 
 export type TriggerInitialPosition = {
   type: 'TRIGGER_INITIAL_POSITION';
-  payload: Pick<DOMRect, 'width' | 'height'>
+  payload: {
+    worldSize: Pick<DOMRect, 'width' | 'height'>,
+    logoSize: LogoDimensions,
+  }
 };
 
 export type TriggerNextPosition = {

@@ -3,8 +3,6 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import 'jest-styled-components';
 
-import { colours } from '../Store/constants';
-
 import Component from './Playingfield';
 import type { PlayingfieldProps } from './Playingfield.types';
 
@@ -16,11 +14,7 @@ describe('Playingfield', () => {
     mockRandom = 10;
   });
 
-  const defaultProps: PlayingfieldProps = {
-    isPaused: false,
-    triggerCollision: vi.fn(),
-    currentColor: colours[0],
-  };
+  const defaultProps: PlayingfieldProps = {};
 
   const setup = (props: Partial<PlayingfieldProps> = {}) =>
     render(

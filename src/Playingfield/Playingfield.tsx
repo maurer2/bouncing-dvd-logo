@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useLayoutEffect, useReducer, useMemo, useEffect } from 'react';
+import React, { useRef, useCallback, useLayoutEffect, useReducer, useEffect } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import { random } from 'lodash-es';
 import { produce } from 'immer';
@@ -6,10 +6,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
-import type { Dispatch } from '../Store/types';
+import type { Dispatch, Colour } from '../Store/types';
+import { startGame, triggerCollision, triggerCollisionEnd } from '../Store/actionCreators';
+import { getPlayState, getIsPlayingSoundState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
+import { reducer } from './reducer'
 
 const logoDimensions: Types.LogoDimensions = [150, 138];
 
@@ -26,48 +29,13 @@ const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): 
     : currentRandomNess - randomValueInRange;
 };
 
-const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
-  isPaused,
-  triggerCollision,
-  currentColor,
-}): ReactElement => {
+const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => {
+  const dispatch: Dispatch = useDispatch();
+  const isPaused: boolean = useSelector(getPlayState);
+  const currentColor: Colour = useSelector(getCurrentColour);
+
   const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, Types.ReducerAction>>(
-    produce((state, action) => {
-      switch (action.type) {
-        case 'TRIGGER_INITIAL_POSITION': {
-          const newDraft = state;
-
-          newDraft.positionX.value = (action.payload.width / 2) - logoDimensions[0] / 2;
-          newDraft.positionY.value = action.payload.height / 2 - logoDimensions[1] / 2;
-
-          break
-        }
-        case 'TRIGGER_NEXT_POSITION': {
-          const newDraft = state;
-
-          newDraft.positionX.value += state.positionX.velocity;
-          newDraft.positionY.value += state.positionY.velocity;
-          break;
-        }
-        case 'TRIGGER_X_COLLISION': {
-          const newDraft = state;
-
-          newDraft.positionX.value += state.positionX.velocity * -1;
-          newDraft.positionX.velocity *= -1;
-          break;
-        }
-        case 'TRIGGER_Y_COLLISION': {
-          const newDraft = state;
-
-          newDraft.positionY.value += state.positionY.velocity * -1;
-          newDraft.positionY.velocity *= -1;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-    }),
+    produce(reducer),
     {
       positionX: {
         value: 1,
@@ -116,6 +84,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
     };
   }, []);
 
+  const onCollision = useCallback(() => {
+    dispatch(triggerCollision());
+    // todo replace with redux thunk
+    setTimeout(() => {
+      dispatch(triggerCollisionEnd());
+    }, 800);
+  }, [dispatch]);
+
   useEffect(() => {
     const width = playingfieldBoundingBox.current?.width;
     const height = playingfieldBoundingBox.current?.height;
@@ -125,12 +101,15 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       dispatchLocal({
         type: 'TRIGGER_INITIAL_POSITION',
         payload: {
-          width,
-          height,
-        }
+          worldSize: {
+            width,
+            height,
+          },
+          logoSize: logoDimensions,
+        },
       });
     }
-  }, [playingfieldBoundingBox.current?.width, playingfieldBoundingBox.current?.height])
+  }, [playingfieldBoundingBox.current?.width, playingfieldBoundingBox.current?.height]);
 
   const loop = useCallback(() => {
     if (!isPaused) {
@@ -138,14 +117,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
         dispatchLocal({
           type: 'TRIGGER_X_COLLISION',
         });
-        triggerCollision();
+        onCollision();
       }
 
       if (isCollidingYStart.current || isCollidingYEnd.current) {
         dispatchLocal({
           type: 'TRIGGER_Y_COLLISION',
         });
-        triggerCollision();
+        onCollision();
       }
 
       if (
@@ -167,7 +146,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
     isCollidingYStart,
     isCollidingXEnd,
     isCollidingYEnd,
-    triggerCollision,
+    onCollision,
   ]);
 
   useLayoutEffect(() => {
@@ -177,6 +156,11 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = ({
       window.cancelAnimationFrame(loopTimestamp.current);
     };
   }, [loop]);
+
+  // init
+  useEffect(() => {
+    dispatch(startGame());
+  }, [dispatch]);
 
   return (
     <Styles.PlayingFieldWrapper
