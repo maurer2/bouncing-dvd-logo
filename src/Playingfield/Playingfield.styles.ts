@@ -6,4 +6,5 @@ export const PlayingFieldWrapper = styled.div`
   height: 100%;
   transform: translateZ(0);
   contain: strict;
+  pointer-events: none;
 `;

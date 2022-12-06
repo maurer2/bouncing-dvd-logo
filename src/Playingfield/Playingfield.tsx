@@ -14,7 +14,7 @@ import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 import { reducer } from './reducer'
 
-const logoDimensions: Types.LogoDimensions = [150, 138];
+const logoDimensions: Types.LogoDimensions = [150, 138.66];
 
 const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): number => {
   // prettier-ignore
