@@ -140,8 +140,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
         dispatchLocal({
           type: 'TRIGGER_NEXT_POSITION',
         });
-        // todo trigger only on pause
-        updateLastPosition();
       }
     }
 
@@ -153,7 +151,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     isCollidingXEnd,
     isCollidingYEnd,
     triggerHasCollided,
-    updateLastPosition,
+    // updateLastPosition,
   ]);
 
   useLayoutEffect(() => {
@@ -163,6 +161,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
       window.cancelAnimationFrame(loopTimestamp.current);
     };
   }, [loop]);
+
+  // set last position when entering pause mode
+  useEffect(() => {
+    if (!isPaused || positions.positionX.value === null || positions.positionY.value === null) {
+      return;
+    }
+    dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
+  }, [isPaused, dispatch, positions.positionX.value, positions.positionY.value])
 
   // init
   useEffect(() => {
