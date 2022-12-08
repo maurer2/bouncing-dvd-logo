@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useLayoutEffect, useReducer, useEffect } from 'react';
+import React, { useRef, useCallback, useLayoutEffect, useReducer, useEffect, useState } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import { random } from 'lodash-es';
 import { produce } from 'immer';
@@ -8,7 +8,7 @@ import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 import type { Dispatch, Colour } from '../Store/types';
 import { startGame, triggerCollision, triggerCollisionEnd, setLastPosition } from '../Store/actionCreators';
-import { getPlayState, getIsPlayingSoundState, getCurrentColour } from '../Store/selectors';
+import { getPlayState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
@@ -38,35 +38,35 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     produce(reducer),
     {
       positionX: {
-        value: 1,
+        value: null,
         velocity: 4,
-        randomness: 0,
       },
       positionY: {
-        value: 1,
+        value: null,
         velocity: 4,
-        randomness: 0,
       },
     },
   );
+  const [playingfieldBoundingBox, setPlayingfieldBoundingBox] = useState<DOMRect | null>(null);
+
   const loopTimestamp = useRef(0);
   const playingfieldDomElement = useRef<HTMLDivElement | null>(null);
-  const playingfieldBoundingBox = useRef<DOMRect | null>(null);
+
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
-    positions.positionX.value,
+    positions.positionX.value ?? 0,
     logoDimensions[0],
-    playingfieldBoundingBox.current?.width,
+    playingfieldBoundingBox?.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
     logoDimensions[1],
-    playingfieldBoundingBox.current?.height,
+    playingfieldBoundingBox?.height,
   );
 
   const gameResizeObserver = useRef(
     new ResizeObserver((entries) => {
       const { contentRect } = entries[0];
-      playingfieldBoundingBox.current = contentRect;
+      setPlayingfieldBoundingBox(contentRect);
     }),
   );
   useEffect(() => {
@@ -91,29 +91,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
       dispatch(triggerCollisionEnd());
     }, 800);
   }, [dispatch]);
-
-  const updateLastPosition = useCallback(() => {
-    dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
-  }, [dispatch, positions.positionX.value, positions.positionY.value]);
-
-  useEffect(() => {
-    const width = playingfieldBoundingBox.current?.width;
-    const height = playingfieldBoundingBox.current?.height;
-
-    // todo 0 falsy
-    if (width && height) {
-      dispatchLocal({
-        type: 'TRIGGER_INITIAL_POSITION',
-        payload: {
-          worldSize: {
-            width,
-            height,
-          },
-          logoSize: logoDimensions,
-        },
-      });
-    }
-  }, [playingfieldBoundingBox.current?.width, playingfieldBoundingBox.current?.height]);
 
   const loop = useCallback(() => {
     if (!isPaused) {
@@ -151,7 +128,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     isCollidingXEnd,
     isCollidingYEnd,
     triggerHasCollided,
-    // updateLastPosition,
   ]);
 
   useLayoutEffect(() => {
@@ -172,22 +148,44 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
 
   // init
   useEffect(() => {
+    const width = playingfieldBoundingBox?.width;
+    const height = playingfieldBoundingBox?.height;
+
+    if (!width || !height) {
+      return
+    }
+
+    dispatchLocal({
+      type: 'TRIGGER_INITIAL_POSITION',
+      payload: {
+        worldSize: {
+          width,
+          height,
+        },
+        logoSize: logoDimensions,
+      }
+    })
+
     dispatch(startGame());
-  }, [dispatch]);
+  }, [dispatch, playingfieldBoundingBox]);
+
+  // const showLogo = positions.positionX.value !== null && positions.positionY.value !== null;
 
   return (
     <Styles.PlayingFieldWrapper
       ref={playingfieldDomElement}
       data-testid="playfingfield"
     >
-      <Logo
-        positionX={positions.positionX.value}
-        positionY={positions.positionY.value}
-        width={logoDimensions[0]}
-        height={logoDimensions[1]}
-        currentColour={currentColor}
-        isPaused={isPaused}
-      />
+      {positions.positionX.value !== null && positions.positionY.value !== null && (
+        <Logo
+          positionX={positions.positionX.value}
+          positionY={positions.positionY.value}
+          width={logoDimensions[0]}
+          height={logoDimensions[1]}
+          currentColour={currentColor}
+          isPaused={isPaused}
+        />
+      )}
     </Styles.PlayingFieldWrapper>
   );
 };

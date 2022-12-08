@@ -3,7 +3,7 @@ import { useRef, useEffect } from 'react';
 import type { UseCollisionDetection } from './useCollisionDetection.types';
 
 export default function useCollisionDetection(
-  position: number,
+  position: number | null,
   objectSize: number,
   worldSize: number | undefined,
 ): Readonly<UseCollisionDetection> {
@@ -11,10 +11,18 @@ export default function useCollisionDetection(
   const hasCollidedWithEnd = useRef(false);
 
   useEffect(() => {
+    if (position === null) {
+      return
+    }
+
     hasCollidedWithStart.current = position <= 0;
   }, [position]);
 
   useEffect(() => {
+    if (position === null) {
+      return
+    }
+
     if (!worldSize) {
       hasCollidedWithEnd.current = false;
       return

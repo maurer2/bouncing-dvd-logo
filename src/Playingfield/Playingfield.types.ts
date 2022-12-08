@@ -3,9 +3,9 @@ export type PlayingfieldProps = Record<string, never>;
 export type LogoDimensions = [width: number, height: number];
 
 export type PositionAndVelocity = {
-  value: number;
+  value: number | null;
   velocity: number;
-  randomness: number;
+  // randomness: number;
 };
 
 export type ReducerState = {

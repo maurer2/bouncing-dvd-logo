@@ -8,7 +8,7 @@ export const initialState: Store = {
     previous: null,
     available: colours,
   },
-  isPaused: false,
+  isPaused: true,
   soundIsDisabled: true,
   isPlayingSound: false,
   collisionCount: 0,
