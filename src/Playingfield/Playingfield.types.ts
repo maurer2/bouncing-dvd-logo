@@ -8,6 +8,7 @@ export type PositionAndVelocity = {
   // randomness: number;
 };
 
+// reducer
 export type ReducerState = {
   positionX: PositionAndVelocity;
   positionY: PositionAndVelocity;
@@ -18,6 +19,8 @@ export type TriggerInitialPosition = {
   payload: {
     worldSize: Pick<DOMRect, 'width' | 'height'>,
     logoSize: LogoDimensions,
+    startVelocityX: number;
+    startVelocityY: number;
   }
 };
 
@@ -27,10 +30,12 @@ export type TriggerNextPosition = {
 
 export type TriggerXCollision = {
   type: 'TRIGGER_X_COLLISION';
+  payload: number;
 };
 
 export type TriggerYCollision = {
   type: 'TRIGGER_Y_COLLISION';
+  payload: number;
 };
 
 export type ReducerAction =

@@ -4,10 +4,12 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
   switch (action.type) {
     case 'TRIGGER_INITIAL_POSITION': {
       const newDraft = state;
-      const { worldSize, logoSize } = action.payload;
+      const { worldSize, logoSize, startVelocityX, startVelocityY } = action.payload;
 
       newDraft.positionX.value = worldSize.width / 2 - logoSize[0] / 2;
       newDraft.positionY.value = worldSize.height / 2 - logoSize[1] / 2;
+      newDraft.positionX.velocity = startVelocityX;
+      newDraft.positionY.velocity = startVelocityY;
 
       break;
     }
@@ -30,7 +32,7 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
       }
 
       newDraft.positionX.value += state.positionX.velocity * -1;
-      newDraft.positionX.velocity *= -1;
+      newDraft.positionX.velocity *= -1 ;
       break;
     }
     case 'TRIGGER_Y_COLLISION': {

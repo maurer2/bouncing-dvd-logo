@@ -1,4 +1,11 @@
-import React, { useRef, useCallback, useLayoutEffect, useReducer, useEffect, useState } from 'react';
+import React, {
+  useRef,
+  useCallback,
+  useLayoutEffect,
+  useReducer,
+  useEffect,
+  useState,
+} from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import { random } from 'lodash-es';
 import { produce } from 'immer';
@@ -7,27 +14,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 import type { Dispatch, Colour } from '../Store/types';
-import { startGame, triggerCollision, triggerCollisionEnd, setLastPosition } from '../Store/actionCreators';
+import {
+  startGame,
+  triggerCollision,
+  triggerCollisionEnd,
+  setLastPosition,
+} from '../Store/actionCreators';
 import { getPlayState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
-import { reducer } from './reducer'
+import { reducer } from './reducer';
 
-const logoDimensions: Types.LogoDimensions = [150, 138.66];
-
-const getRandomValueInRange = (currentRandomNess: number, maxRandomness = 100): number => {
+const getRandomValueInRange = (currentRandomValue: number, maxRandomness = 2): number => {
   // prettier-ignore
-  const upperRandomBound = 0 + ((maxRandomness / 2) / 100);
+  const upperRandomBound = 0 + ((maxRandomness / 2));
   // prettier-ignore
-  const lowerRandomBound = 0 - ((maxRandomness / 2) / 100);
+  const lowerRandomBound = 0 - ((maxRandomness / 2));
 
   const randomValueInRange = random(lowerRandomBound, upperRandomBound, true);
 
-  return Math.sign(currentRandomNess) === 1
-    ? currentRandomNess + randomValueInRange
-    : currentRandomNess - randomValueInRange;
+  return Math.sign(currentRandomValue) === 1
+    ? currentRandomValue + randomValueInRange
+    : currentRandomValue - randomValueInRange;
 };
+
+const logoDimensions: Types.LogoDimensions = [150, 138.66];
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
@@ -39,11 +51,11 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     {
       positionX: {
         value: null,
-        velocity: 4,
+        velocity: 0,
       },
       positionY: {
         value: null,
-        velocity: 4,
+        velocity: 0,
       },
     },
   );
@@ -53,7 +65,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
   const playingfieldDomElement = useRef<HTMLDivElement | null>(null);
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
-    positions.positionX.value ?? 0,
+    positions.positionX.value,
     logoDimensions[0],
     playingfieldBoundingBox?.width,
   );
@@ -95,17 +107,21 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
   const loop = useCallback(() => {
     if (!isPaused) {
       if (isCollidingXStart.current || isCollidingXEnd.current) {
+        // const currentRandomFactor: number = getRandomValueInRange(positions.positionX.value ?? 0);
+        triggerHasCollided();
         dispatchLocal({
           type: 'TRIGGER_X_COLLISION',
+          payload: 0, // todo
         });
-        triggerHasCollided();
       }
 
       if (isCollidingYStart.current || isCollidingYEnd.current) {
+        // const currentRandomFactor: number = getRandomValueInRange(positions.positionY.value ?? 0);
+        triggerHasCollided();
         dispatchLocal({
           type: 'TRIGGER_Y_COLLISION',
+          payload: 0, // todo
         });
-        triggerHasCollided();
       }
 
       if (
@@ -128,6 +144,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     isCollidingXEnd,
     isCollidingYEnd,
     triggerHasCollided,
+    // positions.positionX.value,
+    // positions.positionY.value,
   ]);
 
   useLayoutEffect(() => {
@@ -144,15 +162,19 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
       return;
     }
     dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
-  }, [isPaused, dispatch, positions.positionX.value, positions.positionY.value])
+  }, [isPaused, dispatch, positions.positionX.value, positions.positionY.value]);
 
   // init
   useEffect(() => {
     const width = playingfieldBoundingBox?.width;
     const height = playingfieldBoundingBox?.height;
+    const [startVelocityX, startVelocityY] = Array.from(Array(2)).map(() => Math.random() >= 0.5
+      ? 4 + Math.random() / 2
+      : -4 - Math.random() / 2
+    )
 
     if (!width || !height) {
-      return
+      return;
     }
 
     dispatchLocal({
@@ -163,13 +185,13 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
           height,
         },
         logoSize: logoDimensions,
-      }
-    })
+        startVelocityX,
+        startVelocityY
+      },
+    });
 
     dispatch(startGame());
   }, [dispatch, playingfieldBoundingBox]);
-
-  // const showLogo = positions.positionX.value !== null && positions.positionY.value !== null;
 
   return (
     <Styles.PlayingFieldWrapper
