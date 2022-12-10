@@ -1,9 +1,9 @@
-import type { Store, Action } from './types';
+import type { Store, Action, RootState } from './types';
 import { initialState } from './Store';
 import { colours } from './constants';
 
 // eslint-disable-next-line @typescript-eslint/default-param-last
-const reducers = (state: Store = initialState, action: Action): Store => {
+const reducers = (state: RootState = initialState, action: Action): Store => {
   switch (action.type) {
     case 'START_GAME': {
       return {
@@ -13,32 +13,13 @@ const reducers = (state: Store = initialState, action: Action): Store => {
         colours: {
           current: colours[0],
           previous: null,
-          available: colours,
+          available: [...colours],
         },
         collisionCount: 0,
-      };
-    }
-    case 'PAUSE_GAME': {
-      return {
-        ...state,
-        isPaused: !state.isPaused,
-        lastPosition: action.payload,
-      };
-    }
-    case 'RESET_GAME': {
-      return {
-        ...state,
-        collisionCount: 0,
-        colours: {
-          current: colours[0],
-          previous: null,
-          available: colours,
-        },
-        isPaused: true,
+        lastPosition: null,
       };
     }
     case 'TOGGLE_PLAY_STATE': {
-      // todo: set last position
       return {
         ...state,
         isPaused: !state.isPaused,
@@ -59,8 +40,8 @@ const reducers = (state: Store = initialState, action: Action): Store => {
           ...state.colours,
           current: action.payload,
           previous: state.colours.current,
-        }
-    };
+        },
+      };
     case 'TRIGGER_COLLISION_END':
       return {
         ...state,

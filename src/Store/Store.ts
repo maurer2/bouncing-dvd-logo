@@ -6,7 +6,7 @@ export const initialState: Store = {
   colours: {
     current: colours[0],
     previous: null,
-    available: colours,
+    available: [...colours],
   },
   isPaused: true,
   soundIsDisabled: true,

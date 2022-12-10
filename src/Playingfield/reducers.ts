@@ -1,6 +1,8 @@
+import { produce } from 'immer';
+
 import type * as Types from './Playingfield.types';
 
-export const reducer = (state: Types.ReducerState, action: Types.ReducerAction): void => {
+export const reducers = produce((state: Types.ReducerState, action: Types.ReducerAction) => {
   switch (action.type) {
     case 'TRIGGER_INITIAL_POSITION': {
       const newDraft = state;
@@ -22,6 +24,7 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
 
       newDraft.positionX.value += state.positionX.velocity;
       newDraft.positionY.value += state.positionY.velocity;
+
       break;
     }
     case 'TRIGGER_X_COLLISION': {
@@ -34,6 +37,7 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
 
       newDraft.positionX.value += velocityX;
       newDraft.positionX.velocity = velocityX;
+
       break;
     }
     case 'TRIGGER_Y_COLLISION': {
@@ -46,10 +50,11 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
 
       newDraft.positionY.value += velocityY;
       newDraft.positionY.velocity = velocityY;
+
       break;
     }
     default: {
       break;
     }
   }
-};
+});

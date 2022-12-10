@@ -1,8 +1,6 @@
 import {
   TRIGGER_COLLISION_END,
   START_GAME,
-  PAUSE_GAME,
-  RESET_GAME,
   TRIGGER_COLLISION,
   TOGGLE_PLAY_STATE,
   TOGGLE_SOUND,
@@ -11,13 +9,11 @@ import {
 import type {
   Position,
   StartGameAction,
-  PauseGameAction,
-  ResetGameAction,
   TriggerCollisionAction,
   TogglePlayStateAction,
   ToggleSoundAction,
   TriggerCollisionActionEnd,
-  SetLastPositionAction
+  SetLastPositionAction,
 } from './types';
 
 import store from '.';
@@ -25,19 +21,6 @@ import store from '.';
 export function startGame(): StartGameAction {
   return {
     type: START_GAME,
-  };
-}
-
-export function pauseGame(position: Position): PauseGameAction {
-  return {
-    type: PAUSE_GAME,
-    payload: position,
-  };
-}
-
-export function resetGame(): ResetGameAction {
-  return {
-    type: RESET_GAME,
   };
 }
 

@@ -16,11 +16,11 @@ export type ReducerState = {
 export type TriggerInitialPosition = {
   type: 'TRIGGER_INITIAL_POSITION';
   payload: {
-    worldSize: Pick<DOMRect, 'width' | 'height'>,
-    logoSize: LogoDimensions,
+    worldSize: Pick<DOMRect, 'width' | 'height'>;
+    logoSize: LogoDimensions;
     velocityX: number;
     velocityY: number;
-  }
+  };
 };
 
 export type TriggerNextPosition = {

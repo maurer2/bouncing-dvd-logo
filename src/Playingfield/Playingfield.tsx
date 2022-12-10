@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import type { FC, ReactElement, Reducer } from 'react';
 import { random } from 'lodash-es';
-import { produce } from 'immer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Logo from '../Logo/Logo';
@@ -24,7 +23,7 @@ import { getPlayState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
-import { reducer } from './reducer';
+import { reducers } from './reducers';
 
 const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number => {
   // prettier-ignore
@@ -45,7 +44,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
   const currentColor: Colour = useSelector(getCurrentColour);
 
   const [positions, dispatchLocal] = useReducer<Reducer<Types.ReducerState, Types.ReducerAction>>(
-    produce(reducer),
+    reducers,
     {
       positionX: {
         value: null,
