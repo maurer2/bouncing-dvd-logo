@@ -168,10 +168,29 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
   useEffect(() => {
     const width = playingfieldBoundingBox?.width;
     const height = playingfieldBoundingBox?.height;
-    const [startVelocityX, startVelocityY] = Array.from(Array(2)).map(() => Math.random() >= 0.5
-      ? 4 + Math.random() / 2
-      : -4 - Math.random() / 2
-    )
+
+    const totalVelocity = 8;
+    const velocity1 = Math.random() >= 0.5
+      ? random(1, totalVelocity - 1, true)
+      : random(-1, -totalVelocity + 1, true);
+    const velocity2 = Math.sign(velocity1) === 1
+      ? totalVelocity - velocity1
+      : totalVelocity + velocity1
+
+    console.log(Math.abs(velocity1) + Math.abs(velocity2));
+
+    // const [startVelocityX, startVelocityY] = Array.from(Array(2)).reduce((remainder, maxValue, _, arr) => {
+    //   return random(1, maxValue - (1 * (arr.length -1)), true); // allow remaining values do be at least 1
+    // }, {
+    //   values: [] as number[],
+    //   totalVelocity,
+    // });
+
+    // .map(() => Math.random() >= 0.5
+    //   ? velocity + Math.random() / 2
+    //   : -velocity - Math.random() / 2
+    // )
+
 
     if (!width || !height) {
       return;
@@ -185,8 +204,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
           height,
         },
         logoSize: logoDimensions,
-        startVelocityX,
-        startVelocityY
+        startVelocityX: velocity1,
+        startVelocityY: velocity2,
       },
     });
 
