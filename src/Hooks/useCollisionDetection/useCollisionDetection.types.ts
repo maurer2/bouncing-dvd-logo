@@ -1,6 +1,6 @@
-import type { useRef } from 'react';
+import type { useRef, MutableRefObject } from 'react';
 
 export type UseCollisionDetection = [
-  hasCollidedWithStart: ReturnType<typeof useRef<boolean>>,
-  hasCollidedWithEnd: ReturnType<typeof useRef<boolean>>,
+  hasCollidedWithStart: MutableRefObject<boolean>,
+  hasCollidedWithEnd: MutableRefObject<boolean>,
 ];

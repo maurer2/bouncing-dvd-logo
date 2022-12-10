@@ -9,6 +9,13 @@ const reducers = (state: Store = initialState, action: Action): Store => {
       return {
         ...state,
         isPaused: false,
+        isPlayingSound: false,
+        colours: {
+          current: colours[0],
+          previous: null,
+          available: colours,
+        },
+        collisionCount: 0,
       };
     }
     case 'PAUSE_GAME': {

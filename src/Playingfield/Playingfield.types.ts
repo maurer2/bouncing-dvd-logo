@@ -5,7 +5,6 @@ export type LogoDimensions = [width: number, height: number];
 export type PositionAndVelocity = {
   value: number | null;
   velocity: number;
-  // randomness: number;
 };
 
 // reducer
@@ -19,8 +18,8 @@ export type TriggerInitialPosition = {
   payload: {
     worldSize: Pick<DOMRect, 'width' | 'height'>,
     logoSize: LogoDimensions,
-    startVelocityX: number;
-    startVelocityY: number;
+    velocityX: number;
+    velocityY: number;
   }
 };
 

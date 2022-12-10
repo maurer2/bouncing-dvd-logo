@@ -11,21 +11,14 @@ export default function useCollisionDetection(
   const hasCollidedWithEnd = useRef(false);
 
   useEffect(() => {
-    if (position === null) {
-      return
+    if (position !== null) {
+      hasCollidedWithStart.current = position <= 0;
     }
-
-    hasCollidedWithStart.current = position <= 0;
   }, [position]);
 
   useEffect(() => {
-    if (position === null) {
-      return
-    }
-
-    if (!worldSize) {
-      hasCollidedWithEnd.current = false;
-      return
+    if (!position || !worldSize) {
+      return;
     }
     const maxPositionNotColliding: number = worldSize - objectSize;
 

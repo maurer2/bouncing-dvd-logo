@@ -26,20 +26,18 @@ import * as Styles from './Playingfield.styles';
 import type * as Types from './Playingfield.types';
 import { reducer } from './reducer';
 
-const getRandomValueInRange = (currentRandomValue: number, maxRandomness = 2): number => {
+const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number => {
   // prettier-ignore
-  const upperRandomBound = 0 + ((maxRandomness / 2));
+  const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
   // prettier-ignore
-  const lowerRandomBound = 0 - ((maxRandomness / 2));
+  const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
+  const newInverseVelocity =
+    currentVelocity * random(lowerRandomBound, upperRandomBound, true) * -1;
 
-  const randomValueInRange = random(lowerRandomBound, upperRandomBound, true);
-
-  return Math.sign(currentRandomValue) === 1
-    ? currentRandomValue + randomValueInRange
-    : currentRandomValue - randomValueInRange;
+  return newInverseVelocity;
 };
 
-const logoDimensions: Types.LogoDimensions = [150, 138.66];
+const logoSize: Types.LogoDimensions = [150, 138.66];
 
 const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
@@ -66,12 +64,12 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
 
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
-    logoDimensions[0],
+    logoSize[0],
     playingfieldBoundingBox?.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
-    logoDimensions[1],
+    logoSize[1],
     playingfieldBoundingBox?.height,
   );
 
@@ -105,22 +103,20 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
   }, [dispatch]);
 
   const loop = useCallback(() => {
-    if (!isPaused) {
+    if (!isPaused && positions.positionX.velocity && positions.positionY.velocity) {
       if (isCollidingXStart.current || isCollidingXEnd.current) {
-        // const currentRandomFactor: number = getRandomValueInRange(positions.positionX.value ?? 0);
         triggerHasCollided();
         dispatchLocal({
           type: 'TRIGGER_X_COLLISION',
-          payload: 0, // todo
+          payload: getInverseVelocity(positions.positionX.velocity),
         });
       }
 
       if (isCollidingYStart.current || isCollidingYEnd.current) {
-        // const currentRandomFactor: number = getRandomValueInRange(positions.positionY.value ?? 0);
         triggerHasCollided();
         dispatchLocal({
           type: 'TRIGGER_Y_COLLISION',
-          payload: 0, // todo
+          payload: getInverseVelocity(positions.positionY.velocity),
         });
       }
 
@@ -143,9 +139,9 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     isCollidingYStart,
     isCollidingXEnd,
     isCollidingYEnd,
+    positions.positionX.velocity,
+    positions.positionY.velocity,
     triggerHasCollided,
-    // positions.positionX.value,
-    // positions.positionY.value,
   ]);
 
   useLayoutEffect(() => {
@@ -164,37 +160,23 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
   }, [isPaused, dispatch, positions.positionX.value, positions.positionY.value]);
 
-  // init
+  // init position and trigger start on load and on resize
   useEffect(() => {
     const width = playingfieldBoundingBox?.width;
     const height = playingfieldBoundingBox?.height;
 
-    const totalVelocity = 8;
-    const velocity1 = Math.random() >= 0.5
-      ? random(1, totalVelocity - 1, true)
-      : random(-1, -totalVelocity + 1, true);
-    const velocity2 = Math.sign(velocity1) === 1
-      ? totalVelocity - velocity1
-      : totalVelocity + velocity1
-
-    console.log(Math.abs(velocity1) + Math.abs(velocity2));
-
-    // const [startVelocityX, startVelocityY] = Array.from(Array(2)).reduce((remainder, maxValue, _, arr) => {
-    //   return random(1, maxValue - (1 * (arr.length -1)), true); // allow remaining values do be at least 1
-    // }, {
-    //   values: [] as number[],
-    //   totalVelocity,
-    // });
-
-    // .map(() => Math.random() >= 0.5
-    //   ? velocity + Math.random() / 2
-    //   : -velocity - Math.random() / 2
-    // )
-
-
+    // bounding box is null on initial load
     if (!width || !height) {
       return;
     }
+
+    const totalVelocity = 8;
+    const velocityX: number =
+      Math.random() >= 0.5
+        ? random(1, totalVelocity - 1, true)
+        : random(-1, -totalVelocity + 1, true);
+    const velocityY: number =
+      Math.sign(velocityX) === 1 ? totalVelocity - velocityX : totalVelocity + velocityX;
 
     dispatchLocal({
       type: 'TRIGGER_INITIAL_POSITION',
@@ -203,9 +185,9 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
           width,
           height,
         },
-        logoSize: logoDimensions,
-        startVelocityX: velocity1,
-        startVelocityY: velocity2,
+        logoSize,
+        velocityX,
+        velocityY,
       },
     });
 
@@ -221,8 +203,8 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
         <Logo
           positionX={positions.positionX.value}
           positionY={positions.positionY.value}
-          width={logoDimensions[0]}
-          height={logoDimensions[1]}
+          width={logoSize[0]}
+          height={logoSize[1]}
           currentColour={currentColor}
           isPaused={isPaused}
         />

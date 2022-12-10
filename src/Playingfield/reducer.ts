@@ -4,12 +4,12 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
   switch (action.type) {
     case 'TRIGGER_INITIAL_POSITION': {
       const newDraft = state;
-      const { worldSize, logoSize, startVelocityX, startVelocityY } = action.payload;
+      const { worldSize, logoSize, velocityX, velocityY } = action.payload;
 
-      newDraft.positionX.value = worldSize.width / 2 - logoSize[0] / 2;
-      newDraft.positionY.value = worldSize.height / 2 - logoSize[1] / 2;
-      newDraft.positionX.velocity = startVelocityX;
-      newDraft.positionY.velocity = startVelocityY;
+      newDraft.positionX.value = worldSize.width / 2 - logoSize[0] / 2; // dead centre
+      newDraft.positionY.value = worldSize.height / 2 - logoSize[1] / 2; // dead centre
+      newDraft.positionX.velocity = velocityX;
+      newDraft.positionY.velocity = velocityY;
 
       break;
     }
@@ -17,7 +17,7 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
       const newDraft = state;
 
       if (newDraft.positionX.value === null || newDraft.positionY.value === null) {
-        return
+        return;
       }
 
       newDraft.positionX.value += state.positionX.velocity;
@@ -26,24 +26,26 @@ export const reducer = (state: Types.ReducerState, action: Types.ReducerAction):
     }
     case 'TRIGGER_X_COLLISION': {
       const newDraft = state;
+      const velocityX = action.payload;
 
       if (newDraft.positionX.value === null) {
-        return
+        return;
       }
 
-      newDraft.positionX.value += state.positionX.velocity * -1;
-      newDraft.positionX.velocity *= -1 ;
+      newDraft.positionX.value += velocityX;
+      newDraft.positionX.velocity = velocityX;
       break;
     }
     case 'TRIGGER_Y_COLLISION': {
       const newDraft = state;
+      const velocityY = action.payload;
 
       if (newDraft.positionY.value === null) {
-        return
+        return;
       }
 
-      newDraft.positionY.value += state.positionY.velocity * -1;
-      newDraft.positionY.velocity *= -1;
+      newDraft.positionY.value += velocityY;
+      newDraft.positionY.velocity = velocityY;
       break;
     }
     default: {
