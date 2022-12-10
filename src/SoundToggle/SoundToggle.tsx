@@ -17,11 +17,11 @@ const SoundToggle: FC<Readonly<Types.SoundToggleProps>> = ({
     <Styles.SoundToggle
       onClick={handleClick}
       aria-label={soundIsDisabled ? 'Enable sound' : 'Disable sound'}
-      data-testid="soundtrigger"
+      data-testid="soundtoggle"
     >
       <Styles.SoundToggleIcon
         $status={soundIsDisabled ? 'inactive' : 'active'}
-        data-testid="soundtrigger-icon"
+        data-testid="soundtoggle-icon"
       />
     </Styles.SoundToggle>
   );

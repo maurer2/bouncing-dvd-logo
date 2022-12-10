@@ -43,15 +43,15 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
 
   return (
     <StyleSheetManager disableVendorPrefixes>
-      <Styles.GameWrapper data-testid="game-wrapper">
-        <PlayingField data-testid="game-playingfield" />
+      <Styles.GameWrapper data-testid="game">
+        <PlayingField/>
         <Styles.PauseButton
           tabIndex={0}
           onClick={handleClick}
           onKeyUp={handleInput}
           ref={pauseButtonDomElement}
           aria-label={isPaused ? 'Unpause' : 'Pause'}
-          data-testid="game-pausebutton"
+          data-testid="pausebutton"
         />
         <SoundToggle
           soundIsDisabled={soundIsDisabled}

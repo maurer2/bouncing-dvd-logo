@@ -8,6 +8,7 @@
   "author": "Martin",
   "scripts": {
     "build": "tsc && vite build",
+    "bundle-analyzer": "yarn build",
     "cleanup": "sort-package-json",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
@@ -15,11 +16,10 @@
     "lint:scripts:debug": "eslint --debug 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:scripts:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
-    "start": "vite",
-    "test": "vitest -w",
-    "test:types": "tsc --noEmit --skipLibCheck",
     "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'",
-    "bundle-analyzer": "yarn build"
+    "start": "vite",
+    "test": "vitest 'src/Game/Game.spec.tsx' -w",
+    "test:types": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@babel/core": "^7.20.2",

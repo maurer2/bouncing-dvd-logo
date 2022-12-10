@@ -22,7 +22,7 @@ describe('Components', () => {
   it('should render', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('soundtrigger')).toBeInTheDocument();
+    expect(screen.getByTestId('soundtoggle')).toBeInTheDocument();
   });
 
   it.skip('should match snapshot', () => {
@@ -34,8 +34,8 @@ describe('Components', () => {
   it('should have child elements', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('soundtrigger')).toBeTruthy();
-    expect(screen.getByTestId('soundtrigger-icon')).toBeTruthy();
+    expect(screen.getByTestId('soundtoggle')).toBeTruthy();
+    expect(screen.getByTestId('soundtoggle-icon')).toBeTruthy();
   });
 
   it('should have "Enable sound" text when sound is off', () => {
@@ -55,7 +55,7 @@ describe('Components', () => {
   it('should trigger sound toggle function on click, when sound is off', async () => {
     const screen = setup({});
 
-    await userEvent.click(screen.getByTestId('soundtrigger'));
+    await userEvent.click(screen.getByTestId('soundtoggle'));
     expect(defaultProps.toggleSound).toHaveBeenCalled();
   });
 
@@ -64,7 +64,7 @@ describe('Components', () => {
       soundIsDisabled: false,
     });
 
-    await userEvent.click(screen.getByTestId('soundtrigger'));
+    await userEvent.click(screen.getByTestId('soundtoggle'));
     expect(defaultProps.toggleSound).toHaveBeenCalled();
   });
 });

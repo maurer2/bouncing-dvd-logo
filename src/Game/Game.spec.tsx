@@ -6,12 +6,14 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 
 import store from '../Store';
+import * as actionCreators from '../Store/actionCreators';
 
 import Component from './Game';
 import type { GameProps } from './Game.types';
 
 vi.useFakeTimers();
-userEvent.setup({ delay: null });
+vi.spyOn(actionCreators, 'togglePlayState')
+// userEvent.setup({ delay: null });
 
 describe('Game', () => {
   const resizeObserver = mockResizeObserver();
@@ -26,7 +28,7 @@ describe('Game', () => {
   it('should render', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-wrapper')).toBeInTheDocument();
+    expect(screen.getByTestId('game')).toBeInTheDocument();
   });
 
   it.skip('should match snapshot', () => {
@@ -38,68 +40,98 @@ describe('Game', () => {
   it('should have child elements', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-wrapper')).toBeTruthy();
+    expect(screen.getByTestId('game')).toBeTruthy();
     expect(screen.getByTestId('playfingfield')).toBeTruthy();
-    expect(screen.getByTestId('game-pausebutton')).toBeTruthy();
+    expect(screen.getByTestId('pausebutton')).toBeTruthy();
+    expect(screen.getByTestId('soundtoggle')).toBeTruthy();
   });
 
-  it.skip('should have set focus on game wrapper if supported by browser', () => {
+  it('should set focus on pause button if supported by browser', () => {
     const screen = setup({});
 
-    expect(screen.getByTestId('game-wrapper')).toEqual(document.activeElement);
+    expect(screen.getByTestId('pausebutton')).toEqual(document.activeElement);
   });
 
-  it('should not be paused by default', () => {
+  it('should call togglePlayState action on click', async () => {
     const screen = setup({});
+
+    expect(screen.queryByTestId('pausebutton')).toBeInTheDocument();
+
+    await fireEvent.click(screen.getByTestId('pausebutton'));
+    expect(actionCreators.togglePlayState).toHaveBeenCalled();
+  });
+
+  it('should be paused on start and then start when ready', () => {
+    const screen = setup({});
+    const playingfield = screen.getByTestId('playfingfield')
+    resizeObserver.mockElementSize(playingfield, {
+      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
+    });
+
+    expect(screen.getByLabelText('Pause')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Unpause')).not.toBeInTheDocument();
+
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(screen.getByLabelText('Pause')).toBeInTheDocument();
     expect(screen.queryByLabelText('Unpause')).not.toBeInTheDocument();
   });
 
-  it('should pause when clicking on game when in non pause mode', async () => {
-    const screen = setup();
-
-    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
-
-    await fireEvent.click(screen.getByTestId('game-pausebutton'));
-    // await userEvent.click(screen.getByTestId('game-pausebutton'));
-    expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
-    expect(screen.queryByLabelText('Pause')).not.toBeInTheDocument();
-  });
-
-  it('should unpause when clicking on game when in pause mode', async () => {
-    const screen = setup();
-
-    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
-
-    await fireEvent.click(screen.getByTestId('game-pausebutton'));
-    await fireEvent.click(screen.getByTestId('game-pausebutton'));
-    // await userEvent.click(screen.getByTestId('game-pausebutton'));
-    expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
-    expect(screen.queryByLabelText('Pause')).not.toBeInTheDocument();
-  });
-
-  it('should pause when pressing spacebar when in non-pause mode', async () => {
+  it('should unpause when clicking on pause button when in pause mode', async () => {
     const screen = setup({});
 
-    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
+    expect(screen.queryByTestId('pausebutton')).toBeInTheDocument();
+    expect(screen.getByLabelText('Pause')).toBeInTheDocument();
 
-    await fireEvent.keyPress(screen.getByTestId('game-pausebutton'), { charCode: 32 });
+    await fireEvent.click(screen.getByTestId('pausebutton'));
+    await fireEvent.click(screen.getByTestId('pausebutton'));
+    // await userEvent.click(screen.getByTestId('pausebutton')););
+    expect(screen.queryByLabelText('Pause')).toBeInTheDocument();
+  });
+
+  it('should pause when clicking on game when in unpause mode', async () => {
+    const screen = setup({});
+
+    expect(screen.queryByTestId('pausebutton')).toBeInTheDocument();
+    await fireEvent.click(screen.getByTestId('pausebutton'))
+    expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
+
+    await fireEvent.click(screen.getByTestId('pausebutton'));
+    await fireEvent.click(screen.getByTestId('pausebutton'));
+    // await userEvent.click(screen.getByTestId('pausebutton'));
     expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
   });
 
-  it('should pause when pressing k when in non-pause mode', async () => {
+  it.skip('should unpause when pressing spacebar when in pause mode', async () => {
     const screen = setup({});
 
-    expect(screen.queryByTestId('game-pausebutton')).toBeInTheDocument();
-
-    await fireEvent.keyPress(screen.getByTestId('game-pausebutton'), { charCode: 75 });
+    expect(screen.queryByTestId('pausebutton')).toBeInTheDocument();
+    // await fireEvent.click(screen.getByTestId('pausebutton'))
     expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
+
+    screen.getByTestId('pausebutton').focus();
+    // await userEvent.type(screen.getByTestId('pausebutton'), '{space}');
+    await fireEvent.keyUp(screen.getByTestId('pausebutton'), { charCode: 32 });
+
+    expect(actionCreators.togglePlayState).toHaveBeenCalled();
+    expect(screen.getByLabelText('Pause')).toBeInTheDocument();
+  });
+
+  it.skip('should unpause when pressing k when in non-pause mode', async () => {
+    const screen = setup({});
+
+    expect(screen.queryByTestId('pausebutton')).toBeInTheDocument();
+    expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
+
+    await fireEvent.keyPress(screen.getByTestId('pausebutton'), { charCode: 75 });
+    expect(screen.getByLabelText('Pause')).toBeInTheDocument();
   });
 
   it.skip('resize should trigger key change e.g. reset', async () => {
     const screen = setup();
-    resizeObserver.mockElementSize(screen.getByTestId('game-wrapper'), {
+    resizeObserver.mockElementSize(screen.getByTestId('game'), {
       contentBoxSize: { inlineSize: 1280, blockSize: 1280 },
     });
 
@@ -108,7 +140,7 @@ describe('Game', () => {
     console.log(styleStringBeforeResize);
 
     await act(() => {
-      resizeObserver.resize(screen.getByTestId('game-wrapper'));
+      resizeObserver.resize(screen.getByTestId('game'));
     });
 
     const styleStringAfterResize = await screen
