@@ -169,13 +169,14 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
       return;
     }
 
-    const totalVelocity = 8;
-    const velocityX: number =
+    const totalVelocity = 10;
+    const minVelocityPerAxis = 2;
+    const velocityX =
       Math.random() >= 0.5
-        ? random(1, totalVelocity - 1, true)
-        : random(-1, -totalVelocity + 1, true);
-    const velocityY: number =
-      Math.sign(velocityX) === 1 ? totalVelocity - velocityX : totalVelocity + velocityX;
+        ? random(minVelocityPerAxis, totalVelocity - minVelocityPerAxis, true)
+        : random(-minVelocityPerAxis, -totalVelocity + minVelocityPerAxis, true);
+    const velocityY =
+      Math.sign(velocityX) === 1 ? totalVelocity - velocityX : (totalVelocity + velocityX) * -1;
 
     dispatchLocal({
       type: 'TRIGGER_INITIAL_POSITION',
