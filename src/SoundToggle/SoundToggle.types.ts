@@ -5,5 +5,5 @@ export type SoundToggleProps = {
 };
 
 export type SoundToggleStyleProps = {
-  $status: 'active' | 'inactive';
+  '$soundIsDisabled': SoundToggleProps['soundIsDisabled'],
 };

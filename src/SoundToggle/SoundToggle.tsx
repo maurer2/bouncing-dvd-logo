@@ -20,7 +20,7 @@ const SoundToggle: FC<Readonly<Types.SoundToggleProps>> = ({
       data-testid="soundtoggle"
     >
       <Styles.SoundToggleIcon
-        $status={soundIsDisabled ? 'inactive' : 'active'}
+        $soundIsDisabled={soundIsDisabled}
         data-testid="soundtoggle-icon"
       />
     </Styles.SoundToggle>

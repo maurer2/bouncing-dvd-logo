@@ -198,6 +198,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     <Styles.PlayingFieldWrapper
       ref={playingfieldDomElement}
       data-testid="playingfield"
+      $isPaused={isPaused}
     >
       {positions.positionX.value !== null && positions.positionY.value !== null && (
         <Logo
@@ -206,7 +207,6 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
           width={logoSize[0]}
           height={logoSize[1]}
           currentColour={currentColor}
-          isPaused={isPaused}
         />
       )}
     </Styles.PlayingFieldWrapper>

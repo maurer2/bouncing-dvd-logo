@@ -5,14 +5,12 @@ export type LogoProps = {
   positionY: number;
   width: number;
   height: number;
-  isPaused: boolean;
   currentColour: Colour;
 };
 
 export type LogoStyleProps = {
-  // from parent props
   [K in keyof Pick<
     LogoProps,
-    'positionX' | 'positionY' | 'width' | 'height' | 'isPaused' | 'currentColour'
+    'positionX' | 'positionY' | 'width' | 'height' | 'currentColour'
   > as `$${K}`]: LogoProps[K];
 };

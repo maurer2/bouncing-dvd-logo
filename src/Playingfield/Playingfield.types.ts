@@ -1,5 +1,9 @@
 export type PlayingfieldProps = Record<string, never>;
 
+export type PlayingFieldWrapperStyleProps = {
+  $isPaused: boolean;
+};
+
 export type LogoDimensions = [width: number, height: number];
 
 export type PositionAndVelocity = {

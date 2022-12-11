@@ -12,7 +12,6 @@ const Logo: FC<Readonly<Types.LogoProps>> = ({
   width,
   height,
   currentColour,
-  isPaused,
 }): ReactElement => (
   <Styles.LogoElement
     $positionX={positionX}
@@ -20,7 +19,6 @@ const Logo: FC<Readonly<Types.LogoProps>> = ({
     $width={width}
     $height={height}
     $currentColour={currentColour}
-    $isPaused={isPaused}
     data-testid="logo-element"
   >
     <CatLogo data-testid="cat-logo" />

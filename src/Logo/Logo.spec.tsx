@@ -14,7 +14,6 @@ describe('Logo', () => {
     width: 100,
     height: 100,
     currentColour: colours[0],
-    isPaused: false,
   };
 
   const triggerColourChangeProp: LogoProps = {
