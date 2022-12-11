@@ -59,6 +59,16 @@ module.exports = {
       },
     ],
     'no-useless-constructor': 'off',
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: [
+          '**/*{.,_}{test,spec}.{ts,tsx}',
+          '**/setupTests.ts',
+        ],
+        optionalDependencies: false,
+      },
+    ],
     // typescript
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/consistent-type-imports': 'warn',

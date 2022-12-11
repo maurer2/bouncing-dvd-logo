@@ -137,7 +137,7 @@ describe('Game', () => {
 
     expect(screen.getByTestId('logo-element')).toBeInTheDocument();
     const styleStringBeforeResize = screen.getByTestId('logo-element').getAttribute('style');
-    console.log(styleStringBeforeResize);
+    // console.log(styleStringBeforeResize);
 
     await act(() => {
       resizeObserver.resize(screen.getByTestId('game'));
@@ -146,7 +146,7 @@ describe('Game', () => {
     const styleStringAfterResize = await screen
       .queryByTestId('logo-element')
       ?.getAttribute('style');
-    console.log(styleStringAfterResize);
+    // console.log(styleStringAfterResize);
   });
 
   it.todo('should pause when resizing');

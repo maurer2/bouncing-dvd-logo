@@ -17,7 +17,7 @@
     "outDir": "./dist",
     "isolatedModules": true,
     "strict": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
