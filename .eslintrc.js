@@ -62,10 +62,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: [
-          '**/*{.,_}{test,spec}.{ts,tsx}',
-          '**/setupTests.ts',
-        ],
+        devDependencies: ['**/*{.,_}{test,spec}.{ts,tsx}', '**/setupTests.ts', './vite.config.ts'],
         optionalDependencies: false,
       },
     ],
@@ -102,6 +99,7 @@ module.exports = {
       rules: {
         'react/prop-types': 'off',
         'react/jsx-props-no-spreading': 'off',
+        'no-console': 'off',
       },
     },
   ],

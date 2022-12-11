@@ -5,11 +5,10 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr'; // needed to import SVG as React components, e.g. import ReactComponent as X
 import { visualizer } from 'rollup-plugin-visualizer';
 import checker from 'vite-plugin-checker';
-
 import type { PluginOption } from 'vite';
 
 // https://vitejs.dev/config/
-export default ({ mode }) =>
+export default ({ mode }: { mode: string }) =>
   defineConfig({
     server: {
       open: false,

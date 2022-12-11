@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
-import { createLogger } from 'redux-logger';
+import { logger } from 'redux-logger';
 import type { Store as StoreRedux } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 
@@ -11,10 +11,10 @@ const store: StoreRedux<Store, Action> & {
   dispatch: (action: Action) => Action;
 } = createStore(
   reducers,
-  composeWithDevTools(
-    // applyMiddleware(logger), // breaks vitest
-    applyMiddleware(),
-  ),
+  // composeWithDevTools(
+  //   applyMiddleware(logger), // breaks vitest
+  //   applyMiddleware(),
+  // ),
 );
 
 export default store;
