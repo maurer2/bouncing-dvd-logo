@@ -22,8 +22,8 @@ export const reducers = produce((state: Types.ReducerState, action: Types.Reduce
         return;
       }
 
-      newDraft.positionX.value += state.positionX.velocity;
-      newDraft.positionY.value += state.positionY.velocity;
+      newDraft.positionX.value = Math.round(newDraft.positionX.value + state.positionX.velocity);
+      newDraft.positionY.value = Math.round(newDraft.positionY.value + state.positionY.velocity);
 
       break;
     }
@@ -35,8 +35,8 @@ export const reducers = produce((state: Types.ReducerState, action: Types.Reduce
         return;
       }
 
-      newDraft.positionX.value += velocityX;
-      newDraft.positionX.velocity = velocityX;
+      newDraft.positionX.value = Math.round(newDraft.positionX.value + velocityX);
+      newDraft.positionX.velocity = Math.round(velocityX);
 
       break;
     }
@@ -48,8 +48,8 @@ export const reducers = produce((state: Types.ReducerState, action: Types.Reduce
         return;
       }
 
-      newDraft.positionY.value += velocityY;
-      newDraft.positionY.velocity = velocityY;
+      newDraft.positionY.value = Math.round(newDraft.positionY.value + velocityY);
+      newDraft.positionY.velocity = Math.round(velocityY);
 
       break;
     }

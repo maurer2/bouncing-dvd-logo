@@ -11,6 +11,7 @@ export const PauseButton = styled.button`
   all: unset;
   position: absolute;
   inset: 0;
+  width: 100%; // needed in Firefox
   overflow: hidden;
   cursor: pointer;
 `;

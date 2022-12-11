@@ -169,7 +169,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
       return;
     }
 
-    const totalVelocity = 10;
+    const totalVelocity = 8;
     const minVelocityPerAxis = 2;
     const velocityX =
       Math.random() >= 0.5
