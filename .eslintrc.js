@@ -16,9 +16,10 @@ module.exports = {
     'plugin:import/typescript',
     'plugin:lodash/recommended',
     'plugin:react/recommended',
+    'plugin:react-redux/recommended',
     'prettier',
   ],
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'lodash'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'lodash', 'react-redux'],
   env: {
     jest: true,
     browser: true,

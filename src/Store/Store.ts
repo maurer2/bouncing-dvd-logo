@@ -1,10 +1,15 @@
-import { createContext } from 'react';
+import type { Store } from './types';
+import { colours } from './constants';
 
-import type { StoreType } from './types';
-
-const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'] as const;
-
-const Store = createContext<StoreType | null>(null);
-
-export default Store;
-export { colours };
+export const initialState: Store = {
+  lastPosition: null,
+  colours: {
+    current: colours[0],
+    previous: null,
+    available: [...colours],
+  },
+  isPaused: true,
+  soundIsDisabled: true,
+  isPlayingSound: false,
+  collisionCount: 0,
+};

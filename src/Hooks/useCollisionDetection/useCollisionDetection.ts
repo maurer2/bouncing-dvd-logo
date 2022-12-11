@@ -3,18 +3,23 @@ import { useRef, useEffect } from 'react';
 import type { UseCollisionDetection } from './useCollisionDetection.types';
 
 export default function useCollisionDetection(
-  position: number,
+  position: number | null,
   objectSize: number,
-  worldSize: number,
+  worldSize: number | undefined,
 ): Readonly<UseCollisionDetection> {
   const hasCollidedWithStart = useRef(false);
   const hasCollidedWithEnd = useRef(false);
 
   useEffect(() => {
-    hasCollidedWithStart.current = position <= 0;
+    if (position !== null) {
+      hasCollidedWithStart.current = position <= 0;
+    }
   }, [position]);
 
   useEffect(() => {
+    if (!position || !worldSize) {
+      return;
+    }
     const maxPositionNotColliding: number = worldSize - objectSize;
 
     hasCollidedWithEnd.current = position > maxPositionNotColliding;

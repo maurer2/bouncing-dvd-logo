@@ -1,5 +1,10 @@
 {
   "include": ["./src/**/*"],
+  "exclude": [
+    "src/Hooks/useCollisionDetection/useCollisionDetection.spec.tsx",
+    "src/Hooks/useColour/useColour.spec.tsx",
+    "src/Hooks/useChangeDelta/useChangeDelta.spec.tsx"
+  ],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
@@ -19,7 +24,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": true,
-    "strictNullChecks": false
+    "noEmit": true
   }
 }

@@ -4,8 +4,8 @@ import type { LogoStyleProps } from './Logo.types';
 
 export const LogoElement = styled.figure.attrs<LogoStyleProps>((props) => ({
   style: {
-    translate: `${Math.floor(props.$positionX)}px ${Math.floor(props.$positionY)}px`,
-    color: props.$colour,
+    translate: `${props.$positionX}px ${props.$positionY}px`,
+    color: props.$currentColour,
   },
 }))<LogoStyleProps>`
   position: absolute;

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
+import { Provider } from 'react-redux';
 import 'modern-normalize/modern-normalize.css';
 
-import Settings from './Settings/Settings';
+import store from './Store';
 import Game from './Game/Game';
 
 const GlobalStyles = createGlobalStyle`
@@ -32,14 +33,15 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const App = () => (
-  <Settings>
-    <GlobalStyles />
-    <Game />
-  </Settings>
+  <StrictMode>
+    <Provider store={store}>
+      <GlobalStyles />
+      <Game />
+    </Provider>
+  </StrictMode>
 );
 
 const container = document.getElementById('root');
-
 if (!container) {
   throw new Error('root element not found');
 }

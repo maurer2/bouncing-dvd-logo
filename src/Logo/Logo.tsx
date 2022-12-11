@@ -1,9 +1,6 @@
 import type { FC, ReactElement } from 'react';
-import React, { useEffect, useRef, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
-import Store from '../Store';
-import useColour from '../Hooks/useColour';
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
 
 import * as Styles from './Logo.styles';
@@ -14,45 +11,20 @@ const Logo: FC<Readonly<Types.LogoProps>> = ({
   positionY,
   width,
   height,
-  changeColours,
+  currentColour,
   isPaused,
-}): ReactElement => {
-  const { colours } = useContext(Store);
-  const prevChangeColours = useRef(false);
-  const [colour, setColour] = useColour(colours);
-
-  useEffect(() => {
-    if (changeColours && changeColours !== prevChangeColours.current) {
-      setColour();
-    }
-
-    prevChangeColours.current = changeColours;
-  }, [changeColours, setColour]);
-
-  return (
-    <Styles.LogoElement
-      $positionX={positionX}
-      $positionY={positionY}
-      $width={width}
-      $height={height}
-      $colour={colour}
-      $isPaused={isPaused}
-      data-testid="logo-element"
-    >
-      <CatLogo data-testid="cat-logo" />
-    </Styles.LogoElement>
-  );
-};
-
-const { number, bool } = PropTypes;
-
-Logo.propTypes = {
-  positionX: number.isRequired,
-  positionY: number.isRequired,
-  width: number.isRequired,
-  height: number.isRequired,
-  changeColours: bool.isRequired,
-  isPaused: bool.isRequired,
-};
+}): ReactElement => (
+  <Styles.LogoElement
+    $positionX={positionX}
+    $positionY={positionY}
+    $width={width}
+    $height={height}
+    $currentColour={currentColour}
+    $isPaused={isPaused}
+    data-testid="logo-element"
+  >
+    <CatLogo data-testid="cat-logo" />
+  </Styles.LogoElement>
+);
 
 export default Logo;

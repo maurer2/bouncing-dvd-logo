@@ -1,0 +1,5 @@
+{
+  "language": "en-GB",
+  "ignoreWords": ["nanoid"],
+  "ignorePaths": ["./package.json"]
+}
