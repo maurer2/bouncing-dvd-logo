@@ -2,7 +2,7 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
-import userEvent from '@testing-library/user-event';
+// import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 
 import store from '../Store';
@@ -12,7 +12,7 @@ import Component from './Game';
 import type { GameProps } from './Game.types';
 
 vi.useFakeTimers();
-vi.spyOn(actionCreators, 'togglePlayState')
+vi.spyOn(actionCreators, 'togglePlayState');
 // userEvent.setup({ delay: null });
 
 describe('Game', () => {
@@ -41,7 +41,7 @@ describe('Game', () => {
     const screen = setup({});
 
     expect(screen.getByTestId('game')).toBeTruthy();
-    expect(screen.getByTestId('playfingfield')).toBeTruthy();
+    expect(screen.getByTestId('playingfield')).toBeTruthy();
     expect(screen.getByTestId('pausebutton')).toBeTruthy();
     expect(screen.getByTestId('soundtoggle')).toBeTruthy();
   });
@@ -63,7 +63,7 @@ describe('Game', () => {
 
   it('should be paused on start and then start when ready', () => {
     const screen = setup({});
-    const playingfield = screen.getByTestId('playfingfield')
+    const playingfield = screen.getByTestId('playingfield');
     resizeObserver.mockElementSize(playingfield, {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
@@ -95,7 +95,7 @@ describe('Game', () => {
     const screen = setup({});
 
     expect(screen.queryByTestId('pausebutton')).toBeInTheDocument();
-    await fireEvent.click(screen.getByTestId('pausebutton'))
+    await fireEvent.click(screen.getByTestId('pausebutton'));
     expect(screen.getByLabelText('Unpause')).toBeInTheDocument();
 
     await fireEvent.click(screen.getByTestId('pausebutton'));

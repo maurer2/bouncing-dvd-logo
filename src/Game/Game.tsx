@@ -44,7 +44,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   return (
     <StyleSheetManager disableVendorPrefixes>
       <Styles.GameWrapper data-testid="game">
-        <PlayingField/>
+        <PlayingField />
         <Styles.PauseButton
           tabIndex={0}
           onClick={handleClick}

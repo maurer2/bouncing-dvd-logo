@@ -18,7 +18,7 @@
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'",
     "start": "vite",
-    "test": "vitest 'src/Game/Game.spec.tsx' -w",
+    "test": "vitest -w",
     "test:types": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {

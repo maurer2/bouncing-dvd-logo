@@ -197,7 +197,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
   return (
     <Styles.PlayingFieldWrapper
       ref={playingfieldDomElement}
-      data-testid="playfingfield"
+      data-testid="playingfield"
     >
       {positions.positionX.value !== null && positions.positionY.value !== null && (
         <Logo
