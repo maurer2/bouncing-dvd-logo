@@ -6,21 +6,8 @@ import { ReactComponent as CatLogo } from '../assets/cat.svg';
 import * as Styles from './Logo.styles';
 import type * as Types from './Logo.types';
 
-const Logo: FC<Readonly<Types.LogoProps>> = ({
-  positionX,
-  positionY,
-  width,
-  height,
-  currentColour,
-}): ReactElement => (
-  <Styles.LogoElement
-    $positionX={positionX}
-    $positionY={positionY}
-    $width={width}
-    $height={height}
-    $currentColour={currentColour}
-    data-testid="logo-element"
-  >
+const Logo: FC<Readonly<Types.LogoProps>> = (): ReactElement => (
+  <Styles.LogoElement data-testid="logo-element">
     <CatLogo data-testid="cat-logo" />
   </Styles.LogoElement>
 );

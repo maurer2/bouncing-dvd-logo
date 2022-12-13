@@ -194,6 +194,10 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
     dispatch(startGame());
   }, [dispatch, playingfieldBoundingBox]);
 
+  playingfieldDomElement.current?.style.setProperty('--translate-x', `${String(positions.positionX.value ?? 0)}px`);
+  playingfieldDomElement.current?.style.setProperty('--translate-y', `${String(positions.positionY.value ?? 0)}px`);
+  playingfieldDomElement.current?.style.setProperty('--colour', currentColor);
+
   return (
     <Styles.PlayingFieldWrapper
       ref={playingfieldDomElement}
@@ -201,13 +205,7 @@ const PlayingField: FC<Readonly<Types.PlayingfieldProps>> = (): ReactElement => 
       $isPaused={isPaused}
     >
       {positions.positionX.value !== null && positions.positionY.value !== null && (
-        <Logo
-          positionX={positions.positionX.value}
-          positionY={positions.positionY.value}
-          width={logoSize[0]}
-          height={logoSize[1]}
-          currentColour={currentColor}
-        />
+        <Logo/>
       )}
     </Styles.PlayingFieldWrapper>
   );
