@@ -42,7 +42,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
   }, []);
 
   return (
-    <StyleSheetManager disableVendorPrefixes>
+    <StyleSheetManager>
       <Styles.GameWrapper data-testid="game">
         <PlayingField />
         <Styles.PauseButton

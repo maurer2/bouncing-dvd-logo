@@ -19,7 +19,14 @@ module.exports = {
     'plugin:react-redux/recommended',
     'prettier',
   ],
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'lodash', 'react-redux'],
+  plugins: [
+    'react',
+    'react-hooks',
+    '@typescript-eslint',
+    'lodash',
+    'react-redux',
+    'react-compiler',
+  ],
   env: {
     jest: true,
     browser: true,
@@ -88,6 +95,8 @@ module.exports = {
     'lodash/prefer-lodash-method': 'off',
     // a11y
     'jsx-a11y/media-has-caption': 'off',
+    // react compiler
+    'react-compiler/react-compiler': 'error',
   },
   settings: { react: { version: 'detect' } },
   parserOptions: {
