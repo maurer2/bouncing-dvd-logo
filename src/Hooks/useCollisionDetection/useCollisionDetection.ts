@@ -1,31 +1,36 @@
-import { useRef, useEffect } from 'react';
+import { useState } from 'react';
 
-import type { UseCollisionDetection } from './useCollisionDetection.types';
+type UseCollisionDetection = readonly [hasCollidedWithStart: boolean, hasCollidedWithEnd: boolean];
 
 export default function useCollisionDetection(
   position: number | null,
   objectSize: number,
-  worldSize: number | undefined,
-): Readonly<UseCollisionDetection> {
-  const hasCollidedWithStart = useRef(false);
-  const hasCollidedWithEnd = useRef(false);
+  worldSize?: number,
+): UseCollisionDetection {
+  const [hasCollidedWithStart, setHasCollidedWithStart] = useState(false);
+  const [hasCollidedWithEnd, setHasCollidedWithEnd] = useState(false);
 
-  useEffect(() => {
-    if (position !== null) {
-      hasCollidedWithStart.current = position <= 0;
+  // eslint-disable-next-line lodash/prefer-lodash-typecheck
+  if (position !== null && typeof worldSize === 'number') {
+    // start stuff
+    const hasPositionSmallerThanStart = position < 0;
+    if (hasCollidedWithStart && !hasPositionSmallerThanStart) {
+      setHasCollidedWithStart(false);
     }
-  }, [position]);
-
-  useEffect(() => {
-    if (!position || !worldSize) {
-      hasCollidedWithStart.current = false;
-      hasCollidedWithEnd.current = false;
-      return;
+    if (!hasCollidedWithStart && hasPositionSmallerThanStart) {
+      setHasCollidedWithStart(true);
     }
-    const maxPositionNotColliding: number = worldSize - objectSize;
 
-    hasCollidedWithEnd.current = position >= maxPositionNotColliding;
-  }, [position, objectSize, worldSize]);
+    // end stuff
+    const maxPositionNotColliding = worldSize - objectSize;
+    const hasPositionLargerThanEnd = position > maxPositionNotColliding;
+    if (hasCollidedWithEnd && !hasPositionLargerThanEnd) {
+      setHasCollidedWithEnd(false);
+    }
+    if (!hasCollidedWithEnd && hasPositionLargerThanEnd) {
+      setHasCollidedWithEnd(true);
+    }
+  }
 
   return [hasCollidedWithStart, hasCollidedWithEnd] as const;
 }
