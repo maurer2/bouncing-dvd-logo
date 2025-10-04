@@ -15,7 +15,7 @@ import type * as Types from './Game.types';
 
 const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement => {
   const dispatch: Dispatch = useDispatch();
-  const soundIsDisabled: boolean = useSelector(getSoundState);
+  const isSoundDisabled: boolean = useSelector(getSoundState);
   const isPaused: boolean = useSelector(getPlayState);
   const isPlayingSound: boolean = useSelector(getIsPlayingSoundState);
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
@@ -54,7 +54,7 @@ const Game: FC<Readonly<PropsWithChildren<Types.GameProps>>> = (): ReactElement 
           data-testid="pausebutton"
         />
         <SoundToggle
-          soundIsDisabled={soundIsDisabled}
+          isSoundDisabled={isSoundDisabled}
           toggleSound={toggleSoundCB}
         />
         <SoundPlayer shouldTriggerSound={isPlayingSound} />

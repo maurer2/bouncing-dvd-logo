@@ -2,13 +2,16 @@ import React from 'react';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { ComponentProps } from 'react';
 
 import Component from './SoundToggle';
-import type { SoundToggleProps } from './SoundToggle.types';
+import type SoundToggle from './SoundToggle';
+
+type SoundToggleProps = ComponentProps<typeof SoundToggle>;
 
 describe('Components', () => {
   const defaultProps: SoundToggleProps = {
-    soundIsDisabled: true,
+    isSoundDisabled: true,
     toggleSound: vi.fn(),
   };
   const setup = (props: Partial<SoundToggleProps> = {}) =>
@@ -46,7 +49,7 @@ describe('Components', () => {
 
   it('should have "Disable sound" text when sound is off', () => {
     const screen = setup({
-      soundIsDisabled: false,
+      isSoundDisabled: false,
     });
 
     expect(screen.getByLabelText('Disable sound')).toBeInTheDocument();
@@ -61,7 +64,7 @@ describe('Components', () => {
 
   it('should trigger sound toggle function on click, when sound is on', async () => {
     const screen = setup({
-      soundIsDisabled: false,
+      isSoundDisabled: false,
     });
 
     await userEvent.click(screen.getByTestId('soundtoggle'));

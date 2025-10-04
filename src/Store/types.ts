@@ -22,7 +22,7 @@ export type Store = {
   };
   isPaused: boolean;
   isPlayingSound: boolean;
-  soundIsDisabled: boolean;
+  isSoundDisabled: boolean;
   collisionCount: number;
 };
 export type RootState = Store;

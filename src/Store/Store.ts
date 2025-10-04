@@ -9,7 +9,7 @@ export const initialState: Store = {
     available: [...colours],
   },
   isPaused: true,
-  soundIsDisabled: true,
+  isSoundDisabled: true,
   isPlayingSound: false,
   collisionCount: 0,
 };
