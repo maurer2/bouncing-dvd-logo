@@ -1,6 +1,17 @@
+import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
-import type { LogoStyleProps } from './Logo.types';
+import type Component from './Logo';
+
+type LogoProps = ComponentProps<typeof Component>;
+
+type LogoStyleProps = {
+  // prefix style props with $ so that they are not passed to dom element
+  [K in keyof Pick<
+    LogoProps,
+    'positionX' | 'positionY' | 'width' | 'height' | 'currentColour'
+  > as `$${K}`]: LogoProps[K];
+};
 
 export const LogoElement = styled.figure.attrs<LogoStyleProps>((props) => ({
   style: {

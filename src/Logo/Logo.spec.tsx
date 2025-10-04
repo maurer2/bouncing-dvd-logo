@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { type ComponentProps } from 'react';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 
 import { colours } from '../Store/constants';
 
 import Component from './Logo';
-import type { LogoProps } from './Logo.types';
+
+type LogoProps = ComponentProps<typeof Component>;
 
 describe('Logo', () => {
   const defaultProps: LogoProps = {

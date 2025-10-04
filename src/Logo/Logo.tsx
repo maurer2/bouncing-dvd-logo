@@ -1,18 +1,20 @@
-import type { FC, ReactElement } from 'react';
-import React from 'react';
+import React, { type FC } from 'react';
 
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
+import type { Colour } from '../Store/types';
 
 import * as Styles from './Logo.styles';
-import type * as Types from './Logo.types';
 
-const Logo: FC<Readonly<Types.LogoProps>> = ({
-  positionX,
-  positionY,
-  width,
-  height,
-  currentColour,
-}): ReactElement => (
+type LogoProps = {
+  positionX: number;
+  positionY: number;
+  width: number;
+  height: number;
+  currentColour: Colour;
+};
+
+const Logo: FC<LogoProps> = ({ positionX, positionY, width, height, currentColour }) => (
+  // figure tag
   <Styles.LogoElement
     $positionX={positionX}
     $positionY={positionY}
@@ -20,6 +22,7 @@ const Logo: FC<Readonly<Types.LogoProps>> = ({
     $height={height}
     $currentColour={currentColour}
     data-testid="logo-element"
+    aria-labelledby="Cat logo"
   >
     <CatLogo data-testid="cat-logo" />
   </Styles.LogoElement>
