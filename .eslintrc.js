@@ -1,6 +1,6 @@
 module.exports = {
   parserOptions: {
-    ecmaVersion: 2022,
+    ecmaVersion: 2024,
     sourceType: 'module',
     ecmaFeatures: { jsx: true },
   },
@@ -76,6 +76,8 @@ module.exports = {
     // typescript
     '@typescript-eslint/no-useless-constructor': 'error',
     '@typescript-eslint/consistent-type-imports': 'warn',
+    '@typescript-eslint/lines-between-class-members': 'off',
+    '@typescript-eslint/no-throw-literal': 'off',
     // react
     'react/jsx-uses-vars': 'error',
     'react/jsx-uses-react': 'error',
@@ -93,6 +95,7 @@ module.exports = {
     // lodash
     'lodash/import-scope': [2, 'member'],
     'lodash/prefer-lodash-method': 'off',
+    'lodash/prefer-lodash-typecheck': 'off',
     // a11y
     'jsx-a11y/media-has-caption': 'off',
     // react compiler

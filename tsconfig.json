@@ -1,9 +1,5 @@
 {
-  "include": [
-    "./src/**/*",
-    "vite.config.ts",
-    "jest.config.ts"
-  ],
+  "include": ["./src/**/*", "vite.config.ts", "jest.config.ts"],
   "exclude": [
     "src/Hooks/useCollisionDetection/useCollisionDetection.spec.tsx",
     "src/Hooks/useColour/useColour.spec.tsx",
@@ -11,7 +7,7 @@
   ],
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "NodeNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals"],
     "allowJs": true,
@@ -22,7 +18,7 @@
     "isolatedModules": true,
     "strict": true,
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

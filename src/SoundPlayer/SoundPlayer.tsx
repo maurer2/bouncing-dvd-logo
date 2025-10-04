@@ -27,7 +27,6 @@ const Sound: FC<SoundPlayerProps> = ({ shouldTriggerSound }) => {
       return;
     }
     setSoundIsPlaying(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps useEffectEvent not supported yet
   }, [shouldTriggerSound]);
 
   return (

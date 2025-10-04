@@ -161,7 +161,6 @@ const PlayingField: FC<PlayingfieldProps> = () => {
   //     return;
   //   }
   //   onPauseGame();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps useEffectEvent not supported yet
   // }, [isPaused, positions.positionX.value, positions.positionY.value]);
 
   // init position and trigger start on load and on resize
@@ -195,7 +194,6 @@ const PlayingField: FC<PlayingfieldProps> = () => {
     });
 
     onStartGame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps useEffectEvent not supported yet
   }, [playingfieldBoundingBox?.width, playingfieldBoundingBox?.height]);
 
   return (

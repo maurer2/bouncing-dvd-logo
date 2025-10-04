@@ -10,7 +10,6 @@ export default function useCollisionDetection(
   const [hasCollidedWithStart, setHasCollidedWithStart] = useState(false);
   const [hasCollidedWithEnd, setHasCollidedWithEnd] = useState(false);
 
-  // eslint-disable-next-line lodash/prefer-lodash-typecheck
   if (position !== null && typeof worldSize === 'number') {
     // start stuff
     const hasPositionSmallerThanStart = position < 0;
