@@ -5,8 +5,9 @@ import React, {
   useReducer,
   useEffect,
   useState,
+  useEffectEvent,
 } from 'react';
-import type { FC, ReactElement, Reducer } from 'react';
+import type { FC, ReactElement } from 'react';
 import { random } from 'lodash-es';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,16 +22,12 @@ import {
 import { getPlayState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
-import type {
-  PlayingfieldProps,
-  ReducerState,
-  ReducerAction,
-  LogoDimensions,
-} from './Playingfield.types';
+import type { PlayingfieldProps, LogoDimensions } from './Playingfield.types';
 import { reducers } from './reducers';
 
 const logoSize: LogoDimensions = [150, 138.66];
 const totalVelocity = 8;
+const minVelocityPerAxis = 2;
 
 const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number => {
   // prettier-ignore
@@ -46,9 +43,10 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
 const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
   const dispatch = useDispatch();
   const isPaused = useSelector(getPlayState);
+  const loopTimestamp = useRef(0);
   const currentColor = useSelector(getCurrentColour);
 
-  const [positions, dispatchLocal] = useReducer<Reducer<ReducerState, ReducerAction>>(reducers, {
+  const [positions, dispatchLocal] = useReducer(reducers, {
     positionX: {
       value: null,
       velocity: 0,
@@ -61,11 +59,6 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
   const [playingfieldBoundingBox, setPlayingfieldBoundingBox] = useState<DOMRectReadOnly | null>(
     null,
   );
-
-  const loopTimestamp = useRef(0);
-  // const playingfieldDomElement = useRef<HTMLDivElement | null>(null);
-  // const gameResizeObserver = useRef<ResizeObserver | null>(null);
-
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
     logoSize[0],
@@ -77,16 +70,7 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
     playingfieldBoundingBox?.height,
   );
 
-  // https://react.dev/reference/react/useRef#avoiding-recreating-the-ref-contents
-  // https://newsletter.daishikato.com/p/using-useref-for-lazy-initialization-with-react-compiler
-  // if (gameResizeObserver.current === null) {
-  //   gameResizeObserver.current = new ResizeObserver((entries) => {
-  //     const { contentRect } = entries[0];
-  //     setPlayingfieldBoundingBox(contentRect);
-  //   });
-  // }
-
-  //   https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler#react-19
+  // https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler#react-19
   const playfieldCBRef = useCallback((element: HTMLDivElement) => {
     const observer = new ResizeObserver((entries) => {
       const { contentRect } = entries[0];
@@ -101,6 +85,19 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
     };
   }, []);
 
+  const onStartGame = useEffectEvent(() => {
+    dispatch(startGame());
+  });
+
+  // not used anywhere
+  // const onPauseGame = useEffectEvent(() => {
+  //   if (positions.positionX.value === null || positions.positionY.value === null) {
+  //     return;
+  //   }
+
+  //   dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
+  // });
+
   const triggerHasCollided = useCallback(() => {
     dispatch(triggerCollision());
     // todo replace with redux thunk
@@ -110,7 +107,11 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
   }, [dispatch]);
 
   const loop = useCallback(() => {
-    if (!isPaused && positions.positionX.velocity && positions.positionY.velocity) {
+    if (isPaused) {
+      return;
+    }
+
+    if (positions.positionX.velocity && positions.positionY.velocity) {
       if (isCollidingXStart || isCollidingXEnd) {
         triggerHasCollided();
         dispatchLocal({
@@ -153,14 +154,14 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
       window.cancelAnimationFrame(loopTimestamp.current);
     };
   }, [loop]);
-
   // set last position when entering pause mode
-  useEffect(() => {
-    if (!isPaused || positions.positionX.value === null || positions.positionY.value === null) {
-      return;
-    }
-    dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
-  }, [isPaused, dispatch, positions.positionX.value, positions.positionY.value]);
+  // useEffect(() => {
+  //   if (!isPaused || positions.positionX.value === null || positions.positionY.value === null) {
+  //     return;
+  //   }
+  //   onPauseGame();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps useEffectEvent not supported yet
+  // }, [isPaused, positions.positionX.value, positions.positionY.value]);
 
   // init position and trigger start on load and on resize
   useEffect(() => {
@@ -172,7 +173,6 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
       return;
     }
 
-    const minVelocityPerAxis = 2;
     const velocityX =
       Math.random() >= 0.5
         ? random(minVelocityPerAxis, totalVelocity - minVelocityPerAxis, true)
@@ -193,8 +193,9 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
       },
     });
 
-    dispatch(startGame());
-  }, [dispatch, playingfieldBoundingBox]);
+    onStartGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps useEffectEvent not supported yet
+  }, [playingfieldBoundingBox?.width, playingfieldBoundingBox?.height]);
 
   return (
     <Styles.PlayingFieldWrapper
@@ -202,17 +203,15 @@ const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
       data-testid="playingfield"
       $isPaused={isPaused}
     >
-      <div>
-        {positions.positionX.value !== null && positions.positionY.value !== null ? (
-          <Logo
-            positionX={positions.positionX.value}
-            positionY={positions.positionY.value}
-            width={logoSize[0]}
-            height={logoSize[1]}
-            currentColour={currentColor}
-          />
-        ) : null}
-      </div>
+      {positions.positionX.value !== null && positions.positionY.value !== null ? (
+        <Logo
+          positionX={positions.positionX.value}
+          positionY={positions.positionY.value}
+          width={logoSize[0]}
+          height={logoSize[1]}
+          currentColour={currentColor}
+        />
+      ) : null}
     </Styles.PlayingFieldWrapper>
   );
 };
