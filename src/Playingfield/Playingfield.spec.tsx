@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, act, waitFor } from '@testing-library/react';
@@ -9,7 +10,8 @@ import store from '../Store';
 import * as actionCreators from '../Store/actionCreators';
 
 import Component from './Playingfield';
-import type { PlayingfieldProps } from './Playingfield.types';
+
+type PlayingfieldProps = ComponentProps<typeof Component>;
 
 let mockRandom = 5;
 vi.mock('lodash-es', () => ({ random: vi.fn().mockImplementation(() => mockRandom) }));

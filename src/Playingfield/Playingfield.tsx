@@ -6,8 +6,8 @@ import React, {
   useEffect,
   useState,
   useEffectEvent,
+  type FC,
 } from 'react';
-import type { FC, ReactElement } from 'react';
 import { random } from 'lodash-es';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,15 +17,16 @@ import {
   startGame,
   triggerCollision,
   triggerCollisionEnd,
-  setLastPosition,
+  // setLastPosition,
 } from '../Store/actionCreators';
 import { getPlayState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
-import type { PlayingfieldProps, LogoDimensions } from './Playingfield.types';
 import { reducers } from './reducers';
 
-const logoSize: LogoDimensions = [150, 138.66];
+type PlayingfieldProps = Record<string, never>;
+
+const logoSize: [width: number, height: number] = [150, 138.66];
 const totalVelocity = 8;
 const minVelocityPerAxis = 2;
 
@@ -40,7 +41,7 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
   return newInverseVelocity;
 };
 
-const PlayingField: FC<PlayingfieldProps> = (): ReactElement => {
+const PlayingField: FC<PlayingfieldProps> = () => {
   const dispatch = useDispatch();
   const isPaused = useSelector(getPlayState);
   const loopTimestamp = useRef(0);
