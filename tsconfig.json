@@ -9,7 +9,12 @@
     "target": "esnext",
     "module": "NodeNext",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals"],
+    "types": [
+      "vite/client",
+      "vite-plugin-svgr/client",
+      "vitest/globals",
+      "@vitest/browser/providers/playwright"
+    ],
     "allowJs": true,
     "checkJs": true,
     "jsx": "react",
@@ -24,6 +29,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": true,
+    "erasableSyntaxOnly": true
   }
 }

@@ -13,12 +13,14 @@ type LogoStyleProps = {
   > as `$${K}`]: LogoProps[K];
 };
 
-export const LogoElement = styled.figure.attrs<LogoStyleProps>((props) => ({
-  style: {
-    translate: `${props.$positionX}px ${props.$positionY}px`,
-    color: props.$currentColour,
-  },
-}))<LogoStyleProps>`
+export const LogoElement = styled.figure.attrs<LogoStyleProps>(
+  ({ $positionX, $positionY, $currentColour }) => ({
+    style: {
+      translate: `${$positionX}px ${$positionY}px`,
+      color: $currentColour,
+    },
+  }),
+)<LogoStyleProps>`
   position: absolute;
   top: 0;
   left: 0;

@@ -1,13 +1,13 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Logo > should match snapshot 1`] = `
 <figure
-  class="sc-fHcixP cYYnON"
-  data-testid="logo-element"
-  style="transform: translate(100px, 100px); color: white;"
+  class="sc-bRKDuR jmkCw"
+  style="translate: 100px 100px; color: white;"
 >
   <svg
-    data-testid="cat-logo"
+    aria-label="Cat logo"
+    role="img"
     viewBox="0 0 727.27 672.28"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -48,31 +48,6 @@ exports[`Logo > should match snapshot 1`] = `
       d="M521.887 294.351c-5.208 11.576-18.815 16.738-30.39 11.53s-16.738-18.815-11.53-30.39 18.814-16.739 30.39-11.53 16.738 18.814 11.53 30.39z"
       fill="#fff"
     />
-  </svg>
-</figure>
-`;
-
-exports[`Logo should match snapshot 1`] = `
-.c0 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
-  margin: 0;
-  will-change: transform;
-  opacity: 1;
-}
-
-<figure
-  class="c0"
-  data-testid="logo-element"
-  style="transform: translate(100px, 100px); color: white;"
->
-  <svg
-    data-testid="cat-logo"
-  >
-    SVG markup
   </svg>
 </figure>
 `;

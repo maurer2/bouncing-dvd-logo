@@ -21,10 +21,11 @@ const Logo: FC<LogoProps> = ({ positionX, positionY, width, height, currentColou
     $width={width}
     $height={height}
     $currentColour={currentColour}
-    data-testid="logo-element"
-    aria-labelledby="Cat logo"
   >
-    <CatLogo data-testid="cat-logo" />
+    <CatLogo
+      role="img"
+      aria-label="Cat logo"
+    />
   </Styles.LogoElement>
 );
 

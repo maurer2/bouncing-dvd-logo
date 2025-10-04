@@ -1,11 +1,9 @@
-/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr'; // needed to import SVG as React components, e.g. import ReactComponent as X
 import { visualizer } from 'rollup-plugin-visualizer';
 import checker from 'vite-plugin-checker';
-import type { PluginOption } from 'vite';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) =>
@@ -31,7 +29,7 @@ export default ({ mode }: { mode: string }) =>
         gzipSize: true,
         brotliSize: true,
         open: true,
-      }) as PluginOption,
+      }),
     ],
     define: {
       'process.env.NODE_ENV': `"${mode}"`,
@@ -39,8 +37,19 @@ export default ({ mode }: { mode: string }) =>
     test: {
       globals: true,
       environment: 'jsdom',
-      setupFiles: 'src/setupTests.ts',
+      setupFiles: ['./src/setup-tests.ts'],
       clearMocks: true,
+      browser: {
+        enabled: true,
+        provider: 'playwright',
+        instances: [
+          {
+            browser: 'chromium',
+            headless: false,
+          },
+        ],
+      },
+      include: ['src/**/*.{test,spec}.tsx'],
       coverage: {
         reporter: ['text', 'lcov'],
         exclude: [
