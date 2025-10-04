@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import type { FC, ReactElement } from 'react';
+import React, { useState, useEffect, useRef, useEffectEvent, type FC } from 'react';
 
 import soundFile from '../assets/soundFile.wav';
 
-import type * as Types from './SoundPlayer.types';
+type SoundPlayerProps = {
+  shouldTriggerSound: boolean;
+};
 
-const Sound: FC<Readonly<Types.SoundPlayerProps>> = ({ shouldTriggerSound }): ReactElement => {
+const Sound: FC<SoundPlayerProps> = ({ shouldTriggerSound }) => {
   const [soundIsPlaying, setSoundIsPlaying] = useState(false);
   const audioDomElement = useRef<HTMLAudioElement | null>(null);
 
-  const playSound = useCallback(() => {
+  const onSoundStart = useEffectEvent(() => {
     // do not trigger new sound start while previous sound is playing
     if (!audioDomElement.current || soundIsPlaying) {
       return;
@@ -17,21 +18,23 @@ const Sound: FC<Readonly<Types.SoundPlayerProps>> = ({ shouldTriggerSound }): Re
 
     audioDomElement.current.currentTime = 0;
     audioDomElement.current.play();
-  }, [soundIsPlaying]);
+  });
 
   useEffect(() => {
     if (shouldTriggerSound) {
-      playSound();
+      onSoundStart();
       setSoundIsPlaying(true);
       return;
     }
     setSoundIsPlaying(false);
-  }, [shouldTriggerSound, playSound]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps useEffectEvent not supported yet
+  }, [shouldTriggerSound]);
 
   return (
     <audio
       data-testid="audio-tag"
       ref={audioDomElement}
+      aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
     >
       <source
         src={soundFile}

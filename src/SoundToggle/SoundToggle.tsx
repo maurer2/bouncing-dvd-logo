@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { type FC } from 'react';
 
 import * as Styles from './SoundToggle.styles';
 
