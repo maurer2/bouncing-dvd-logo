@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type ComponentProps } from 'react';
 import '@testing-library/jest-dom';
 import { render, fireEvent, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
@@ -9,7 +9,8 @@ import store from '../Store';
 import * as actionCreators from '../Store/actionCreators';
 
 import Component from './Game';
-import type { GameProps } from './Game.types';
+
+type GameProps = ComponentProps<typeof Component>;
 
 vi.useFakeTimers();
 vi.spyOn(actionCreators, 'togglePlayState');
