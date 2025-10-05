@@ -35,7 +35,7 @@ const Game: FC = () => {
     [dispatch],
   );
 
-  const toggleSoundCB = useCallback(() => {
+  const handleSoundToggle = useCallback(() => {
     dispatch(toggleSound());
   }, [dispatch]);
 
@@ -54,7 +54,7 @@ const Game: FC = () => {
         />
         <SoundToggle
           isSoundDisabled={isSoundDisabled}
-          toggleSound={toggleSoundCB}
+          onSoundToggle={handleSoundToggle}
         />
         <SoundPlayer shouldTriggerSound={isPlayingSound} />
       </Styles.GameWrapper>

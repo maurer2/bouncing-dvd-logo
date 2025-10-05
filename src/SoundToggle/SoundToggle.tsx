@@ -4,12 +4,12 @@ import * as Styles from './SoundToggle.styles';
 
 type SoundToggleProps = {
   isSoundDisabled: boolean;
-  toggleSound: () => void;
+  onSoundToggle: () => void;
 };
 
-const SoundToggle: FC<SoundToggleProps> = ({ isSoundDisabled, toggleSound }) => {
+const SoundToggle: FC<SoundToggleProps> = ({ isSoundDisabled, onSoundToggle }) => {
   const handleClick = (): void => {
-    toggleSound();
+    onSoundToggle();
   };
 
   return (

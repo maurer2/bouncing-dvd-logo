@@ -11,7 +11,7 @@ type SoundToggleProps = ComponentProps<typeof SoundToggle>;
 describe('Components', () => {
   const defaultProps: SoundToggleProps = {
     isSoundDisabled: false,
-    toggleSound: vi.fn(),
+    onSoundToggle: vi.fn(),
   };
 
   it('should render', () => {
@@ -59,7 +59,7 @@ describe('Components', () => {
     const { rerender } = render(<Component {...defaultProps} />);
 
     await user.click(screen.getByRole('button', { name: 'Play sound' }));
-    expect(defaultProps.toggleSound).toHaveBeenCalled();
+    expect(defaultProps.onSoundToggle).toHaveBeenCalled();
 
     rerender(
       <Component
@@ -69,6 +69,6 @@ describe('Components', () => {
     );
 
     await user.click(screen.getByRole('button', { name: 'Play sound' }));
-    expect(defaultProps.toggleSound).toHaveBeenCalled();
+    expect(defaultProps.onSoundToggle).toHaveBeenCalled();
   });
 });
