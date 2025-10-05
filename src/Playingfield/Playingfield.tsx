@@ -24,7 +24,7 @@ import { getPlayState, getCurrentColour } from '../Store/selectors';
 import * as Styles from './Playingfield.styles';
 import { reducers } from './reducers';
 
-type PlayingfieldProps = Record<string, never>;
+type PlayingFieldProps = Record<string, never>;
 
 const logoSize: [width: number, height: number] = [150, 138.66];
 const totalVelocity = 8;
@@ -41,7 +41,7 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
   return newInverseVelocity;
 };
 
-const PlayingField: FC<PlayingfieldProps> = () => {
+const PlayingField: FC<PlayingFieldProps> = () => {
   const dispatch = useDispatch();
   const isPaused = useSelector(getPlayState);
   const loopTimestamp = useRef(0);
@@ -107,6 +107,7 @@ const PlayingField: FC<PlayingfieldProps> = () => {
     }, 800);
   }, [dispatch]);
 
+  // todo remove access of ref.current in render
   const loop = useCallback(() => {
     if (isPaused) {
       return;
@@ -155,6 +156,7 @@ const PlayingField: FC<PlayingfieldProps> = () => {
       window.cancelAnimationFrame(loopTimestamp.current);
     };
   }, [loop]);
+
   // set last position when entering pause mode
   // useEffect(() => {
   //   if (!isPaused || positions.positionX.value === null || positions.positionY.value === null) {

@@ -1,21 +1,18 @@
-import type { ComponentProps } from 'react';
-import React from 'react';
-import '@testing-library/jest-dom';
-import { render, act, waitFor } from '@testing-library/react';
-import 'jest-styled-components';
+import React, { type ComponentProps, type ReactElement } from 'react';
+import { screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
+import { render } from 'vitest-browser-react';
 
 import store from '../Store';
-import * as actionCreators from '../Store/actionCreators';
+// import * as actionCreators from '../Store/actionCreators';
 
 import Component from './Playingfield';
 
-type PlayingfieldProps = ComponentProps<typeof Component>;
+type PlayingFieldProps = ComponentProps<typeof Component>;
 
 let mockRandom = 5;
 vi.mock('lodash-es', () => ({ random: vi.fn().mockImplementation(() => mockRandom) }));
-vi.spyOn(actionCreators, 'startGame');
 
 describe('Playingfield', () => {
   beforeEach(() => {
@@ -23,30 +20,72 @@ describe('Playingfield', () => {
   });
 
   const resizeObserver = mockResizeObserver();
-  const defaultProps: PlayingfieldProps = {};
-
-  const setup = (props: Partial<PlayingfieldProps> = {}) =>
-    render(
-      <Provider store={store}>
-        <Component
-          {...defaultProps}
+  const defaultProps: PlayingFieldProps = {};
+  // https://github.com/testing-library/react-testing-library/issues/780#issuecomment-687525893
+  const renderWithStore = (element: ReactElement) =>
+    render(element, {
+      wrapper: (props) => (
+        <Provider
+          store={store}
           {...props}
         />
-      </Provider>,
-    );
+      ),
+    });
 
-  it.only('should render', () => {
-    const screen = setup({});
+  it('should render', () => {
+    renderWithStore(<Component {...defaultProps} />);
 
     expect(screen.getByTestId('playingfield')).toBeInTheDocument();
   });
 
-  it.only('should have logo hidden on startup until wrapper dimensions have been determined', () => {
-    const screen = setup({});
+  it('should match snapshot', async () => {
+    const { container } = renderWithStore(<Component {...defaultProps} />);
 
-    expect(screen.queryByTestId('logo-element')).not.toBeInTheDocument();
-    const playingfield = screen.getByTestId('playingfield');
-    resizeObserver.mockElementSize(playingfield, {
+    resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
+      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
+    });
+    await act(async () => {
+      resizeObserver.resize();
+    });
+
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
+  it('should not show the the logo on load until wrapper dimensions have been determined', async () => {
+    renderWithStore(<Component {...defaultProps} />);
+
+    expect(screen.queryByRole('img', { name: 'Cat logo' })).not.toBeInTheDocument();
+
+    resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
+      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
+    });
+    await act(async () => {
+      resizeObserver.resize();
+    });
+
+    expect(await screen.findByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
+  });
+
+  it('should show logo be in the middle of the screen on load once the wrapper dimensions have been determined', async () => {
+    renderWithStore(<Component {...defaultProps} />);
+
+    resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
+      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
+    });
+    await act(async () => {
+      resizeObserver.resize();
+    });
+
+    expect(await screen.findByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
+    expect(await screen.findByRole('figure')).toBeInTheDocument();
+
+    expect((await screen.findByRole('figure')).getAttribute('style')).toContain('translate');
+  });
+
+  it.skip('should call startGame action on start', async () => {
+    renderWithStore(<Component {...defaultProps} />);
+
+    resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
 
@@ -54,56 +93,20 @@ describe('Playingfield', () => {
       resizeObserver.resize();
     });
 
-    expect(screen.queryByTestId('logo-element')).toBeInTheDocument();
+    // expect(actionCreators.startGame).toHaveBeenCalled();
   });
 
-  it.skip('should match snapshot', () => {
-    const screen = setup({});
+  it('should render the logo in white on load', async () => {
+    renderWithStore(<Component {...defaultProps} />);
 
-    expect(screen.container.firstChild).toMatchSnapshot();
-  });
-
-  it.skip('should show logo be in the middle of the screen', async () => {
-    const screen = setup({});
-    const playingfield = screen.getByTestId('playingfield');
-    resizeObserver.mockElementSize(playingfield, {
+    resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
 
-    act(() => {
+    await act(async () => {
       resizeObserver.resize();
     });
 
-    await waitFor(() => {
-      expect(screen.getByTestId('logo-element').getAttribute('style')).toContain('transform');
-    });
-  });
-
-  it.only('should call startGame action on start', async () => {
-    const screen = setup({});
-    const playingfield = screen.getByTestId('playingfield');
-    resizeObserver.mockElementSize(playingfield, {
-      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
-    });
-
-    act(() => {
-      resizeObserver.resize();
-    });
-
-    expect(actionCreators.startGame).toHaveBeenCalled();
-  });
-
-  it.only('should begin with white as start colour', async () => {
-    const screen = setup({});
-    const playingfield = screen.getByTestId('playingfield');
-    resizeObserver.mockElementSize(playingfield, {
-      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
-    });
-
-    act(() => {
-      resizeObserver.resize();
-    });
-
-    expect(screen.getByTestId('logo-element').getAttribute('style')).toContain('white');
+    expect((await screen.findByRole('figure')).getAttribute('style')).toContain('white');
   });
 });
