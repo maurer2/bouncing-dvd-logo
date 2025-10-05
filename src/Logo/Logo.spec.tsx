@@ -1,7 +1,6 @@
 import React, { type ComponentProps } from 'react';
 import { screen, within } from '@testing-library/react';
 import { render } from 'vitest-browser-react';
-// import 'jest-styled-components';
 
 import { colours } from '../Store/constants';
 
@@ -18,10 +17,10 @@ describe('Logo', () => {
     currentColour: colours[0],
   };
 
-  // const triggerColourChangeProp: LogoProps = {
-  //   ...defaultProps,
-  //   currentColour: colours[1],
-  // };
+  const triggerColourChangeProp: LogoProps = {
+    ...defaultProps,
+    currentColour: colours[1],
+  };
 
   it('should render ', () => {
     render(<Component {...defaultProps} />);
@@ -49,41 +48,43 @@ describe('Logo', () => {
     expect(screen.getByRole('figure')).toHaveStyle(`color: rgb(255, 255, 255)`);
   });
 
-  // it('should change colour', async () => {
-  //   const { rerender, getByTestId } = setup({});
-  //   const startColour = getByTestId('logo-element').style.getPropertyValue('color');
+  it('should change colour', async () => {
+    const { rerender } = render(<Component {...defaultProps} />);
 
-  //   rerender(
-  //     <Component
-  //       {...defaultProps}
-  //       {...triggerColourChangeProp}
-  //     />,
-  //   );
+    const parent = screen.getByRole('figure');
+    const startColour = parent.style.getPropertyValue('color');
 
-  //   const coloursWithoutStartColour = colours.filter((colour) => colour !== startColour);
-  //   const currentColour = getByTestId('logo-element').style.getPropertyValue('color');
+    rerender(
+      <Component
+        {...defaultProps}
+        {...triggerColourChangeProp}
+      />,
+    );
 
-  //   expect(coloursWithoutStartColour).toContain(currentColour);
-  //   expect(coloursWithoutStartColour).not.toContain(startColour);
+    const currentColour = parent.style.getPropertyValue('color');
 
-  //   expect(getByTestId('logo-element').style.getPropertyValue('color')).not.toBe(colours[0]);
-  //   expect(getByTestId('logo-element')).toHaveStyle(`color: ${currentColour}`);
-  // });
+    expect(currentColour).not.toEqual(startColour);
+    expect(parent).toHaveStyle(`color: rgb(255, 0, 0)`);
+  });
 
-  // const cycles: number[] = Array.from(Array(10).keys());
-  // it.each(cycles)('should have a new colour after rerender/useEffect - Cycle %i', () => {
-  //   const { rerender, getByTestId } = setup({});
-  //   const startColour = getByTestId('logo-element').style.getPropertyValue('color');
+  it.each(colours.map((_, index) => index))(
+    'should have a new colour after rerender - Cycle %i',
+    () => {
+      const { rerender } = render(<Component {...defaultProps} />);
 
-  //   rerender(
-  //     <Component
-  //       {...defaultProps}
-  //       {...triggerColourChangeProp}
-  //     />,
-  //   );
+      const parent = screen.getByRole('figure');
+      const startColour = parent.style.getPropertyValue('color');
 
-  //   const currentColour = getByTestId('logo-element').style.getPropertyValue('color');
+      rerender(
+        <Component
+          {...defaultProps}
+          {...triggerColourChangeProp}
+        />,
+      );
 
-  //   expect(startColour).not.toEqual(currentColour);
-  // });
+      const currentColour = parent.style.getPropertyValue('color');
+
+      expect(startColour).not.toEqual(currentColour);
+    },
+  );
 });
