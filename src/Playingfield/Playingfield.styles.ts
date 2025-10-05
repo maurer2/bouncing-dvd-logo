@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-import type { PlayingFieldWrapperStyleProps } from './Playingfield.types';
+type PlayingFieldWrapperStyleProps = {
+  $isPaused: boolean;
+};
 
 export const PlayingFieldWrapper = styled.div<PlayingFieldWrapperStyleProps>`
   position: relative;

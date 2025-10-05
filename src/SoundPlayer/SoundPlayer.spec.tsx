@@ -1,44 +1,45 @@
-import React from 'react';
+import React, { type ComponentProps } from 'react';
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 
 import Component from './SoundPlayer';
-import type { SoundPlayerProps } from './SoundPlayer.types';
 
-const mockPlay = vi.spyOn(window.HTMLAudioElement.prototype, 'play').mockImplementation(() => Promise.resolve());
+type SoundPlayerProps = ComponentProps<typeof Component>;
 
-describe('Components', () => {
+const mockPlay = vi
+  .spyOn(window.HTMLAudioElement.prototype, 'play')
+  .mockImplementation(() => Promise.resolve());
+
+describe('SoundPlayer', () => {
   const defaultProps: SoundPlayerProps = { shouldTriggerSound: false };
-  const setup = (props: Partial<SoundPlayerProps> = {}) =>
-    render(
-      <Component
-        {...defaultProps}
-        {...props}
-      />,
-    );
+
+  it('should render ', () => {
+    render(<Component {...defaultProps} />);
+
+    expect(screen.getByTestId('audio-tag')).toBeInTheDocument();
+  });
+
+  it('should match snapshots', () => {
+    const { container } = render(<Component {...defaultProps} />);
+
+    expect(container.firstChild).toMatchSnapshot();
+  });
 
   it('has child components', () => {
-    const screen = setup({});
+    render(<Component {...defaultProps} />);
 
     expect(screen.queryByTestId('audio-tag')).toBeInTheDocument();
     expect(screen.queryByTestId('audio-file')).toBeInTheDocument();
   });
 
-  it('should play sound when shouldTriggerSound is true', () => {
-    setup({ shouldTriggerSound: true });
+  it('should play sound when shouldTriggerSound is set', () => {
+    render(
+      <Component
+        {...defaultProps}
+        shouldTriggerSound
+      />,
+    );
 
     expect(mockPlay).toHaveBeenCalled();
-  });
-
-  it.skip('should match snapshot when triggerSound is false', () => {
-    const screen = setup({});
-
-    expect(screen.container.firstChild).toMatchSnapshot();
-  });
-
-  it.skip('should match snapshot when triggerSound is true', () => {
-    const screen = setup({ shouldTriggerSound: true });
-
-    expect(screen.container.firstChild).toMatchSnapshot();
   });
 });

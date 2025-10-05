@@ -1,8 +1,47 @@
 import { produce } from 'immer';
 
-import type * as Types from './Playingfield.types';
+type PositionAndVelocity = {
+  value: number | null;
+  velocity: number;
+};
 
-export const reducers = produce((state: Types.ReducerState, action: Types.ReducerAction) => {
+export type ReducerState = {
+  positionX: PositionAndVelocity;
+  positionY: PositionAndVelocity;
+};
+
+export type TriggerInitialPosition = {
+  type: 'TRIGGER_INITIAL_POSITION';
+  payload: {
+    worldSize: Pick<DOMRectReadOnly, 'width' | 'height'>;
+    logoSize: [width: number, height: number];
+    velocityX: number;
+    velocityY: number;
+  };
+};
+
+export type TriggerNextPosition = {
+  type: 'TRIGGER_NEXT_POSITION';
+};
+
+export type TriggerXCollision = {
+  type: 'TRIGGER_X_COLLISION';
+  payload: number;
+};
+
+export type TriggerYCollision = {
+  type: 'TRIGGER_Y_COLLISION';
+  payload: number;
+};
+
+export type ReducerAction =
+  | TriggerInitialPosition
+  | TriggerNextPosition
+  | TriggerXCollision
+  | TriggerYCollision;
+
+// https://prateeksurana.me/blog/simplify-immutable-data-structures-in-usereducer-with-immer/#:~:text=Thunder%27%2C%20%27Virtually%20Immortal%27%5D-,useReducer%20with%20Immer,-Now%20that%20we
+export const reducers = produce((state: ReducerState, action: ReducerAction) => {
   switch (action.type) {
     case 'TRIGGER_INITIAL_POSITION': {
       const newDraft = state;

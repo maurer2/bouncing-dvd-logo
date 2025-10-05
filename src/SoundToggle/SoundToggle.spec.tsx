@@ -1,70 +1,74 @@
-import React from 'react';
-import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import React, { type ComponentProps } from 'react';
+import { screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 import userEvent from '@testing-library/user-event';
 
 import Component from './SoundToggle';
-import type { SoundToggleProps } from './SoundToggle.types';
+import type SoundToggle from './SoundToggle';
+
+type SoundToggleProps = ComponentProps<typeof SoundToggle>;
 
 describe('Components', () => {
   const defaultProps: SoundToggleProps = {
-    soundIsDisabled: true,
-    toggleSound: vi.fn(),
+    isSoundDisabled: false,
+    onSoundToggle: vi.fn(),
   };
-  const setup = (props: Partial<SoundToggleProps> = {}) =>
-    render(
-      <Component
-        {...defaultProps}
-        {...props}
-      />,
-    );
 
   it('should render', () => {
-    const screen = setup({});
+    render(<Component {...defaultProps} />);
 
-    expect(screen.getByTestId('soundtoggle')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Play sound' })).toBeInTheDocument();
   });
 
-  it.skip('should match snapshot', () => {
-    const screen = setup({});
+  it('should match snapshot', () => {
+    const { container } = render(<Component {...defaultProps} />);
 
-    expect(screen.container.firstChild).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('should have child elements', () => {
-    const screen = setup({});
+    render(<Component {...defaultProps} />);
 
-    expect(screen.getByTestId('soundtoggle')).toBeTruthy();
-    expect(screen.getByTestId('soundtoggle-icon')).toBeTruthy();
+    expect(screen.getByTestId('soundtoggle-icon')).toBeInTheDocument();
   });
 
-  it('should have "Enable sound" text when sound is off', () => {
-    const screen = setup({});
+  it('should render the button as pressed with the "Play sound" label when sound is not enabled', () => {
+    render(<Component {...defaultProps} />);
 
-    expect(screen.getByLabelText('Enable sound')).toBeInTheDocument();
+    expect(screen.getByLabelText('Play sound')).toBeInTheDocument();
+    expect(screen.getByLabelText('Play sound')).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByLabelText('Play sound')).toBePressed(); // https://github.com/testing-library/jest-dom/releases/tag/v6.7.0
   });
 
-  it('should have "Disable sound" text when sound is off', () => {
-    const screen = setup({
-      soundIsDisabled: false,
-    });
+  it('should render the button as not-pressed with the "Play sound" label when sound is disabled', () => {
+    render(
+      <Component
+        {...defaultProps}
+        isSoundDisabled
+      />,
+    );
 
-    expect(screen.getByLabelText('Disable sound')).toBeInTheDocument();
+    expect(screen.getByLabelText('Play sound')).toBeInTheDocument();
+    expect(screen.getByLabelText('Play sound')).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByLabelText('Play sound')).not.toBePressed();
   });
 
-  it('should trigger sound toggle function on click, when sound is off', async () => {
-    const screen = setup({});
+  it('should trigger sound toggle function on click', async () => {
+    const user = userEvent.setup();
 
-    await userEvent.click(screen.getByTestId('soundtoggle'));
-    expect(defaultProps.toggleSound).toHaveBeenCalled();
-  });
+    const { rerender } = render(<Component {...defaultProps} />);
 
-  it('should trigger sound toggle function on click, when sound is on', async () => {
-    const screen = setup({
-      soundIsDisabled: false,
-    });
+    await user.click(screen.getByRole('button', { name: 'Play sound' }));
+    expect(defaultProps.onSoundToggle).toHaveBeenCalled();
 
-    await userEvent.click(screen.getByTestId('soundtoggle'));
-    expect(defaultProps.toggleSound).toHaveBeenCalled();
+    rerender(
+      <Component
+        {...defaultProps}
+        isSoundDisabled
+      />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Play sound' }));
+    expect(defaultProps.onSoundToggle).toHaveBeenCalled();
   });
 });

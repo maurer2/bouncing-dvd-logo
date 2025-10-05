@@ -28,13 +28,13 @@ const reducers = (state: RootState = initialState, action: Action): Store => {
     case 'TOGGLE_SOUND': {
       return {
         ...state,
-        soundIsDisabled: !state.soundIsDisabled,
+        isSoundDisabled: !state.isSoundDisabled,
       };
     }
     case 'TRIGGER_COLLISION':
       return {
         ...state,
-        isPlayingSound: !state.soundIsDisabled,
+        isPlayingSound: !state.isSoundDisabled,
         collisionCount: state.collisionCount + 1,
         colours: {
           ...state.colours,

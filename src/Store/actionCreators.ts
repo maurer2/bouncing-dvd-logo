@@ -27,9 +27,12 @@ export function startGame(): StartGameAction {
 export function triggerCollision(): TriggerCollisionAction {
   const { current, available } = store.getState().colours;
 
-  const coloursWithoutCurrent = available.filter((colour) => colour !== current);
-  const randomColourIndex = Math.floor(Math.random() * coloursWithoutCurrent.length);
-  const newColour = coloursWithoutCurrent[randomColourIndex];
+  // const coloursWithoutCurrent = new Set(available).difference(new Set([current]));
+  const coloursWithoutCurrent = new Set(available);
+  coloursWithoutCurrent.delete(current);
+
+  const randomColourIndex = Math.floor(Math.random() * coloursWithoutCurrent.size);
+  const newColour = [...coloursWithoutCurrent][randomColourIndex];
 
   return {
     type: TRIGGER_COLLISION,

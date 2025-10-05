@@ -11,6 +11,5 @@ https://maurer2.github.io/bouncing-dvd-logo/
 ## Start
 
 ```js
-yarn start
-npm run start
+pnpm dev
 ```

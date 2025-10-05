@@ -1,29 +1,31 @@
-import React from 'react';
-import type { FC, MouseEvent, ReactElement } from 'react';
+import React, { type FC } from 'react';
 
 import * as Styles from './SoundToggle.styles';
-import type * as Types from './SoundToggle.types';
 
-const SoundToggle: FC<Readonly<Types.SoundToggleProps>> = ({
-  soundIsDisabled,
-  toggleSound,
-}): ReactElement => {
-  const handleClick = (event: MouseEvent<HTMLButtonElement>): void => {
-    event.stopPropagation();
-    toggleSound();
+type SoundToggleProps = {
+  isSoundDisabled: boolean;
+  onSoundToggle: () => void;
+};
+
+const SoundToggle: FC<SoundToggleProps> = ({ isSoundDisabled, onSoundToggle }) => {
+  const handleClick = (): void => {
+    onSoundToggle();
   };
 
   return (
-    <Styles.SoundToggle
+    <Styles.SoundToggleButton
       onClick={handleClick}
-      aria-label={soundIsDisabled ? 'Enable sound' : 'Disable sound'}
-      data-testid="soundtoggle"
+      // https://github.com/w3c/wcag/issues/2038
+      // https://github.com/w3c/aria-practices/issues/121
+      aria-label="Play sound"
+      aria-pressed={!isSoundDisabled}
     >
       <Styles.SoundToggleIcon
-        $soundIsDisabled={soundIsDisabled}
+        $isSoundDisabled={isSoundDisabled}
         data-testid="soundtoggle-icon"
+        aria-hidden
       />
-    </Styles.SoundToggle>
+    </Styles.SoundToggleButton>
   );
 };
 

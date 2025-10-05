@@ -1,11 +1,12 @@
-import React from 'react';
-import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import React, { type ComponentProps } from 'react';
+import { screen, within } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 
 import { colours } from '../Store/constants';
 
 import Component from './Logo';
-import type { LogoProps } from './Logo.types';
+
+type LogoProps = ComponentProps<typeof Component>;
 
 describe('Logo', () => {
   const defaultProps: LogoProps = {
@@ -21,45 +22,37 @@ describe('Logo', () => {
     currentColour: colours[1],
   };
 
-  const setup = (props: Partial<LogoProps> = {}) =>
-    render(
-      <Component
-        {...defaultProps}
-        {...props}
-      >
-        Children
-      </Component>,
-    );
-
   it('should render ', () => {
-    const screen = setup({});
+    render(<Component {...defaultProps} />);
 
-    expect(screen.getByTestId('logo-element')).toBeInTheDocument();
+    expect(screen.getByRole('figure')).toBeInTheDocument();
   });
 
-  it.skip('should match snapshot', () => {
-    const screen = setup({});
+  it('should match snapshot', () => {
+    const { container } = render(<Component {...defaultProps} />);
 
-    expect(screen.container.firstChild).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
-  it('should have child elements', () => {
-    const screen = setup({});
+  it('should have the cat logo', () => {
+    render(<Component {...defaultProps} />);
 
-    expect(screen.getByTestId('logo-element')).toBeInTheDocument();
-    expect(screen.getByTestId('cat-logo')).toBeTruthy();
+    const parent = within(screen.getByRole('figure'));
+    expect(parent.getByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
   });
 
-  it('should have the initial colour', () => {
-    const screen = setup({});
+  it('should have the default colour', () => {
+    render(<Component {...defaultProps} />);
 
-    expect(screen.getByTestId('logo-element').style.getPropertyValue('color')).toBe(colours[0]);
-    expect(screen.getByTestId('logo-element')).toHaveStyle(`color: ${colours[0]}`);
+    // expect(screen.getByRole('figure')).toHaveStyle(`color: ${colours[0]}`);
+    expect(screen.getByRole('figure')).toHaveStyle(`color: rgb(255, 255, 255)`);
   });
 
   it('should change colour', async () => {
-    const { rerender, getByTestId } = setup({});
-    const startColour = getByTestId('logo-element').style.getPropertyValue('color');
+    const { rerender } = render(<Component {...defaultProps} />);
+
+    const parent = screen.getByRole('figure');
+    const startColour = parent.style.getPropertyValue('color');
 
     rerender(
       <Component
@@ -68,30 +61,30 @@ describe('Logo', () => {
       />,
     );
 
-    const coloursWithoutStartColour = colours.filter((colour) => colour !== startColour);
-    const currentColour = getByTestId('logo-element').style.getPropertyValue('color');
+    const currentColour = parent.style.getPropertyValue('color');
 
-    expect(coloursWithoutStartColour).toContain(currentColour);
-    expect(coloursWithoutStartColour).not.toContain(startColour);
-
-    expect(getByTestId('logo-element').style.getPropertyValue('color')).not.toBe(colours[0]);
-    expect(getByTestId('logo-element')).toHaveStyle(`color: ${currentColour}`);
+    expect(currentColour).not.toEqual(startColour);
+    expect(parent).toHaveStyle(`color: rgb(255, 0, 0)`);
   });
 
-  const cycles: number[] = Array.from(Array(10).keys());
-  it.each(cycles)('should have a new colour after rerender/useEffect - Cycle %i', () => {
-    const { rerender, getByTestId } = setup({});
-    const startColour = getByTestId('logo-element').style.getPropertyValue('color');
+  it.each(colours.map((_, index) => index))(
+    'should have a new colour after rerender - Cycle %i',
+    () => {
+      const { rerender } = render(<Component {...defaultProps} />);
 
-    rerender(
-      <Component
-        {...defaultProps}
-        {...triggerColourChangeProp}
-      />,
-    );
+      const parent = screen.getByRole('figure');
+      const startColour = parent.style.getPropertyValue('color');
 
-    const currentColour = getByTestId('logo-element').style.getPropertyValue('color');
+      rerender(
+        <Component
+          {...defaultProps}
+          {...triggerColourChangeProp}
+        />,
+      );
 
-    expect(startColour).not.toEqual(currentColour);
-  });
+      const currentColour = parent.style.getPropertyValue('color');
+
+      expect(startColour).not.toEqual(currentColour);
+    },
+  );
 });
