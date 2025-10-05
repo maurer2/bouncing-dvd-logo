@@ -12,7 +12,7 @@ import type store from '.';
 
 // store
 export type Position = [x: number, y: number];
-export type Colour = typeof colours[number];
+export type Colour = (typeof colours)[number];
 export type Store = {
   lastPosition: Position | null;
   colours: {
