@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useCallback,
-  type FC,
-  type KeyboardEvent,
-  type PropsWithChildren,
-} from 'react';
+import React, { useRef, useCallback, type FC, type KeyboardEvent } from 'react';
 import { StyleSheetManager } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,9 +10,9 @@ import { getSoundState, getPlayState, getIsPlayingSoundState } from '../Store/se
 
 import * as Styles from './Game.styles';
 
-type GameProps = PropsWithChildren;
+// type GameProps = Record<string, never>;
 
-const Game: FC<GameProps> = () => {
+const Game: FC = () => {
   const dispatch = useDispatch();
   const isSoundDisabled = useSelector(getSoundState);
   const isPaused = useSelector(getPlayState);
