@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { sample } from 'es-toolkit';
+import { devtools } from 'zustand/middleware';
 
 const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'] as const;
 
@@ -52,7 +53,6 @@ type Store = {
   dispatch: (action: Action) => void;
 };
 
-// https://github.com/pmndrs/zustand?tab=readme-ov-file#cant-live-without-redux-like-reducers-and-action-types
 const reducers = (state: Store, action: Action): Store => {
   switch (action.type) {
     case 'GAME_STARTED': {
@@ -126,44 +126,43 @@ const reducers = (state: Store, action: Action): Store => {
   }
 };
 
-export const useStore = create<Store>((set) => ({
-  position: {
-    lastPosition: null,
-  },
-  colours: {
-    current: 'white',
-    previous: null,
-    // https://zustand.docs.pmnd.rs/guides/maps-and-sets-usage
-    list: new Set(colours),
-  },
-  flags: {
-    isPaused: true,
-    isPlayingSound: false,
-    isSoundDisabled: true,
-  },
-  stats: {
-    collisionCount: 0,
-  },
-  dispatch: (action: Action) => set((state) => reducers(state, action)),
-}));
-
-export const dispatch = useStore((state) => state.dispatch);
-
-export const useStartGame = () => useStore(() => dispatch({ type: 'GAME_STARTED' }));
-export const useStopGame = (position: Position) =>
-  useStore(() => dispatch({ type: 'GAME_STOPPED', payload: position }));
-export const useTriggerCollision = useStore((state) => {
-  const coloursWithoutCurrent = state.colours.list.difference(new Set([state.colours.current]));
-  const newColour = sample(Array.from(coloursWithoutCurrent));
-
-  return () => dispatch({ type: 'COLLISION_TRIGGERED', payload: newColour });
-});
-export const useTogglePlayState = () => useStore(() => dispatch({ type: 'PLAY_STATE_TOGGLED' }));
-export const useToggleSoundState = () => useStore(() => dispatch({ type: 'SOUND_STATE_TOGGLED' }));
+export const useStore = create<Store>()(
+  devtools((set) => ({
+    position: {
+      lastPosition: null,
+    },
+    colours: {
+      current: 'white',
+      previous: null,
+      list: new Set(colours),
+    },
+    flags: {
+      isPaused: true,
+      isPlayingSound: false,
+      isSoundDisabled: true,
+    },
+    stats: {
+      collisionCount: 0,
+    },
+    dispatch: (action: Action) => set((state) => reducers(state, action), undefined, action.type), // last param for logging in dev tools
+  })),
+);
 
 export const useIsPaused = () => useStore((state) => state.flags.isPaused);
 export const useIsPlayingSound = () => useStore((state) => state.flags.isPlayingSound);
 export const useIsSoundDisabled = () => useStore((state) => state.flags.isSoundDisabled);
 
-// dispatch({ type: 'START_GAME', payload: 'meow'}) // test
-// dispatch({ type: 'TRIGGER_COLLISION', payload: 'blue'})
+export const useStartGame = () => useStore.getState().dispatch({ type: 'GAME_STARTED' });
+export const useStopGame = (position: Position) =>
+  useStore(() => useStore.getState().dispatch({ type: 'GAME_STOPPED', payload: position }));
+export const useTriggerCollision = () => {
+  const state = useStore.getState();
+  const coloursWithoutCurrent = state.colours.list.difference(new Set([state.colours.current]));
+  const newColour = sample(Array.from(coloursWithoutCurrent));
+
+  return () => useStore.getState().dispatch({ type: 'COLLISION_TRIGGERED', payload: newColour });
+};
+export const useTogglePlayState = () =>
+  useStore(() => useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED' }));
+export const useToggleSoundState = () =>
+  useStore(() => useStore.getState().dispatch({ type: 'SOUND_STATE_TOGGLED' }));
