@@ -9,17 +9,10 @@ import React, {
   type FC,
 } from 'react';
 import { random } from 'lodash-es';
-import { useDispatch, useSelector } from 'react-redux';
 
+import { useIsPaused, useStoreActions, useCurrentColour } from '../Store2';
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
-import {
-  startGame,
-  triggerCollision,
-  triggerCollisionEnd,
-  // setLastPosition,
-} from '../Store/actionCreators';
-import { getPlayState, getCurrentColour } from '../Store/selectors';
 
 import * as Styles from './Playingfield.styles';
 import { reducers } from './reducers';
@@ -42,11 +35,11 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
 };
 
 const PlayingField: FC<PlayingFieldProps> = () => {
-  const dispatch = useDispatch();
-  const isPaused = useSelector(getPlayState);
-  const loopTimestamp = useRef(0);
-  const currentColor = useSelector(getCurrentColour);
+  const { startGame, triggerCollision } = useStoreActions();
 
+  const isPaused = useIsPaused();
+  const loopTimestamp = useRef(0);
+  const currentColor = useCurrentColour();
   const [positions, dispatchLocal] = useReducer(reducers, {
     positionX: {
       value: null,
@@ -87,7 +80,7 @@ const PlayingField: FC<PlayingFieldProps> = () => {
   }, []);
 
   const onStartGame = useEffectEvent(() => {
-    dispatch(startGame());
+    startGame();
   });
 
   // not used anywhere
@@ -99,14 +92,6 @@ const PlayingField: FC<PlayingFieldProps> = () => {
   //   dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
   // });
 
-  const triggerHasCollided = useCallback(() => {
-    dispatch(triggerCollision());
-    // todo replace with redux thunk
-    setTimeout(() => {
-      dispatch(triggerCollisionEnd());
-    }, 800);
-  }, [dispatch]);
-
   // todo remove access of ref.current in render
   const loop = useCallback(() => {
     if (isPaused) {
@@ -115,7 +100,7 @@ const PlayingField: FC<PlayingFieldProps> = () => {
 
     if (positions.positionX.velocity && positions.positionY.velocity) {
       if (isCollidingXStart || isCollidingXEnd) {
-        triggerHasCollided();
+        triggerCollision();
         dispatchLocal({
           type: 'TRIGGER_X_COLLISION',
           payload: getInverseVelocity(positions.positionX.velocity),
@@ -123,7 +108,7 @@ const PlayingField: FC<PlayingFieldProps> = () => {
       }
 
       if (isCollidingYStart || isCollidingYEnd) {
-        triggerHasCollided();
+        triggerCollision();
         dispatchLocal({
           type: 'TRIGGER_Y_COLLISION',
           payload: getInverseVelocity(positions.positionY.velocity),
@@ -146,7 +131,7 @@ const PlayingField: FC<PlayingFieldProps> = () => {
     isCollidingYEnd,
     positions.positionX.velocity,
     positions.positionY.velocity,
-    triggerHasCollided,
+    triggerCollision,
   ]);
 
   useLayoutEffect(() => {

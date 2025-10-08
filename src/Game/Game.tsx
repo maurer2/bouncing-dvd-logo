@@ -1,35 +1,25 @@
 import React, { useRef, useCallback, type FC, type KeyboardEvent } from 'react';
 import { StyleSheetManager } from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
 
 import SoundToggle from '../SoundToggle/SoundToggle';
 import PlayingField from '../Playingfield/Playingfield';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
-import { toggleSound, togglePlayState } from '../Store/actionCreators';
-import { getSoundState, getPlayState, getIsPlayingSoundState } from '../Store/selectors';
-import { useIsPaused, useStoreActions } from '../Store2';
+import { useIsPaused, useIsSoundDisabled, useIsPlayingSound, useStoreActions } from '../Store2';
 
 import * as Styles from './Game.styles';
 
 // type GameProps = Record<string, never>;
 
 const Game: FC = () => {
-  const dispatch = useDispatch();
-  const isSoundDisabled = useSelector(getSoundState);
-  const isPaused = useSelector(getPlayState);
-  const isPlayingSound = useSelector(getIsPlayingSoundState);
+  const isSoundDisabled = useIsSoundDisabled();
+  const isPaused = useIsPaused();
+  const isPlayingSound = useIsPlayingSound();
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
-  const { startGame, triggerCollision } = useStoreActions();
-
-  const isPaused2 = useIsPaused();
-  console.log(isPaused2);
+  const { togglePlayState, toggleSoundState } = useStoreActions();
 
   const handleClick = useCallback(() => {
-    dispatch(togglePlayState());
-
-    startGame();
-    triggerCollision();
-  }, [dispatch, triggerCollision, startGame]);
+    togglePlayState();
+  }, [togglePlayState]);
 
   const handleInput = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>): void => {
@@ -37,15 +27,15 @@ const Game: FC = () => {
       const observedKeys = [' ', 'k']; // " " === spacebar
 
       if (observedKeys.includes(event.key.toLowerCase())) {
-        dispatch(togglePlayState());
+        togglePlayState();
       }
     },
-    [dispatch],
+    [togglePlayState],
   );
 
   const handleSoundToggle = useCallback(() => {
-    dispatch(toggleSound());
-  }, [dispatch]);
+    toggleSoundState();
+  }, [toggleSoundState]);
 
   return (
     <StyleSheetManager>
