@@ -7,7 +7,7 @@ import PlayingField from '../Playingfield/Playingfield';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
 import { toggleSound, togglePlayState } from '../Store/actionCreators';
 import { getSoundState, getPlayState, getIsPlayingSoundState } from '../Store/selectors';
-import { useIsPaused, useStartGame } from '../Store2';
+import { useIsPaused, useStoreActions } from '../Store2';
 
 import * as Styles from './Game.styles';
 
@@ -19,6 +19,7 @@ const Game: FC = () => {
   const isPaused = useSelector(getPlayState);
   const isPlayingSound = useSelector(getIsPlayingSoundState);
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
+  const { startGame, triggerCollision } = useStoreActions();
 
   const isPaused2 = useIsPaused();
   console.log(isPaused2);
@@ -26,8 +27,9 @@ const Game: FC = () => {
   const handleClick = useCallback(() => {
     dispatch(togglePlayState());
 
-    useStartGame();
-  }, [dispatch]);
+    startGame();
+    triggerCollision();
+  }, [dispatch, triggerCollision, startGame]);
 
   const handleInput = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>): void => {

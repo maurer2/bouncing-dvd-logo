@@ -8,30 +8,24 @@ type Position = [x: number, y: number];
 type Colour = (typeof colours)[number];
 type Colours = Set<Colour>;
 
-type GameStartedAction = {
-  type: 'GAME_STARTED';
-};
-type GameStoppedAction = {
-  type: 'GAME_STOPPED';
-  payload: Position;
-};
-type CollisionTriggeredAction = {
-  type: 'COLLISION_TRIGGERED';
-  payload: Colour;
-};
-type PlayStateToggledAction = {
-  type: 'PLAY_STATE_TOGGLED';
-};
-type SoundStateToggledAction = {
-  type: 'SOUND_STATE_TOGGLED';
-};
-
 type Action =
-  | GameStartedAction
-  | GameStoppedAction
-  | CollisionTriggeredAction
-  | PlayStateToggledAction
-  | SoundStateToggledAction;
+  | {
+      type: 'GAME_STARTED';
+    }
+  | {
+      type: 'GAME_STOPPED';
+      payload: Position;
+    }
+  | {
+      type: 'COLLISION_TRIGGERED';
+      payload: Colour;
+    }
+  | {
+      type: 'PLAY_STATE_TOGGLED';
+    }
+  | {
+      type: 'SOUND_STATE_TOGGLED';
+    };
 
 type Store = {
   position: {
@@ -64,7 +58,6 @@ const reducers = (state: Store, action: Action): Store => {
         },
       };
     }
-
     case 'GAME_STOPPED': {
       const newPosition = action.payload;
 
@@ -79,7 +72,6 @@ const reducers = (state: Store, action: Action): Store => {
         },
       };
     }
-
     case 'COLLISION_TRIGGERED': {
       const newColour = action.payload;
 
@@ -99,7 +91,6 @@ const reducers = (state: Store, action: Action): Store => {
         },
       };
     }
-
     case 'PLAY_STATE_TOGGLED': {
       return {
         ...state,
@@ -109,7 +100,6 @@ const reducers = (state: Store, action: Action): Store => {
         },
       };
     }
-
     case 'SOUND_STATE_TOGGLED': {
       return {
         ...state,
@@ -119,7 +109,6 @@ const reducers = (state: Store, action: Action): Store => {
         },
       };
     }
-
     default: {
       return action satisfies never;
     }
@@ -127,42 +116,45 @@ const reducers = (state: Store, action: Action): Store => {
 };
 
 export const useStore = create<Store>()(
-  devtools((set) => ({
-    position: {
-      lastPosition: null,
-    },
-    colours: {
-      current: 'white',
-      previous: null,
-      list: new Set(colours),
-    },
-    flags: {
-      isPaused: true,
-      isPlayingSound: false,
-      isSoundDisabled: true,
-    },
-    stats: {
-      collisionCount: 0,
-    },
-    dispatch: (action: Action) => set((state) => reducers(state, action), undefined, action.type), // last param for logging in dev tools
-  })),
+  devtools(
+    (set) => ({
+      position: {
+        lastPosition: null,
+      },
+      colours: {
+        current: 'white',
+        previous: null,
+        list: new Set(colours),
+      },
+      flags: {
+        isPaused: true,
+        isPlayingSound: false,
+        isSoundDisabled: true,
+      },
+      stats: {
+        collisionCount: 0,
+      },
+      dispatch: (action: Action) => set((state) => reducers(state, action), undefined, action), // last param for logging in dev tools
+    }),
+    { serialize: { options: true } }, // correctly display sets and maps in redux dev tools, https://github.com/reduxjs/redux-devtools/issues/496
+  ),
 );
 
 export const useIsPaused = () => useStore((state) => state.flags.isPaused);
 export const useIsPlayingSound = () => useStore((state) => state.flags.isPlayingSound);
 export const useIsSoundDisabled = () => useStore((state) => state.flags.isSoundDisabled);
 
-export const useStartGame = () => useStore.getState().dispatch({ type: 'GAME_STARTED' });
-export const useStopGame = (position: Position) =>
-  useStore(() => useStore.getState().dispatch({ type: 'GAME_STOPPED', payload: position }));
-export const useTriggerCollision = () => {
-  const state = useStore.getState();
-  const coloursWithoutCurrent = state.colours.list.difference(new Set([state.colours.current]));
-  const newColour = sample(Array.from(coloursWithoutCurrent));
+export const useStoreActions = () => ({
+  startGame: () => useStore.getState().dispatch({ type: 'GAME_STARTED' }),
+  stopGame: () => (position: Position) => () =>
+    useStore.getState().dispatch({ type: 'GAME_STOPPED', payload: position }),
+  triggerCollision: () => {
+    const state = useStore.getState();
+    const coloursWithoutCurrent = state.colours.list.difference(new Set([state.colours.current]));
+    const newColour = sample(Array.from(coloursWithoutCurrent));
 
-  return () => useStore.getState().dispatch({ type: 'COLLISION_TRIGGERED', payload: newColour });
-};
-export const useTogglePlayState = () =>
-  useStore(() => useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED' }));
-export const useToggleSoundState = () =>
-  useStore(() => useStore.getState().dispatch({ type: 'SOUND_STATE_TOGGLED' }));
+    useStore.getState().dispatch({ type: 'COLLISION_TRIGGERED', payload: newColour });
+  },
+  togglePlayState: () => useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED' }),
+  toggleSoundState: () => useStore.getState().dispatch({ type: 'SOUND_STATE_TOGGLED' }),
+});
