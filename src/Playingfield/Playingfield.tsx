@@ -6,7 +6,9 @@ import React, {
   useEffect,
   useState,
   useEffectEvent,
+  useImperativeHandle,
   type FC,
+  type RefObject,
 } from 'react';
 import { random } from 'lodash-es';
 
@@ -17,7 +19,9 @@ import useCollisionDetection from '../Hooks/useCollisionDetection';
 import * as Styles from './Playingfield.styles';
 import { reducers } from './reducers';
 
-type PlayingFieldProps = Record<string, never>;
+type PlayingFieldProps = {
+  ref: RefObject<{ togglePlayStateInChild: () => void } | null>;
+};
 
 const logoSize: [width: number, height: number] = [150, 138.66];
 const totalVelocity = 8;
@@ -34,9 +38,8 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
   return newInverseVelocity;
 };
 
-const PlayingField: FC<PlayingFieldProps> = () => {
-  const { startGame, triggerCollision } = useStoreActions();
-
+const PlayingField: FC<PlayingFieldProps> = ({ ref }) => {
+  const { startGame, triggerCollision, togglePlayState } = useStoreActions();
   const isPaused = useIsPaused();
   const loopTimestamp = useRef(0);
   const currentColor = useCurrentColour();
@@ -82,15 +85,6 @@ const PlayingField: FC<PlayingFieldProps> = () => {
   const onStartGame = useEffectEvent(() => {
     startGame();
   });
-
-  // not used anywhere
-  // const onPauseGame = useEffectEvent(() => {
-  //   if (positions.positionX.value === null || positions.positionY.value === null) {
-  //     return;
-  //   }
-
-  //   dispatch(setLastPosition([positions.positionX.value, positions.positionY.value]));
-  // });
 
   // todo remove access of ref.current in render
   const loop = useCallback(() => {
@@ -142,13 +136,15 @@ const PlayingField: FC<PlayingFieldProps> = () => {
     };
   }, [loop]);
 
-  // set last position when entering pause mode
-  // useEffect(() => {
-  //   if (!isPaused || positions.positionX.value === null || positions.positionY.value === null) {
-  //     return;
-  //   }
-  //   onPauseGame();
-  // }, [isPaused, positions.positionX.value, positions.positionY.value]);
+  useImperativeHandle(ref, () => ({
+    togglePlayStateInChild() {
+      const newPosition: Parameters<typeof togglePlayState>[0] = [
+        positions.positionX.value ?? 0,
+        positions.positionY.value ?? 0,
+      ];
+      togglePlayState(newPosition);
+    },
+  }));
 
   // init position and trigger start on load and on resize
   useEffect(() => {

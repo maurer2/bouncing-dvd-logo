@@ -1,4 +1,10 @@
-import React, { useRef, useCallback, type FC, type KeyboardEvent } from 'react';
+import React, {
+  useRef,
+  useCallback,
+  type FC,
+  type KeyboardEvent,
+  type ComponentProps,
+} from 'react';
 import { StyleSheetManager } from 'styled-components';
 
 import SoundToggle from '../SoundToggle/SoundToggle';
@@ -9,29 +15,29 @@ import { useIsPaused, useIsSoundDisabled, useIsPlayingSound, useStoreActions } f
 import * as Styles from './Game.styles';
 
 // type GameProps = Record<string, never>;
+type PlayingFieldProps = ComponentProps<typeof PlayingField>;
 
 const Game: FC = () => {
   const isSoundDisabled = useIsSoundDisabled();
   const isPaused = useIsPaused();
   const isPlayingSound = useIsPlayingSound();
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
-  const { togglePlayState, toggleSoundState } = useStoreActions();
+  const playingFieldRef = useRef<PlayingFieldProps['ref']['current']>(null);
+
+  const { toggleSoundState } = useStoreActions();
 
   const handleClick = useCallback(() => {
-    togglePlayState();
-  }, [togglePlayState]);
+    playingFieldRef.current?.togglePlayStateInChild();
+  }, []);
 
-  const handleInput = useCallback(
-    (event: KeyboardEvent<HTMLButtonElement>): void => {
-      event.preventDefault();
-      const observedKeys = [' ', 'k']; // " " === spacebar
+  const handleInput = useCallback((event: KeyboardEvent<HTMLButtonElement>): void => {
+    event.preventDefault();
+    const observedKeys = [' ', 'k']; // " " === spacebar
 
-      if (observedKeys.includes(event.key.toLowerCase())) {
-        togglePlayState();
-      }
-    },
-    [togglePlayState],
-  );
+    if (observedKeys.includes(event.key.toLowerCase())) {
+      playingFieldRef.current?.togglePlayStateInChild();
+    }
+  }, []);
 
   const handleSoundToggle = useCallback(() => {
     toggleSoundState();
@@ -40,7 +46,7 @@ const Game: FC = () => {
   return (
     <StyleSheetManager>
       <Styles.GameWrapper data-testid="game">
-        <PlayingField />
+        <PlayingField ref={playingFieldRef} />
         <Styles.PauseButton
           onClick={handleClick}
           onKeyUp={handleInput}

@@ -1,4 +1,4 @@
-import React, { type ComponentProps, type ReactElement } from 'react';
+import React, { createRef, type ComponentProps, type ReactElement } from 'react';
 import { screen, act } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
@@ -20,7 +20,9 @@ describe('Playingfield', () => {
   });
 
   const resizeObserver = mockResizeObserver();
-  const defaultProps: PlayingFieldProps = {};
+  const defaultProps: PlayingFieldProps = {
+    ref: null as unknown as any, // temp
+  };
   // https://github.com/testing-library/react-testing-library/issues/780#issuecomment-687525893
   const renderWithStore = (element: ReactElement) =>
     render(element, {

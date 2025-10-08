@@ -22,6 +22,7 @@ type Action =
     }
   | {
       type: 'PLAY_STATE_TOGGLED';
+      payload: Position;
     }
   | {
       type: 'SOUND_STATE_TOGGLED';
@@ -94,11 +95,16 @@ const reducers = (state: Store, action: Action): Store => {
       };
     }
     case 'PLAY_STATE_TOGGLED': {
+      const newPosition = action.payload;
+
       return {
         ...state,
         flags: {
           ...state.flags,
           isPaused: !state.flags.isPaused,
+        },
+        position: {
+          lastPosition: newPosition,
         },
       };
     }
@@ -188,6 +194,7 @@ export const useStoreActions = () => ({
       }, 750);
     }
   },
-  togglePlayState: () => useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED' }),
+  togglePlayState: (position: Position) =>
+    useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED', payload: position }),
   toggleSoundState: () => useStore.getState().dispatch({ type: 'SOUND_STATE_TOGGLED' }),
 });
