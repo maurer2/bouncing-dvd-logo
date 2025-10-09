@@ -1,13 +1,12 @@
 import styled from 'styled-components';
-import type { ComponentProps } from 'react';
 
 import { ReactComponent as SoundIcon } from '../assets/sound.svg';
+import { useIsSoundDisabled } from '../Store2';
 
 import type SoundToggle from './SoundToggle';
 
-type SoundToggleProps = ComponentProps<typeof SoundToggle>;
 type SoundToggleStyleProps = {
-  $isSoundDisabled: SoundToggleProps['isSoundDisabled'];
+  $isSoundDisabled: ReturnType<typeof useIsSoundDisabled>;
 };
 
 export const SoundToggleButton = styled.button.attrs(() => ({ type: 'button' }))`

@@ -18,13 +18,10 @@ import * as Styles from './Game.styles';
 type PlayingFieldProps = ComponentProps<typeof PlayingField>;
 
 const Game: FC = () => {
-  const isSoundDisabled = useIsSoundDisabled();
   const isPaused = useIsPaused();
   const isPlayingSound = useIsPlayingSound();
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
   const playingFieldRef = useRef<PlayingFieldProps['ref']['current']>(null);
-
-  const { toggleSoundState } = useStoreActions();
 
   const handleClick = useCallback(() => {
     playingFieldRef.current?.togglePlayStateInChild();
@@ -39,10 +36,6 @@ const Game: FC = () => {
     }
   }, []);
 
-  const handleSoundToggle = useCallback(() => {
-    toggleSoundState();
-  }, [toggleSoundState]);
-
   return (
     <StyleSheetManager>
       <Styles.GameWrapper data-testid="game">
@@ -56,11 +49,8 @@ const Game: FC = () => {
           data-testid="pausebutton"
           autoFocus
         />
-        <SoundToggle
-          isSoundDisabled={isSoundDisabled}
-          onSoundToggle={handleSoundToggle}
-        />
         <SoundPlayer shouldTriggerSound={isPlayingSound} />
+        <SoundToggle />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );

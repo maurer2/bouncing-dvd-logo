@@ -1,15 +1,17 @@
 import React, { type FC } from 'react';
 
+import { useStoreActions, useIsSoundDisabled } from '../Store2';
+
 import * as Styles from './SoundToggle.styles';
 
-type SoundToggleProps = {
-  isSoundDisabled: boolean;
-  onSoundToggle: () => void;
-};
+type SoundToggleProps = Record<string, never>;
 
-const SoundToggle: FC<SoundToggleProps> = ({ isSoundDisabled, onSoundToggle }) => {
+const SoundToggle: FC<SoundToggleProps> = () => {
+  const { toggleSoundState } = useStoreActions();
+  const isSoundDisabled = useIsSoundDisabled();
+
   const handleClick = (): void => {
-    onSoundToggle();
+    toggleSoundState();
   };
 
   return (
