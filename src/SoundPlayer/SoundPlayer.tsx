@@ -1,38 +1,27 @@
-import React, { useState, useEffect, useRef, useEffectEvent, type FC } from 'react';
+import React, { useEffect, useRef, type FC } from 'react';
+
+import { useIsPlayingSound } from '../Store2';
 
 import soundFile from '../assets/soundFile.wav';
 
-type SoundPlayerProps = {
-  shouldTriggerSound: boolean;
-};
+type SoundPlayerProps = Record<string, never>;
 
-const Sound: FC<SoundPlayerProps> = ({ shouldTriggerSound }) => {
-  const [soundIsPlaying, setSoundIsPlaying] = useState(false);
-  const audioDomElement = useRef<HTMLAudioElement | null>(null);
-
-  const onSoundStart = useEffectEvent(() => {
-    // do not trigger new sound start while previous sound is playing
-    if (!audioDomElement.current || soundIsPlaying) {
-      return;
-    }
-
-    audioDomElement.current.currentTime = 0;
-    audioDomElement.current.play();
-  });
+const Sound: FC<SoundPlayerProps> = () => {
+  const isPlayingSound = useIsPlayingSound();
+  const audioDomElement = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (shouldTriggerSound) {
-      onSoundStart();
-      setSoundIsPlaying(true);
-      return;
+    if (isPlayingSound && audioDomElement.current) {
+      audioDomElement.current.currentTime = 0;
+      audioDomElement.current.play();
     }
-    setSoundIsPlaying(false);
-  }, [shouldTriggerSound]);
+  }, [isPlayingSound]);
 
   return (
     <audio
       data-testid="audio-tag"
       ref={audioDomElement}
+      preload="auto"
       aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
     >
       <source

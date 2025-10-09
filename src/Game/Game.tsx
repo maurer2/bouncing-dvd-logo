@@ -10,7 +10,7 @@ import { StyleSheetManager } from 'styled-components';
 import SoundToggle from '../SoundToggle/SoundToggle';
 import PlayingField from '../Playingfield/Playingfield';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
-import { useIsPaused, useIsSoundDisabled, useIsPlayingSound, useStoreActions } from '../Store2';
+import { useIsPaused } from '../Store2';
 
 import * as Styles from './Game.styles';
 
@@ -19,7 +19,6 @@ type PlayingFieldProps = ComponentProps<typeof PlayingField>;
 
 const Game: FC = () => {
   const isPaused = useIsPaused();
-  const isPlayingSound = useIsPlayingSound();
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
   const playingFieldRef = useRef<PlayingFieldProps['ref']['current']>(null);
 
@@ -49,8 +48,8 @@ const Game: FC = () => {
           data-testid="pausebutton"
           autoFocus
         />
-        <SoundPlayer shouldTriggerSound={isPlayingSound} />
         <SoundToggle />
+        <SoundPlayer />
       </Styles.GameWrapper>
     </StyleSheetManager>
   );
