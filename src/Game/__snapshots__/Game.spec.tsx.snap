@@ -51,6 +51,7 @@ exports[`Game > should match snapshot 1`] = `
   <audio
     aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
     data-testid="audio-tag"
+    preload="auto"
   >
     <source
       data-testid="audio-file"

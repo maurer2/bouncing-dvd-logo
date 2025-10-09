@@ -1,48 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Components > should match snapshot 1`] = `
-<audio
-  aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
-  data-testid="audio-tag"
->
-  <source
-    data-testid="audio-file"
-    src="/src/assets/soundFile.wav"
-    type="audio/wav"
-  />
-</audio>
-`;
-
-exports[`Components > should match snapshots 1`] = `
-<audio
-  aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
-  data-testid="audio-tag"
->
-  <source
-    data-testid="audio-file"
-    src="/src/assets/soundFile.wav"
-    type="audio/wav"
-  />
-</audio>
-`;
-
-exports[`Components > should match snapshots 2`] = `
-<audio
-  aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
-  data-testid="audio-tag"
->
-  <source
-    data-testid="audio-file"
-    src="/src/assets/soundFile.wav"
-    type="audio/wav"
-  />
-</audio>
-`;
-
 exports[`SoundPlayer > should match snapshots 1`] = `
 <audio
   aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
   data-testid="audio-tag"
+  preload="auto"
 >
   <source
     data-testid="audio-file"

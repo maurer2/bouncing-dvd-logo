@@ -2,6 +2,8 @@ import React, { type ComponentProps } from 'react';
 import '@testing-library/jest-dom';
 import { screen, render } from '@testing-library/react';
 
+import { useStore } from '../Store2';
+
 import Component from './SoundPlayer';
 
 type SoundPlayerProps = ComponentProps<typeof Component>;
@@ -11,7 +13,11 @@ const mockPlay = vi
   .mockImplementation(() => Promise.resolve());
 
 describe('SoundPlayer', () => {
-  const defaultProps: SoundPlayerProps = { shouldTriggerSound: false };
+  const defaultProps: SoundPlayerProps = {};
+
+  beforeEach(() => {
+    useStore.setState(useStore.getInitialState(), true);
+  });
 
   it('should render ', () => {
     render(<Component {...defaultProps} />);
@@ -32,13 +38,12 @@ describe('SoundPlayer', () => {
     expect(screen.queryByTestId('audio-file')).toBeInTheDocument();
   });
 
-  it('should play sound when shouldTriggerSound is set', () => {
-    render(
-      <Component
-        {...defaultProps}
-        shouldTriggerSound
-      />,
-    );
+  it('should play sound when isPlayingSound is set and sound is enabled', () => {
+    useStore.setState({
+      flags: { isPaused: false, isPlayingSound: true, isSoundDisabled: false },
+    });
+
+    render(<Component />);
 
     expect(mockPlay).toHaveBeenCalled();
   });

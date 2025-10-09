@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, type FC } from 'react';
 
 import { useIsPlayingSound } from '../Store2';
-
 import soundFile from '../assets/soundFile.wav';
 
 type SoundPlayerProps = Record<string, never>;
