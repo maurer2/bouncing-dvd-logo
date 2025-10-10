@@ -13,7 +13,6 @@ exports[`Game > should match snapshot 1`] = `
     aria-label="Pause button"
     aria-pressed="true"
     class="sc-jwTyAe gjuGHY"
-    data-testid="pausebutton"
   />
   <button
     aria-label="Play sound"

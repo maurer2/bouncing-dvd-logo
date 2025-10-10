@@ -53,26 +53,26 @@ const PlayingField: FC<PlayingFieldProps> = ({ ref }) => {
       velocity: 0,
     },
   });
-  const [playingfieldBoundingBox, setPlayingfieldBoundingBox] = useState<DOMRectReadOnly | null>(
+  const [playingFieldBoundingBox, setPlayingFieldBoundingBox] = useState<DOMRectReadOnly | null>(
     null,
   );
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
     logoSize[0],
-    playingfieldBoundingBox?.width,
+    playingFieldBoundingBox?.width,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
     logoSize[1],
-    playingfieldBoundingBox?.height,
+    playingFieldBoundingBox?.height,
   );
 
   // https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler#react-19
-  const playfieldCBRef = useCallback((element: HTMLDivElement) => {
+  const PlayingFieldCBRef = useCallback((element: HTMLDivElement) => {
     const observer = new ResizeObserver((entries) => {
       const { contentRect } = entries[0];
 
-      setPlayingfieldBoundingBox(contentRect);
+      setPlayingFieldBoundingBox(contentRect);
     });
 
     observer.observe(element);
@@ -81,10 +81,6 @@ const PlayingField: FC<PlayingFieldProps> = ({ ref }) => {
       observer.disconnect();
     };
   }, []);
-
-  const onStartGame = useEffectEvent(() => {
-    startGame();
-  });
 
   // todo remove access of ref.current in render
   const loop = useCallback(() => {
@@ -146,10 +142,14 @@ const PlayingField: FC<PlayingFieldProps> = ({ ref }) => {
     },
   }));
 
+  const onStartGame = useEffectEvent(() => {
+    startGame();
+  });
+
   // init position and trigger start on load and on resize
   useEffect(() => {
-    const width = playingfieldBoundingBox?.width;
-    const height = playingfieldBoundingBox?.height;
+    const width = playingFieldBoundingBox?.width;
+    const height = playingFieldBoundingBox?.height;
 
     // bounding box is null on initial load
     if (!width || !height) {
@@ -177,11 +177,11 @@ const PlayingField: FC<PlayingFieldProps> = ({ ref }) => {
     });
 
     onStartGame();
-  }, [playingfieldBoundingBox?.width, playingfieldBoundingBox?.height]);
+  }, [playingFieldBoundingBox?.width, playingFieldBoundingBox?.height]);
 
   return (
     <Styles.PlayingFieldWrapper
-      ref={playfieldCBRef}
+      ref={PlayingFieldCBRef}
       data-testid="playingfield"
       $isPaused={isPaused}
     >

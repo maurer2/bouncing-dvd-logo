@@ -17,7 +17,8 @@
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'",
     "preview": "vite preview",
-    "test": "vitest -w",
+    "test": "vitest",
+    "test:headless": "vitest --browser.headless -w",
     "test:types": "npx tsgo --noEmit --skipLibCheck"
   },
   "dependencies": {

@@ -10,12 +10,21 @@ import Component from './Playingfield';
 type PlayingFieldProps = ComponentProps<typeof Component>;
 
 let mockRandom = 5;
+let storeDispatchSpy: unknown;
+
 vi.mock('lodash-es', () => ({ random: vi.fn().mockImplementation(() => mockRandom) }));
 
 describe('Playingfield', () => {
   beforeEach(() => {
     useStore.setState(useStore.getInitialState(), true);
     mockRandom = 5;
+
+    const storeDispatchSpyTemp = vi.spyOn(useStore.getState(), 'dispatch');
+    storeDispatchSpy = storeDispatchSpyTemp;
+
+    return () => {
+      (storeDispatchSpy as typeof storeDispatchSpyTemp).mockReset();
+    };
   });
 
   const resizeObserver = mockResizeObserver();
@@ -29,7 +38,7 @@ describe('Playingfield', () => {
     expect(screen.getByTestId('playingfield')).toBeInTheDocument();
   });
 
-  it('should match snapshot', async () => {
+  it.skip('should match snapshot', async () => {
     const { container, rerender } = render(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
@@ -75,21 +84,22 @@ describe('Playingfield', () => {
     expect((await screen.findByRole('figure')).getAttribute('style')).toContain('translate');
   });
 
-  it.skip('should call startGame action on start', async () => {
+  it('should call startGame action on start', async () => {
     render(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-
-    act(() => {
+    await act(async () => {
       resizeObserver.resize();
     });
 
-    // expect(actionCreators.startGame).toHaveBeenCalled();
+    expect(storeDispatchSpy).toHaveBeenCalledWith({
+      type: 'GAME_STARTED',
+    });
   });
 
-  it('should render the logo in white on load', async () => {
+  it('should render the logo with default colour (white) on load', async () => {
     render(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {

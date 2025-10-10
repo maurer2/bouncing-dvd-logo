@@ -45,7 +45,6 @@ const Game: FC = () => {
           ref={pauseButtonDomElement}
           aria-label="Pause button"
           aria-pressed={isPaused}
-          data-testid="pausebutton"
           autoFocus
         />
         <SoundToggle />

@@ -1,7 +1,7 @@
 import React, { type ComponentProps } from 'react';
 import { screen } from '@testing-library/react';
 import { render } from 'vitest-browser-react';
-import userEvent from '@testing-library/user-event';
+import { userEvent } from '@vitest/browser/context';
 import { beforeEach } from 'vitest';
 
 import { useStore } from '../Store2';

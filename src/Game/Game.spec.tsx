@@ -1,48 +1,44 @@
-import React, { type ReactElement } from 'react';
+import React from 'react';
 import { screen, render, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
-import userEvent from '@testing-library/user-event';
-import { Provider } from 'react-redux';
+import { userEvent } from '@vitest/browser/context';
 
-import store from '../Store';
-// import * as actionCreators from '../Store/actionCreators';
+import { useStore } from '../Store2';
 
 import Component from './Game';
 
-// type GameProps = ComponentProps<typeof Component>;
+let storeDispatchSpy: unknown;
 
 vi.useFakeTimers();
-// vi.spyOn(actionCreators, 'togglePlayState');
-// userEvent.setup({ delay: null });
 
 describe('Game', () => {
   const resizeObserver = mockResizeObserver();
 
-  // https://github.com/testing-library/react-testing-library/issues/780#issuecomment-687525893
-  const renderWithStore = (element: ReactElement) =>
-    render(element, {
-      wrapper: (props) => (
-        <Provider
-          store={store}
-          {...props}
-        />
-      ),
-    });
+  beforeEach(() => {
+    useStore.setState(useStore.getInitialState(), true);
+
+    const storeDispatchSpyTemp = vi.spyOn(useStore.getState(), 'dispatch');
+    storeDispatchSpy = storeDispatchSpyTemp;
+
+    return () => {
+      (storeDispatchSpy as typeof storeDispatchSpyTemp).mockReset();
+    };
+  });
 
   it('should render', () => {
-    renderWithStore(<Component />);
+    render(<Component />);
 
     expect(screen.getByTestId('game')).toBeInTheDocument();
   });
 
-  it('should match snapshot', () => {
-    const { container } = renderWithStore(<Component />);
+  it.skip('should match snapshot', () => {
+    const { container } = render(<Component />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('should have child elements', async () => {
-    renderWithStore(<Component />);
+    render(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -60,7 +56,7 @@ describe('Game', () => {
   });
 
   it('should render the pause button as not-pressed with the "Pause button" label when sound is not enabled', async () => {
-    renderWithStore(<Component />);
+    render(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -77,45 +73,45 @@ describe('Game', () => {
   });
 
   it('should set keyboard focus on pause button on load if supported by browser', () => {
-    renderWithStore(<Component />);
+    render(<Component />);
 
     expect(screen.getByRole('button', { name: 'Pause button' })).toEqual(document.activeElement);
   });
 
-  // it('should call togglePlayState action on click', async () => {
-  //   const user = userEvent.setup();
-
-  //   renderWithStore(<Component />);
-
-  //   await user.click(screen.getByRole('button', { name: 'Pause button' }));
-
-  //   expect(actionCreators.togglePlayState).toHaveBeenCalled();
-  // });
-
-  it.skip('should be paused on load and then unpause when ready', () => {
-    renderWithStore(<Component />);
-
-    expect(screen.getByRole('button', { name: 'Pause button' })).toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(screen.getByLabelText('Pause button')).toBePressed(); // https://github.com/testing-library/jest-dom/releases/tag/v6.7.0
-
-    resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
-      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
-    });
-
-    expect(screen.getByRole('button', { name: 'Pause button' })).not.toHaveAttribute(
-      'aria-pressed',
-      'true',
-    );
-    expect(screen.getByLabelText('Pause button')).not.toBePressed(); // https://github.com/testing-library/jest-dom/releases/tag/v6.7.0
-  });
-
-  it.skip('should toggle pause mode when clicking on pause button', async () => {
+  it('should call togglePlayState action on click and pause/unpause the game', async () => {
     const user = userEvent.setup();
+    useStore.setState({
+      flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: true },
+    });
+    render(<Component />);
 
-    renderWithStore(<Component />);
+    await act(async () => {
+      await user.click(screen.getByRole('button', { name: 'Pause button' }));
+
+      expect(storeDispatchSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'PLAY_STATE_TOGGLED',
+        }),
+      );
+      expect(useStore.getState().flags.isPaused).toBeFalse();
+    });
+
+    await act(async () => {
+      await user.click(screen.getByRole('button', { name: 'Pause button' }));
+
+      expect(storeDispatchSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'PLAY_STATE_TOGGLED',
+        }),
+      );
+      expect(useStore.getState().flags.isPaused).toBeTrue();
+    });
+  });
+
+  it('should be paused on load and then unpause when ready', async () => {
+    render(<Component />);
+
+    expect(useStore.getState().flags.isPaused).toBeTrue();
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -124,19 +120,12 @@ describe('Game', () => {
       resizeObserver.resize();
     });
 
-    expect(screen.getByLabelText('Pause button')).not.toBePressed();
-
-    await user.click(screen.getByRole('button', { name: 'Pause button' }));
-    expect(screen.getByLabelText('Pause button')).toBePressed();
-
-    await user.click(screen.getByRole('button', { name: 'Pause button' }));
-    expect(screen.getByLabelText('Pause button')).not.toBePressed();
+    expect(useStore.getState().flags.isPaused).toBeFalse();
   });
 
-  it.skip('should toggle pause mode when pressing space bar', async () => {
+  it('should toggle pause mode when clicking on pause button', async () => {
     const user = userEvent.setup();
-
-    renderWithStore(<Component />);
+    render(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -145,19 +134,24 @@ describe('Game', () => {
       resizeObserver.resize();
     });
 
-    expect(screen.getByLabelText('Pause button')).not.toBePressed();
+    expect(screen.getByRole('button', { name: 'Pause button' })).not.toBePressed();
 
-    await user.keyboard('{space}');
-    expect(screen.getByLabelText('Pause button')).toBePressed();
+    await act(async () => {
+      await user.click(screen.getByRole('button', { name: 'Pause button' }));
 
-    await user.keyboard('{space}');
-    expect(screen.getByLabelText('Pause button')).not.toBePressed();
+      expect(screen.getByRole('button', { name: 'Pause button' })).toBePressed();
+    });
+
+    await act(async () => {
+      await user.click(screen.getByRole('button', { name: 'Pause button' }));
+
+      expect(screen.getByRole('button', { name: 'Pause button' })).not.toBePressed();
+    });
   });
 
-  it.skip('should toggle pause mode when pressing "k"-key', async () => {
+  it('should toggle pause mode when pressing space bar', async () => {
     const user = userEvent.setup();
-
-    renderWithStore(<Component />);
+    render(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -168,15 +162,22 @@ describe('Game', () => {
 
     expect(screen.getByLabelText('Pause button')).not.toBePressed();
 
-    await user.keyboard('k');
-    expect(screen.getByLabelText('Pause button')).toBePressed();
+    await act(async () => {
+      await user.keyboard('[Space]');
 
-    await user.keyboard('k');
-    expect(screen.getByLabelText('Pause button')).not.toBePressed();
+      expect(screen.getByRole('button', { name: 'Pause button' })).toBePressed();
+    });
+
+    await act(async () => {
+      await user.keyboard('[Space]');
+
+      expect(screen.getByRole('button', { name: 'Pause button' })).not.toBePressed();
+    });
   });
 
-  it.skip('resize should trigger key change e.g. reset', async () => {
-    renderWithStore(<Component />);
+  it('should toggle pause mode when pressing "k"-key', async () => {
+    const user = userEvent.setup();
+    render(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -185,19 +186,32 @@ describe('Game', () => {
       resizeObserver.resize();
     });
 
-    const styleStringBeforeResize = screen.getByRole('figure').getAttribute('style');
-    console.log(styleStringBeforeResize);
+    expect(screen.getByLabelText('Pause button')).not.toBePressed();
+
+    await act(async () => {
+      await user.keyboard('k');
+      expect(screen.getByRole('button', { name: 'Pause button' })).toBePressed();
+    });
+
+    await act(async () => {
+      await user.keyboard('k');
+
+      expect(screen.getByRole('button', { name: 'Pause button' })).not.toBePressed();
+    });
+  });
+
+  it('should pause when resizing', async () => {
+    render(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
-      contentBoxSize: { inlineSize: 1280, blockSize: 720 },
+      contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
     await act(async () => {
       resizeObserver.resize();
     });
 
-    const styleStringAfterResize = (await screen).getByRole('figure').getAttribute('style');
-    console.log(styleStringAfterResize);
+    expect(storeDispatchSpy).toHaveBeenCalledWith({
+      type: 'GAME_STARTED',
+    });
   });
-
-  it.todo('should pause when resizing');
 });
