@@ -12,7 +12,7 @@ export default function useCollisionDetection(
 
   if (position !== null && typeof worldSize === 'number') {
     // start stuff
-    const hasPositionSmallerThanStart = position < 0;
+    const hasPositionSmallerThanStart = position <= 0;
     if (hasCollidedWithStart && !hasPositionSmallerThanStart) {
       setHasCollidedWithStart(false);
     }
@@ -22,7 +22,7 @@ export default function useCollisionDetection(
 
     // end stuff
     const maxPositionNotColliding = worldSize - objectSize;
-    const hasPositionLargerThanEnd = position > maxPositionNotColliding;
+    const hasPositionLargerThanEnd = position >= maxPositionNotColliding;
     if (hasCollidedWithEnd && !hasPositionLargerThanEnd) {
       setHasCollidedWithEnd(false);
     }
