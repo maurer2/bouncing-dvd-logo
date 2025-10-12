@@ -4,6 +4,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr'; // needed to import SVG as React components, e.g. import ReactComponent as X
 import { visualizer } from 'rollup-plugin-visualizer';
 import checker from 'vite-plugin-checker';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) =>
@@ -33,6 +34,19 @@ export default ({ mode }: { mode: string }) =>
     ],
     define: {
       'process.env.NODE_ENV': `"${mode}"`,
+    },
+    optimizeDeps: {
+      // https://github.com/vitest-dev/vitest/issues/6345
+      esbuildOptions: {
+        define: {
+          global: 'globalThis',
+        },
+        plugins: [
+          NodeGlobalsPolyfillPlugin({
+            buffer: true,
+          }),
+        ],
+      },
     },
     test: {
       globals: true,

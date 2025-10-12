@@ -31,7 +31,7 @@ describe('Game', () => {
     expect(screen.getByTestId('game')).toBeInTheDocument();
   });
 
-  it.skip('should match snapshot', () => {
+  it('should match snapshot', () => {
     const { container } = render(<Component />);
 
     expect(container.firstChild).toMatchSnapshot();

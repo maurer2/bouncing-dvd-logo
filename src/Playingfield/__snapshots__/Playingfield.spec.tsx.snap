@@ -1,13 +1,36 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Playingfield > should match snapshot 1`] = `
+.c1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 138.66px;
+  margin: 0;
+  will-change: translate;
+  contain: strict;
+}
+
+.c0 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(0);
+  pointer-events: none;
+  filter: none;
+  transition: filter 0.1s;
+  contain: strict;
+  will-change: filter;
+}
+
 <div
-  class="sc-hvigdm iwSSFt"
+  class="c0"
   data-testid="playingfield"
 >
   <figure
-    class="sc-bRKDuR iKHpaw"
-    style="translate: 890px 474px; color: white;"
+    class="c1"
+    style="translate: 885px 470.67px; color: white;"
   >
     <svg
       aria-label="Cat logo"

@@ -1,28 +1,72 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Game > should match snapshot 1`] = `
+.c3 {
+  all: unset;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5em;
+  cursor: pointer;
+}
+
+.c4 {
+  display: block;
+}
+
+.c4 .soundwaves {
+  display: none;
+}
+
+.c1 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateZ(0);
+  pointer-events: none;
+  filter: invert(50%) brightness(0.25);
+  transition: filter 0.1s;
+  contain: strict;
+  will-change: filter;
+}
+
+.c0 {
+  position: relative;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.c2 {
+  all: unset;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
 <div
-  class="sc-dTvVRJ eoLRjV"
+  class="c0"
   data-testid="game"
 >
   <div
-    class="sc-ggWZvA ihSAh"
+    class="c1"
     data-testid="playingfield"
   />
   <button
     aria-label="Pause button"
     aria-pressed="true"
-    class="sc-jwTyAe gjuGHY"
+    class="c2"
   />
   <button
     aria-label="Play sound"
     aria-pressed="false"
-    class="sc-bRKDuR gWnvG"
+    class="c3"
     type="button"
   >
     <svg
       aria-hidden="true"
-      class="sc-hvigdm lmtBmH"
+      class="c4"
       data-testid="soundtoggle-icon"
       height="85.355"
       viewBox="80.775 -23.508 85.413 85.355"

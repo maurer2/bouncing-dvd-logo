@@ -38,7 +38,7 @@ describe('Playingfield', () => {
     expect(screen.getByTestId('playingfield')).toBeInTheDocument();
   });
 
-  it.skip('should match snapshot', async () => {
+  it('should match snapshot', async () => {
     const { container, rerender } = render(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {

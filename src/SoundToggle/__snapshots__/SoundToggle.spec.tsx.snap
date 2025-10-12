@@ -1,15 +1,31 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Components > should match snapshots > Sound is disabled 1`] = `
+.c0 {
+  all: unset;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5em;
+  cursor: pointer;
+}
+
+.c1 {
+  display: block;
+}
+
+.c1 .soundwaves {
+  display: none;
+}
+
 <button
   aria-label="Play sound"
   aria-pressed="false"
-  class="sc-bRKDuR gWnvG"
+  class="c0"
   type="button"
 >
   <svg
     aria-hidden="true"
-    class="sc-hvigdm lmtBmH"
+    class="c1"
     data-testid="soundtoggle-icon"
     height="85.355"
     viewBox="80.775 -23.508 85.413 85.355"
@@ -37,15 +53,31 @@ exports[`Components > should match snapshots > Sound is disabled 1`] = `
 `;
 
 exports[`Components > should match snapshots > Sound is enabled 1`] = `
+.c0 {
+  all: unset;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5em;
+  cursor: pointer;
+}
+
+.c1 {
+  display: block;
+}
+
+.c1 .soundwaves {
+  display: block;
+}
+
 <button
   aria-label="Play sound"
   aria-pressed="true"
-  class="sc-bRKDuR gWnvG"
+  class="c0"
   type="button"
 >
   <svg
     aria-hidden="true"
-    class="sc-hvigdm jQRmwQ"
+    class="c1"
     data-testid="soundtoggle-icon"
     height="85.355"
     viewBox="80.775 -23.508 85.413 85.355"

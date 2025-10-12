@@ -1,8 +1,19 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Logo > should match snapshot 1`] = `
+.c0 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  margin: 0;
+  will-change: translate;
+  contain: strict;
+}
+
 <figure
-  class="sc-bRKDuR jmkCw"
+  class="c0"
   style="translate: 100px 100px; color: white;"
 >
   <svg
