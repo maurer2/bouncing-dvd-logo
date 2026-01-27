@@ -5,7 +5,6 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import lodash from 'eslint-plugin-lodash';
 import reactRedux from 'eslint-plugin-react-redux';
-import reactCompiler from 'eslint-plugin-react-compiler';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
 import path from 'node:path';
@@ -46,7 +45,6 @@ export default defineConfig([
       '@typescript-eslint': fixupPluginRules(typescriptEslint),
       lodash: fixupPluginRules(lodash),
       'react-redux': fixupPluginRules(reactRedux),
-      'react-compiler': reactCompiler,
     },
 
     languageOptions: {
@@ -64,7 +62,6 @@ export default defineConfig([
         ecmaFeatures: {
           jsx: true,
         },
-
         project: './tsconfig.json',
         tsconfigRootDir: __dirname,
       },
@@ -154,7 +151,6 @@ export default defineConfig([
       'lodash/prefer-lodash-method': 'off',
       'lodash/prefer-lodash-typecheck': 'off',
       'jsx-a11y/media-has-caption': 'off',
-      'react-compiler/react-compiler': 'error',
     },
   },
   {

@@ -5,18 +5,47 @@ import svgrPlugin from 'vite-plugin-svgr'; // needed to import SVG as React comp
 import { visualizer } from 'rollup-plugin-visualizer';
 import checker from 'vite-plugin-checker';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import type { Logger } from 'babel-plugin-react-compiler';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) =>
   defineConfig({
     base: '', // "/" is default
+    define: {
+      'process.env.NODE_ENV': `"${mode}"`,
+    },
     server: {
       open: false,
     },
     plugins: [
       react({
         babel: {
-          plugins: ['babel-plugin-react-compiler'],
+          plugins: [
+            [
+              'babel-plugin-react-compiler',
+              {
+                debug: true,
+                logger: {
+                  logEvent(filename, event) {
+                    switch (event.kind) {
+                      case 'CompileSuccess': {
+                        console.log(`✅ Compiled: ${filename}`);
+                        break;
+                      }
+                      case 'CompileError': {
+                        console.log(`❌ Compiler Error: ${filename}`);
+                        console.error(`Reason: ${event.detail.reason}`);
+                        break;
+                      }
+                      default: {
+                        break; // eslint fix
+                      }
+                    }
+                  },
+                } satisfies Logger,
+              },
+            ],
+          ],
         },
       }),
       checker({
@@ -32,11 +61,9 @@ export default ({ mode }: { mode: string }) =>
         open: true,
       }),
     ],
-    define: {
-      'process.env.NODE_ENV': `"${mode}"`,
-    },
     optimizeDeps: {
       // https://github.com/vitest-dev/vitest/issues/6345
+      // snapshotSerializer
       esbuildOptions: {
         define: {
           global: 'globalThis',

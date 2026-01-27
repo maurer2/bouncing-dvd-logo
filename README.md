@@ -13,3 +13,7 @@ https://maurer2.github.io/bouncing-dvd-logo/
 ```js
 pnpm dev
 ```
+
+## React compiler todo
+
+* `src/Playingfield/Playingfield.tsx` - `loop` variable, access of `ref` during render
