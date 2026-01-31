@@ -10,7 +10,7 @@ type SoundPlayerProps = ComponentProps<typeof Component>;
 
 const mockPlay = vi
   .spyOn(window.HTMLAudioElement.prototype, 'play')
-  .mockImplementation(() => Promise.resolve());
+  .mockImplementation(async () => {});
 
 describe('SoundPlayer', () => {
   const defaultProps: SoundPlayerProps = {};

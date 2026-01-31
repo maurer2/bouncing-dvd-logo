@@ -24,7 +24,6 @@ export default ({ mode }: { mode: string }) =>
             [
               'babel-plugin-react-compiler',
               {
-                debug: true,
                 logger: {
                   logEvent(filename, event) {
                     switch (event.kind) {

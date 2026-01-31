@@ -2,6 +2,7 @@ import React, { type FC } from 'react';
 
 import { useStoreActions, useIsSoundDisabled } from '../Store2';
 
+// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './SoundToggle.styles';
 
 type SoundToggleProps = Record<string, never>;

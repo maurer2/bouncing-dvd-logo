@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react';
 import styled from 'styled-components';
 
-import type Component from './Logo';
+import type Logo from './Logo';
 
-type LogoProps = ComponentProps<typeof Component>;
+type LogoProps = ComponentProps<typeof Logo>;
 
 type LogoStyleProps = {
   // prefix style props with $ so that they are not passed to dom element

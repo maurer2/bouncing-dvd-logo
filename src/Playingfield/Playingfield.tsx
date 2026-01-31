@@ -16,6 +16,7 @@ import { useIsPaused, useStoreActions, useCurrentColour } from '../Store2';
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 
+// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Playingfield.styles';
 import { reducers } from './reducers';
 

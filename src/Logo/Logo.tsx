@@ -3,6 +3,7 @@ import React, { type FC } from 'react';
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
 import type { Colour } from '../Store/types';
 
+// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Logo.styles';
 
 type LogoProps = {

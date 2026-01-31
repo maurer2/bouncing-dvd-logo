@@ -12,6 +12,7 @@ import PlayingField from '../Playingfield/Playingfield';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
 import { useIsPaused } from '../Store2';
 
+// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Game.styles';
 
 // type GameProps = Record<string, never>;
@@ -40,11 +41,11 @@ const Game: FC = () => {
       <Styles.GameWrapper data-testid="game">
         <PlayingField ref={playingFieldRef} />
         <Styles.PauseButton
-          onClick={handleClick}
-          onKeyUp={handleInput}
           ref={pauseButtonDomElement}
           aria-label="Pause button"
           aria-pressed={isPaused}
+          onClick={handleClick}
+          onKeyUp={handleInput}
           autoFocus
         />
         <SoundToggle />

@@ -5,7 +5,7 @@ import soundFile from '../assets/soundFile.wav';
 
 type SoundPlayerProps = Record<string, never>;
 
-const Sound: FC<SoundPlayerProps> = () => {
+const SoundPlayer: FC<SoundPlayerProps> = () => {
   const isPlayingSound = useIsPlayingSound();
   const audioDomElement = useRef<HTMLAudioElement>(null);
 
@@ -32,4 +32,4 @@ const Sound: FC<SoundPlayerProps> = () => {
   );
 };
 
-export default Sound;
+export default SoundPlayer;
