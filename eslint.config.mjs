@@ -9,6 +9,7 @@ import { rules as prettierConfigRules } from 'eslint-config-prettier';
 import lodash from 'eslint-plugin-lodash';
 import prettierPlugin from 'eslint-plugin-prettier';
 import reactRedux from 'eslint-plugin-react-redux';
+import reactHooks from 'eslint-plugin-react-hooks';
 
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -103,6 +104,8 @@ const reactConfig = defineConfig([
   plugins.react,
   // React hooks plugin
   plugins.reactHooks,
+  // Compiler - currently not enabled by eslint-config-airbnb-extended reactHooks plugin
+  reactHooks.configs.flat['recommended-latest'],
   // Redux
   ...defineConfig([
     {
