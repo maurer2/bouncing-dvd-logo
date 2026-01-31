@@ -1,0 +1,123 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+  "name": "Node.js & TypeScript",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // "features": {},
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [3000],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  // "postCreateCommand": "yarn install",
+
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        // general
+        "editor.guides.bracketPairs": true,
+        "editor.stickyScroll.enabled": true,
+        "editor.inlayHints.enabled": "on",
+        // terminal
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        // typescript
+        "typescript.validate.enable": true,
+        "typescript.inlayHints.variableTypes.enabled": true,
+        "typescript.inlayHints.parameterTypes.enabled": true,
+        "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+        "typescript.inlayHints.enumMemberValues.enabled": true,
+        "typescript.inlayHints.parameterNames.enabled": "literals",
+        "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+        "typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": true, // show variable type hints even for primitives (e.g. strings, numbers, booleans)
+        // javascript
+        "javascript.validate.enable": true,
+        "javascript.inlayHints.variableTypes.enabled": true,
+        "javascript.inlayHints.parameterNames.enabled": "literals",
+        "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+        "javascript.inlayHints.parameterTypes.enabled": true,
+        "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+        "javascript.inlayHints.enumMemberValues.enabled": true,
+        "javascript.inlayHints.variableTypes.suppressWhenTypeMatchesName": false,
+        // eslint
+        "eslint.useFlatConfig": true,
+        // markdown
+        "markdown.preview.scrollEditorWithPreview": true,
+        "markdown.preview.scrollPreviewWithEditor": true,
+        // icons
+        "vsicons.presets.jsOfficial": true,
+        "workbench.editorAssociations": {
+          "*.svg": "default" // https://stackoverflow.com/questions/79363302/how-to-disable-svg-preview-in-vs-code-1-97/79427278#79427278
+        },
+        // react-compiler-marker
+        "reactCompilerMarker.successEmoji": "✅",
+        "reactCompilerMarker.errorEmoji": "🚫"
+      },
+      "extensions": [
+        "aaron-bond.better-comments",
+        "ban.spellright",
+        "bradlc.vscode-tailwindcss",
+        "christian-kohler.path-intellisense",
+        "clinyong.vscode-css-modules",
+        "DavidAnson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "fivepointseven.node-version",
+        "ghmcadams.lintlens",
+        "github.vscode-github-actions",
+        "IBM.output-colorizer",
+        "jock.svg",
+        "kisstkondoros.csstriggers",
+        "kisstkondoros.vscode-codemetrics",
+        "markis.code-coverage",
+        "me-dutour-mathieu.vscode-github-actions",
+        "meganrogge.template-string-converter",
+        "mervin.markdown-formatter",
+        "mkxml.vscode-filesize",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.vscode-typescript-next",
+        "naumovs.color-highlight",
+        "oderwat.indent-rainbow",
+        "pflannery.vscode-versionlens",
+        "redhat.vscode-yaml",
+        "ricard.postcss",
+        "shardulm94.trailing-spaces",
+        "shd101wyy.markdown-preview-enhanced",
+        "streetsidesoftware.code-spell-checker",
+        "stylelint.vscode-stylelint",
+        "uctakeoff.vscode-counter",
+        "unifiedjs.vscode-mdx",
+        "vincaslt.highlight-matching-tag",
+        "vscode-icons-team.vscode-icons",
+        "waderyan.gitblame",
+        "wix.vscode-import-cost",
+        "wmaurer.change-case",
+        "yatki.vscode-surround",
+        // "Orta.vscode-jest", // jest
+        "vitest.explorer", // vitest
+        // "ms-playwright.playwright"
+        "yoavbls.pretty-ts-errors",
+        "mikestead.dotenv",
+        "vunguyentuan/vscode-css-variables",
+        "qcz/vscode-restart-ts-server-button",
+        "microsoft/vscode-pull-request-github",
+        "github.copilot",
+        "vincaslt.highlight-matching-tag",
+        // "oven.bun-vscode",
+        // "biomejs.biome"
+        // astro-build.astro-vscode",
+        "tamasfe.even-better-toml",
+        // "attilabuti.vscode-mjml",
+        "blazejkustra.react-compiler-marker"
+      ]
+    }
+  }
+
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
+}
