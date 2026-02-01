@@ -57,7 +57,7 @@ const jsConfig = defineConfig([
           'newlines-between': 'always',
         },
       ],
-      'import-x/consistent-type-specifier-style': 'off', // too rigid, can't mix type and normal inputs
+      'import-x/consistent-type-specifier-style': 'off', // too rigid, can't mix type and normal imports
       'import-x/no-anonymous-default-export': [
         'error',
         {
@@ -121,7 +121,6 @@ const reactConfig = defineConfig([
   ...configs.react.recommended,
   // Strict React rules
   rules.react.strict,
-
   {
     rules: {
       'react/jsx-sort-props': [
@@ -152,12 +151,6 @@ const typescriptConfig = defineConfig([
   {
     rules: {
       '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
-    },
-  },
-  // Zustand and Redux store are properly typed and hooks can safely use inferred types
-  {
-    files: ['./src/Store2/**.ts', './src/Store/**.ts'],
-    rules: {
       '@typescript-eslint/explicit-module-boundary-types': 'off',
     },
   },
@@ -184,7 +177,7 @@ const prettierConfig = defineConfig([
 export default defineConfig([
   // Ignore files and folders listed in .gitignore
   includeIgnoreFile(gitignorePath),
-  // Eslintignore
+  // faux .eslintignore
   {
     ignores: ['./vite.config.ts', './__mocks__/**'],
   },

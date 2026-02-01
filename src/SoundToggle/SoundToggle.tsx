@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React from 'react';
 
 import { useStoreActions, useIsSoundDisabled } from '../Store2';
 
@@ -7,7 +7,7 @@ import * as Styles from './SoundToggle.styles';
 
 type SoundToggleProps = Record<string, never>;
 
-const SoundToggle: FC<SoundToggleProps> = () => {
+const SoundToggle = (_props: SoundToggleProps) => {
   const { toggleSoundState } = useStoreActions();
   const isSoundDisabled = useIsSoundDisabled();
 

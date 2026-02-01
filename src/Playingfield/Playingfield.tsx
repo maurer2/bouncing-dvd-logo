@@ -7,7 +7,6 @@ import React, {
   useState,
   useEffectEvent,
   useImperativeHandle,
-  type FC,
   type RefObject,
 } from 'react';
 import { random } from 'lodash-es';
@@ -39,7 +38,7 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
   return newInverseVelocity;
 };
 
-const PlayingField: FC<PlayingFieldProps> = ({ ref }) => {
+const PlayingField = ({ ref }: PlayingFieldProps) => {
   const { startGame, triggerCollision, togglePlayState } = useStoreActions();
   const isPaused = useIsPaused();
   const loopTimestamp = useRef(0);

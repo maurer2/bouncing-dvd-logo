@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, type FC } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useIsPlayingSound } from '../Store2';
 import soundFile from '../assets/soundFile.wav';
 
 type SoundPlayerProps = Record<string, never>;
 
-const SoundPlayer: FC<SoundPlayerProps> = () => {
+const SoundPlayer = (_props: SoundPlayerProps) => {
   const isPlayingSound = useIsPlayingSound();
   const audioDomElement = useRef<HTMLAudioElement>(null);
 

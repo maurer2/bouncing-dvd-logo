@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import React from 'react';
 
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
 import type { Colour } from '../Store/types';
@@ -14,7 +14,7 @@ type LogoProps = {
   currentColour: Colour;
 };
 
-const Logo: FC<LogoProps> = ({ positionX, positionY, width, height, currentColour }) => (
+const Logo = ({ positionX, positionY, width, height, currentColour }: LogoProps) => (
   // figure tag
   <Styles.LogoElement
     $positionX={positionX}
