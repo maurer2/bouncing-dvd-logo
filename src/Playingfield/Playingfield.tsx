@@ -1,5 +1,4 @@
 import React, {
-  useRef,
   useCallback,
   useLayoutEffect,
   useReducer,
@@ -41,7 +40,6 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
 const PlayingField = ({ ref }: PlayingFieldProps) => {
   const { startGame, triggerCollision, togglePlayState } = useStoreActions();
   const isPaused = useIsPaused();
-  const loopTimestamp = useRef(0);
   const currentColor = useCurrentColour();
   const [positions, dispatchLocal] = useReducer(reducers, {
     positionX: {
@@ -82,55 +80,53 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
     };
   }, []);
 
-  // todo remove access of ref.current in render
-  const loop = useCallback(() => {
-    if (isPaused) {
+  const onFrameDraw = useEffectEvent(() => {
+    if (!positions.positionX.velocity && !positions.positionY.velocity) {
       return;
     }
 
-    if (positions.positionX.velocity && positions.positionY.velocity) {
-      if (isCollidingXStart || isCollidingXEnd) {
-        triggerCollision();
-        dispatchLocal({
-          type: 'TRIGGER_X_COLLISION',
-          payload: getInverseVelocity(positions.positionX.velocity),
-        });
-      }
-
-      if (isCollidingYStart || isCollidingYEnd) {
-        triggerCollision();
-        dispatchLocal({
-          type: 'TRIGGER_Y_COLLISION',
-          payload: getInverseVelocity(positions.positionY.velocity),
-        });
-      }
-
-      if (!isCollidingXStart && !isCollidingXEnd && !isCollidingYStart && !isCollidingYEnd) {
-        dispatchLocal({
-          type: 'TRIGGER_NEXT_POSITION',
-        });
-      }
+    if (isCollidingXStart || isCollidingXEnd) {
+      triggerCollision();
+      dispatchLocal({
+        type: 'TRIGGER_X_COLLISION',
+        payload: getInverseVelocity(positions.positionX.velocity),
+      });
     }
 
-    loopTimestamp.current = window.requestAnimationFrame(loop);
-  }, [
-    isPaused,
-    isCollidingXStart,
-    isCollidingYStart,
-    isCollidingXEnd,
-    isCollidingYEnd,
-    positions.positionX.velocity,
-    positions.positionY.velocity,
-    triggerCollision,
-  ]);
+    if (isCollidingYStart || isCollidingYEnd) {
+      triggerCollision();
+      dispatchLocal({
+        type: 'TRIGGER_Y_COLLISION',
+        payload: getInverseVelocity(positions.positionY.velocity),
+      });
+    }
+
+    if (!isCollidingXStart && !isCollidingXEnd && !isCollidingYStart && !isCollidingYEnd) {
+      dispatchLocal({
+        type: 'TRIGGER_NEXT_POSITION',
+      });
+    }
+  });
 
   useLayoutEffect(() => {
-    loopTimestamp.current = window.requestAnimationFrame(loop);
+    let currentRequestID: number | null = null;
+
+    const requestNewFrameDraw = () => {
+      onFrameDraw();
+      currentRequestID = requestAnimationFrame(requestNewFrameDraw);
+    };
+
+    // first frame request
+    if (!isPaused) {
+      currentRequestID = requestAnimationFrame(requestNewFrameDraw);
+    }
 
     return () => {
-      window.cancelAnimationFrame(loopTimestamp.current);
+      if (currentRequestID !== null) {
+        cancelAnimationFrame(currentRequestID);
+      }
     };
-  }, [loop]);
+  }, [isPaused]);
 
   useImperativeHandle(ref, () => ({
     togglePlayStateInChild() {
