@@ -6,7 +6,6 @@ import { FlatCompat } from '@eslint/eslintrc';
 import { fixupConfigRules, fixupPluginRules, includeIgnoreFile } from '@eslint/compat';
 import { configs, plugins, rules } from 'eslint-config-airbnb-extended';
 import { rules as prettierConfigRules } from 'eslint-config-prettier';
-import lodash from 'eslint-plugin-lodash';
 import prettierPlugin from 'eslint-plugin-prettier';
 import reactRedux from 'eslint-plugin-react-redux';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -39,17 +38,6 @@ const jsConfig = defineConfig([
   rules.base.importsStrict,
   {
     rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          paths: [
-            {
-              name: 'lodash',
-              message: 'Please use lodash-es instead of "lodash".',
-            },
-          ],
-        },
-      ],
       'import-x/order': [
         'error',
         {
@@ -81,20 +69,6 @@ const jsConfig = defineConfig([
     files: ['**/*.spec.ts', '**/*.spec.tsx'],
     rules: {
       'import-x/no-rename-default': 'off', // allow importing default components as "Component" in tests
-    },
-  },
-]);
-
-const lodashConfig = defineConfig([
-  {
-    extends: fixupConfigRules(compat.extends('plugin:lodash/recommended')),
-    plugins: {
-      lodash: fixupPluginRules(lodash),
-    },
-    rules: {
-      'lodash/import-scope': [2, 'member'],
-      'lodash/prefer-lodash-method': 'off',
-      'lodash/prefer-lodash-typecheck': 'off',
     },
   },
 ]);
@@ -183,8 +157,6 @@ export default defineConfig([
   },
   // JavaScript config
   ...jsConfig,
-  // lodash config
-  ...lodashConfig,
   // React config
   ...reactConfig,
   // TypeScript config

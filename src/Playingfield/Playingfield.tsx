@@ -8,7 +8,7 @@ import React, {
   useImperativeHandle,
   type RefObject,
 } from 'react';
-import { random } from 'lodash-es';
+import { random } from 'es-toolkit';
 
 import { useIsPaused, useStoreActions, useCurrentColour } from '../Store2';
 import Logo from '../Logo/Logo';
@@ -23,16 +23,14 @@ type PlayingFieldProps = {
 };
 
 const logoSize: [width: number, height: number] = [150, 138.66];
-const totalVelocity = 8;
-const minVelocityPerAxis = 2;
+const speed = 7;
 
 const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number => {
   // prettier-ignore
   const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
   // prettier-ignore
   const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
-  const newInverseVelocity =
-    currentVelocity * random(lowerRandomBound, upperRandomBound, true) * -1;
+  const newInverseVelocity = currentVelocity * random(lowerRandomBound, upperRandomBound) * -1;
 
   return newInverseVelocity;
 };
@@ -66,7 +64,7 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
   );
 
   // https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler#react-19
-  const PlayingFieldCBRef = useCallback((element: HTMLDivElement) => {
+  const playingFieldRefCB = useCallback((element: HTMLDivElement) => {
     const observer = new ResizeObserver((entries) => {
       const { contentRect } = entries[0];
 
@@ -152,12 +150,10 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
       return;
     }
 
-    const velocityX =
-      Math.random() >= 0.5
-        ? random(minVelocityPerAxis, totalVelocity - minVelocityPerAxis, true)
-        : random(-minVelocityPerAxis, -totalVelocity + minVelocityPerAxis, true);
-    const velocityY =
-      Math.sign(velocityX) === 1 ? totalVelocity - velocityX : (totalVelocity + velocityX) * -1;
+    const angleInRad = Math.random() * Math.PI * 2;
+
+    const velocityX = Math.cos(angleInRad) * speed;
+    const velocityY = Math.sin(angleInRad) * speed;
 
     dispatchLocal({
       type: 'TRIGGER_INITIAL_POSITION',
@@ -177,7 +173,7 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
 
   return (
     <Styles.PlayingFieldWrapper
-      ref={PlayingFieldCBRef}
+      ref={playingFieldRefCB}
       data-testid="playingfield"
       $isPaused={isPaused}
     >

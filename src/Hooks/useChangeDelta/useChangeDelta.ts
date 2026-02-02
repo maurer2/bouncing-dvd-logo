@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { random } from 'lodash-es';
+import { random } from 'es-toolkit';
 
 import type { UseChangeDelta } from './useChangeDelta.types';
 
@@ -23,7 +23,7 @@ export default function useChangeDelta(
 
   useEffect(() => {
     if (hasCollided && !hasCollidedPrev.current) {
-      const newChangeDelta = changeDelta.current * random(lowerRandomBound, upperRandomBound, true);
+      const newChangeDelta = changeDelta.current * random(lowerRandomBound, upperRandomBound);
 
       changeDelta.current = newChangeDelta * -1;
     }

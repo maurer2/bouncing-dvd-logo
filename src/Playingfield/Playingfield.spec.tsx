@@ -12,7 +12,14 @@ type PlayingFieldProps = ComponentProps<typeof Component>;
 let mockRandom = 5;
 let storeDispatchSpy: unknown;
 
-vi.mock('lodash-es', () => ({ random: vi.fn().mockImplementation(() => mockRandom) }));
+vi.mock('es-toolkit', async () => {
+  const originalModule = await vi.importActual('es-toolkit');
+
+  return {
+    ...originalModule,
+    random: vi.fn().mockImplementation(() => mockRandom),
+  };
+});
 
 describe('Playingfield', () => {
   beforeEach(() => {
@@ -22,9 +29,15 @@ describe('Playingfield', () => {
     const storeDispatchSpyTemp = vi.spyOn(useStore.getState(), 'dispatch');
     storeDispatchSpy = storeDispatchSpyTemp;
 
+    vi.spyOn(Math, 'random').mockReturnValue(0.5);
+
     return () => {
       (storeDispatchSpy as typeof storeDispatchSpyTemp).mockReset();
     };
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   const resizeObserver = mockResizeObserver();
