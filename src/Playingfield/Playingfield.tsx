@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, {
   useCallback,
   useLayoutEffect,
@@ -126,6 +128,38 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
     };
   }, [isPaused]);
 
+  const onCanvasPaint = useEffectEvent((ctx: any) => {
+    const logo = document.getElementById('logo');
+
+    ctx.reset();
+    const transform = ctx.drawElementImage(
+      logo,
+      positions.positionX.value,
+      positions.positionY.value,
+    );
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    logo!.style.transform = transform.toString();
+  });
+
+  useLayoutEffect(() => {
+    const canvas = document.getElementById('canvas');
+    const logo = document.getElementById('logo');
+    // @ts-ignore
+    const ctx = canvas?.getContext('2d');
+
+    // console.log(logo);
+
+    if (canvas && 'onpaint' in canvas && ctx && logo) {
+      // @ts-ignore
+      canvas.onpaint = () => {
+        // @ts-ignore
+        onCanvasPaint(ctx);
+      };
+      // @ts-ignore
+      canvas.requestPaint();
+    }
+  }, [isPaused]);
+
   useImperativeHandle(ref, () => ({
     togglePlayStateInChild() {
       const newPosition: Parameters<typeof togglePlayState>[0] = [
@@ -177,15 +211,26 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
       data-testid="playingfield"
       $isPaused={isPaused}
     >
-      {positions.positionX.value !== null && positions.positionY.value !== null ? (
-        <Logo
-          positionX={positions.positionX.value}
-          positionY={positions.positionY.value}
-          width={logoSize[0]}
-          height={logoSize[1]}
-          currentColour={currentColor}
-        />
-      ) : null}
+      <canvas
+        width="1000"
+        height="1000"
+        // @ts-expect-error experimental
+        // eslint-disable-next-line react/no-unknown-property
+        layoutsubtree="true"
+        id="canvas"
+        style={{ inlineSize: '100dvw', blockSize: '100dvh' }}
+      >
+        {positions.positionX.value !== null && positions.positionY.value !== null ? (
+          <Logo
+            positionX={positions.positionX.value}
+            positionY={positions.positionY.value}
+            width={logoSize[0]}
+            height={logoSize[1]}
+            currentColour={currentColor}
+            id="logo"
+          />
+        ) : null}
+      </canvas>
     </Styles.PlayingFieldWrapper>
   );
 };

@@ -12,9 +12,10 @@ type LogoProps = {
   width: number;
   height: number;
   currentColour: Colour;
+  id: string;
 };
 
-const Logo = ({ positionX, positionY, width, height, currentColour }: LogoProps) => (
+const Logo = ({ positionX, positionY, width, height, currentColour, id }: LogoProps) => (
   // figure tag
   <Styles.LogoElement
     $positionX={positionX}
@@ -22,6 +23,7 @@ const Logo = ({ positionX, positionY, width, height, currentColour }: LogoProps)
     $width={width}
     $height={height}
     $currentColour={currentColour}
+    id={id}
   >
     <CatLogo
       role="img"
