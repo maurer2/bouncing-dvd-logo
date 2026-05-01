@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useCallback,
-  type FC,
-  type KeyboardEvent,
-  type ComponentProps,
-} from 'react';
+import React, { useRef, useCallback, type KeyboardEvent, type ComponentProps } from 'react';
 import { StyleSheetManager } from 'styled-components';
 
 import SoundToggle from '../SoundToggle/SoundToggle';
@@ -18,7 +12,7 @@ import * as Styles from './Game.styles';
 // type GameProps = Record<string, never>;
 type PlayingFieldProps = ComponentProps<typeof PlayingField>;
 
-const Game: FC = () => {
+function Game() {
   const isPaused = useIsPaused();
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
   const playingFieldRef = useRef<PlayingFieldProps['ref']['current']>(null);
@@ -53,6 +47,6 @@ const Game: FC = () => {
       </Styles.GameWrapper>
     </StyleSheetManager>
   );
-};
+}
 
 export default Game;

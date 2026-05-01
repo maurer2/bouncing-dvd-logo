@@ -35,7 +35,7 @@ const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number
   return newInverseVelocity;
 };
 
-const PlayingField = ({ ref }: PlayingFieldProps) => {
+function PlayingField({ ref }: PlayingFieldProps) {
   const { startGame, triggerCollision, togglePlayState } = useStoreActions();
   const isPaused = useIsPaused();
   const currentColor = useCurrentColour();
@@ -188,6 +188,6 @@ const PlayingField = ({ ref }: PlayingFieldProps) => {
       ) : null}
     </Styles.PlayingFieldWrapper>
   );
-};
+}
 
 export default PlayingField;

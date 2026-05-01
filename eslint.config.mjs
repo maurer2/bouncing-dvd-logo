@@ -109,6 +109,10 @@ const reactConfig = defineConfig([
           reservedFirst: false,
         },
       ],
+      'react/function-component-definition': {
+        namedComponents: 'function-declaration',
+        unnamedComponents: 'function-expression',
+      },
     },
   },
 ]);

@@ -14,20 +14,22 @@ type LogoProps = {
   currentColour: Colour;
 };
 
-const Logo = ({ positionX, positionY, width, height, currentColour }: LogoProps) => (
-  // figure tag
-  <Styles.LogoElement
-    $positionX={positionX}
-    $positionY={positionY}
-    $width={width}
-    $height={height}
-    $currentColour={currentColour}
-  >
-    <CatLogo
-      role="img"
-      aria-label="Cat logo"
-    />
-  </Styles.LogoElement>
-);
+function Logo({ positionX, positionY, width, height, currentColour }: LogoProps) {
+  return (
+    // figure tag
+    <Styles.LogoElement
+      $positionX={positionX}
+      $positionY={positionY}
+      $width={width}
+      $height={height}
+      $currentColour={currentColour}
+    >
+      <CatLogo
+        role="img"
+        aria-label="Cat logo"
+      />
+    </Styles.LogoElement>
+  );
+}
 
 export default Logo;

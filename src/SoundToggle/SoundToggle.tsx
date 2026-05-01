@@ -5,9 +5,7 @@ import { useStoreActions, useIsSoundDisabled } from '../Store2';
 // eslint-disable-next-line import-x/no-namespace
 import * as Styles from './SoundToggle.styles';
 
-type SoundToggleProps = Record<string, never>;
-
-const SoundToggle = (_props: SoundToggleProps) => {
+function SoundToggle() {
   const { toggleSoundState } = useStoreActions();
   const isSoundDisabled = useIsSoundDisabled();
 
@@ -30,6 +28,6 @@ const SoundToggle = (_props: SoundToggleProps) => {
       />
     </Styles.SoundToggleButton>
   );
-};
+}
 
 export default SoundToggle;

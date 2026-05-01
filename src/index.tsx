@@ -32,14 +32,16 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-const App = () => (
-  <StrictMode>
-    <Provider store={store}>
-      <GlobalStyles />
-      <Game />
-    </Provider>
-  </StrictMode>
-);
+function App() {
+  return (
+    <StrictMode>
+      <Provider store={store}>
+        <GlobalStyles />
+        <Game />
+      </Provider>
+    </StrictMode>
+  );
+}
 
 const container = document.getElementById('root');
 if (!container) {

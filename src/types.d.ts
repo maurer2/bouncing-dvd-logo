@@ -1,3 +1,4 @@
+import type { ReactElement, SVGProps } from 'react';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 declare module '*.json' {
@@ -12,7 +13,7 @@ declare module '*.wav' {
 
 declare module '*.svg' {
   // allows import of svg as react components
-  export const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
+  export const ReactComponent: (props: SVGProps<SVGSVGElement>) => ReactElement;
   const src: string;
   export default src;
 }

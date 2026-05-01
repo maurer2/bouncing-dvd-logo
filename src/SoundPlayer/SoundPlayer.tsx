@@ -3,9 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useIsPlayingSound } from '../Store2';
 import soundFile from '../assets/soundFile.wav';
 
-type SoundPlayerProps = Record<string, never>;
-
-const SoundPlayer = (_props: SoundPlayerProps) => {
+function SoundPlayer() {
   const isPlayingSound = useIsPlayingSound();
   const audioDomElement = useRef<HTMLAudioElement>(null);
 
@@ -30,6 +28,6 @@ const SoundPlayer = (_props: SoundPlayerProps) => {
       />
     </audio>
   );
-};
+}
 
 export default SoundPlayer;
