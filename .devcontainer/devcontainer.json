@@ -4,16 +4,14 @@
   "name": "Node.js & TypeScript",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
-
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
-
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000],
-
+  "forwardPorts": [
+    3000
+  ],
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "yarn install",
-
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
@@ -24,24 +22,17 @@
         "editor.inlayHints.enabled": "on",
         // terminal
         "terminal.integrated.defaultProfile.linux": "zsh",
-        // typescript
-        "typescript.validate.enable": true,
-        "typescript.inlayHints.variableTypes.enabled": true,
-        "typescript.inlayHints.parameterTypes.enabled": true,
-        "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
-        "typescript.inlayHints.enumMemberValues.enabled": true,
-        "typescript.inlayHints.parameterNames.enabled": "literals",
-        "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
-        "typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": true, // show variable type hints even for primitives (e.g. strings, numbers, booleans)
-        // javascript
-        "javascript.validate.enable": true,
-        "javascript.inlayHints.variableTypes.enabled": true,
-        "javascript.inlayHints.parameterNames.enabled": "literals",
-        "javascript.inlayHints.propertyDeclarationTypes.enabled": true,
-        "javascript.inlayHints.parameterTypes.enabled": true,
-        "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
-        "javascript.inlayHints.enumMemberValues.enabled": true,
-        "javascript.inlayHints.variableTypes.suppressWhenTypeMatchesName": false,
+        // typescript & javascript
+        "js/ts.preferences.importModuleSpecifier": "relative",
+        "js/ts.experimental.useTsgo": false,
+        "js/ts.validate.enable": true,
+        "js/ts.inlayHints.variableTypes.enabled": true,
+        "js/ts.inlayHints.parameterTypes.enabled": true,
+        "js/ts.inlayHints.functionLikeReturnTypes.enabled": true,
+        "js/ts.inlayHints.enumMemberValues.enabled": true,
+        "js/ts.inlayHints.parameterNames.enabled": "literals",
+        "js/ts.inlayHints.propertyDeclarationTypes.enabled": true,
+        "js/ts.inlayHints.variableTypes.suppressWhenTypeMatchesName": false, // show variable type hints even for primitives (e.g. strings, numbers, booleans)
         // eslint
         "eslint.useFlatConfig": true,
         // markdown
@@ -117,7 +108,6 @@
       ]
     }
   }
-
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
 }
