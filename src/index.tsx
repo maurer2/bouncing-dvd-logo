@@ -1,7 +1,6 @@
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createGlobalStyle } from 'styled-components';
-import { Provider } from 'react-redux';
 import 'modern-normalize/modern-normalize.css';
 
 import store from './Store';
@@ -35,10 +34,8 @@ const GlobalStyles = createGlobalStyle`
 function App() {
   return (
     <StrictMode>
-      <Provider store={store}>
         <GlobalStyles />
         <Game />
-      </Provider>
     </StrictMode>
   );
 }
