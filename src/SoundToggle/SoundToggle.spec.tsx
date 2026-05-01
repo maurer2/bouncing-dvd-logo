@@ -1,4 +1,4 @@
-import React, { type ComponentProps } from 'react';
+import React from 'react';
 import { screen } from '@testing-library/react';
 import { render } from 'vitest-browser-react';
 import { userEvent } from '@vitest/browser/context';
@@ -7,15 +7,10 @@ import { beforeEach } from 'vitest';
 import { useStore } from '../Store2';
 
 import Component from './SoundToggle';
-import type SoundToggle from './SoundToggle';
-
-type SoundToggleProps = ComponentProps<typeof SoundToggle>;
 
 let storeDispatchSpy: unknown;
 
 describe('Components', () => {
-  const defaultProps: SoundToggleProps = {};
-
   beforeEach(() => {
     useStore.setState(useStore.getInitialState(), true);
 

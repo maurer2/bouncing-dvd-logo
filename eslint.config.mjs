@@ -109,10 +109,13 @@ const reactConfig = defineConfig([
           reservedFirst: false,
         },
       ],
-      'react/function-component-definition': {
-        namedComponents: 'function-declaration',
-        unnamedComponents: 'function-expression',
-      },
+      'react/function-component-definition': [
+        'error',
+        {
+          namedComponents: 'function-declaration',
+          unnamedComponents: 'function-expression',
+        },
+      ],
     },
   },
 ]);
@@ -157,7 +160,7 @@ export default defineConfig([
   includeIgnoreFile(gitignorePath),
   // faux .eslintignore
   {
-    ignores: ['./vite.config.ts', './__mocks__/**'],
+    ignores: ['./vite.config.ts', './__mocks__/**', './src/Store'],
   },
   // JavaScript config
   ...jsConfig,

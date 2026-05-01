@@ -1,12 +1,10 @@
-import React, { type ComponentProps } from 'react';
+import React from 'react';
 import '@testing-library/jest-dom';
 import { screen, render } from '@testing-library/react';
 
 import { useStore } from '../Store2';
 
 import Component from './SoundPlayer';
-
-type SoundPlayerProps = ComponentProps<typeof Component>;
 
 const mockPlay = vi
   .spyOn(window.HTMLAudioElement.prototype, 'play')
