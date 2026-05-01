@@ -1,41 +1,21 @@
 import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createGlobalStyle } from 'styled-components';
-import 'modern-normalize/modern-normalize.css';
+import { ThemeProvider } from 'styled-components';
+import 'modern-normalize/modern-normalize.css'; // todo: move to global CSS in correct layer
 
-import store from './Store';
+import { theme, GlobalStyles } from './Theme';
 import Game from './Game/Game';
-
-const GlobalStyles = createGlobalStyle`
-  html {
-    font-size: 16px;
-    font-family:
-      -apple-system,
-      BlinkMacSystemFont,
-      "Segoe UI",
-      "Roboto",
-      "Oxygen",
-      "Ubuntu",
-      "Cantarell",
-      "Fira Sans",
-      "Droid Sans",
-      "Helvetica Neue",
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    background-color: #000;
-  }
-
-  body {
-    overflow: hidden;
-  }
-`;
 
 function App() {
   return (
     <StrictMode>
+      <ThemeProvider theme={theme}>
+        {/* CSS vars */}
+        <theme.GlobalStyle />
+        {/* Global styles */}
         <GlobalStyles />
         <Game />
+      </ThemeProvider>
     </StrictMode>
   );
 }

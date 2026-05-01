@@ -22,10 +22,10 @@ export const LogoElement = styled.figure.attrs<LogoStyleProps>(
   }),
 )<LogoStyleProps>`
   position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => `${props.$width}px`};
-  height: ${(props) => `${props.$height}px`};
+  inset-block-start: 0;
+  inset-inline0start: 0;
+  inline-size: ${(props) => `${props.$width}px`};
+  block-size: ${(props) => `${props.$height}px`};
   margin: 0;
   will-change: translate;
   contain: strict;

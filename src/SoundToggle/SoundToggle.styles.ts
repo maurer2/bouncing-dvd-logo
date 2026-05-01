@@ -10,8 +10,8 @@ type SoundToggleStyleProps = {
 export const SoundToggleButton = styled.button.attrs(() => ({ type: 'button' }))`
   all: unset;
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.5em;
+  inset-block-end: 0.5rem;
+  inset-inline-end: 0.5em;
   cursor: pointer;
 `;
 
