@@ -28,7 +28,7 @@ describe('Components', () => {
   });
 
   it('should render', () => {
-    render(<Component {...defaultProps} />);
+    render(<Component />);
 
     expect(screen.getByRole('button', { name: 'Play sound' })).toBeInTheDocument();
   });
@@ -37,20 +37,20 @@ describe('Components', () => {
     useStore.setState({
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: true },
     });
-    const { container, rerender } = render(<Component {...defaultProps} />);
+    const { container, rerender } = render(<Component />);
 
     expect(container.firstChild).toMatchSnapshot('Sound is disabled');
 
     useStore.setState({
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: false },
     });
-    rerender(<Component {...defaultProps} />);
+    rerender(<Component />);
 
     expect(container.firstChild).toMatchSnapshot('Sound is enabled');
   });
 
   it('should have child elements', () => {
-    render(<Component {...defaultProps} />);
+    render(<Component />);
 
     expect(screen.getByTestId('soundtoggle-icon')).toBeInTheDocument();
   });
@@ -60,7 +60,7 @@ describe('Components', () => {
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: false },
     });
 
-    render(<Component {...defaultProps} />);
+    render(<Component />);
 
     expect(screen.getByLabelText('Play sound')).toBeInTheDocument();
     expect(screen.getByLabelText('Play sound')).toBePressed(); // https://github.com/testing-library/jest-dom/releases/tag/v6.7.0
@@ -70,7 +70,7 @@ describe('Components', () => {
     useStore.setState({
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: true },
     });
-    render(<Component {...defaultProps} />);
+    render(<Component />);
 
     useStore.setState({
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: false },
@@ -83,7 +83,7 @@ describe('Components', () => {
   it('should trigger sound toggle function on click', async () => {
     const user = userEvent.setup();
 
-    const { rerender } = render(<Component {...defaultProps} />);
+    const { rerender } = render(<Component />);
 
     await user.click(screen.getByRole('button', { name: 'Play sound' }));
 
@@ -91,7 +91,7 @@ describe('Components', () => {
       type: 'SOUND_STATE_TOGGLED',
     });
 
-    rerender(<Component {...defaultProps} />);
+    rerender(<Component />);
 
     await user.click(screen.getByRole('button', { name: 'Play sound' }));
     expect(storeDispatchSpy).toHaveBeenCalledWith({

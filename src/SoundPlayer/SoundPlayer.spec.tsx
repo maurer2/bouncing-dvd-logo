@@ -13,26 +13,24 @@ const mockPlay = vi
   .mockImplementation(async () => {});
 
 describe('SoundPlayer', () => {
-  const defaultProps: SoundPlayerProps = {};
-
   beforeEach(() => {
     useStore.setState(useStore.getInitialState(), true);
   });
 
   it('should render ', () => {
-    render(<Component {...defaultProps} />);
+    render(<Component />);
 
     expect(screen.getByTestId('audio-tag')).toBeInTheDocument();
   });
 
   it('should match snapshots', () => {
-    const { container } = render(<Component {...defaultProps} />);
+    const { container } = render(<Component />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('has child components', () => {
-    render(<Component {...defaultProps} />);
+    render(<Component />);
 
     expect(screen.queryByTestId('audio-tag')).toBeInTheDocument();
     expect(screen.queryByTestId('audio-file')).toBeInTheDocument();
