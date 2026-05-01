@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { sample } from 'es-toolkit';
 import { devtools } from 'zustand/middleware';
 
-const colours = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'] as const;
+import { accentColourNames as colours } from '../Theme';
 
 type Position = [x: number, y: number];
 type Colour = (typeof colours)[number];

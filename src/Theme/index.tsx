@@ -1,5 +1,8 @@
 import { createTheme, createGlobalStyle } from 'styled-components';
 
+export const accentColourNames = ['white', 'red', 'blue', 'yellow', 'fuchsia', 'lime'] as const;
+type AccentColourNames = (typeof accentColourNames)[number];
+
 const defaultTheme = createTheme({
   colors: {
     background: 'oklch(0.1448 0 0)',
@@ -11,7 +14,7 @@ const defaultTheme = createTheme({
       yellow: 'oklch(92% 0.18 105)',
       fuchsia: 'oklch(70% 0.32 330)',
       lime: 'oklch(87% 0.24 135)',
-    },
+    } as const satisfies Record<AccentColourNames, string>, // guarantees that theme.accent keys match accentColourNames
   } as const,
 });
 export { defaultTheme as theme };
