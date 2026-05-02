@@ -60,6 +60,15 @@ const jsConfig = defineConfig([
         },
       ],
       'import-x/prefer-default-export': 'off',
+      // allow "export { default } from "
+      // forbid renaming nonm default exports as default
+      'no-restricted-exports': [
+        'error',
+        {
+          restrictedNamedExports: ['then'],
+          restrictDefaultExports: { named: true, namedFrom: true },
+        },
+      ],
       // styled components
       // 'import-x/no-namespace': ['error', { ignore: ['**/*.styles.*'] }],
     },

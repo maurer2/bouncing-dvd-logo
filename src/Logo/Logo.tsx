@@ -1,10 +1,12 @@
 import React from 'react';
 
 import { ReactComponent as CatLogo } from '../assets/cat.svg';
-import type { Colour } from '../Store/types';
+import type { accentColourNames } from '../Theme';
 
 // eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Logo.styles';
+
+type Colour = (typeof accentColourNames)[number];
 
 type LogoProps = {
   positionX: number;
@@ -16,7 +18,6 @@ type LogoProps = {
 
 function Logo({ positionX, positionY, width, height, currentColour }: LogoProps) {
   return (
-    // figure tag
     <Styles.LogoElement
       $positionX={positionX}
       $positionY={positionY}

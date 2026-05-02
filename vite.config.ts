@@ -82,6 +82,7 @@ export default ({ mode }: { mode: string }) =>
       browser: {
         enabled: true,
         provider: 'playwright',
+        screenshotFailures: false,
         instances: [
           {
             browser: 'chromium',
@@ -89,7 +90,6 @@ export default ({ mode }: { mode: string }) =>
           },
         ],
       },
-      include: ['src/**/*.{test,spec}.tsx'],
       coverage: {
         reporter: ['text', 'lcov'],
         exclude: [
@@ -100,10 +100,7 @@ export default ({ mode }: { mode: string }) =>
           '**/setupTests.ts',
         ],
       },
-      exclude: [
-        'node_modules',
-        'src/Hooks/useColour/useColour.spec.tsx',
-        'src/Hooks/useChangeDelta/useChangeDelta.spec.tsx',
-      ],
+      include: ['src/**/*.test.tsx', 'src/**/*.spec.tsx'],
+      exclude: ['node_modules'],
     },
   });

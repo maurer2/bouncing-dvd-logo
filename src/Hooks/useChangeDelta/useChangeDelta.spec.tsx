@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 
 import customHook from './useChangeDelta';
 
@@ -18,7 +18,10 @@ describe('useChangeDelta', () => {
   it('should return the same absolute value as inputted if no collision has occurred', () => {
     const { result } = setup();
 
-    expect(Math.abs(result.current[0].current)).toBe(defaultProps[0]);
+    expect(result.current[0].current).toBeDefined();
+    if (result.current[0].current !== undefined) {
+      expect(Math.abs(result.current[0].current)).toBe(defaultProps[0]);
+    }
   });
 
   it('should not return the same absolute value as inputted if collision has occurred', () => {
@@ -26,7 +29,10 @@ describe('useChangeDelta', () => {
 
     const { result } = setup(collisionProps);
 
-    expect(Math.abs(result.current[0].current)).not.toBe(defaultProps[0]);
+    expect(result.current[0].current).toBeDefined();
+    if (result.current[0].current !== undefined) {
+      expect(Math.abs(result.current[0].current)).not.toBe(defaultProps[0]);
+    }
   });
 
   it('returned value should not deviate more than maxRandomness/2 percentage', () => {
@@ -37,9 +43,12 @@ describe('useChangeDelta', () => {
     const upperBound = collisionProps[0] * (1 + 5 / 100);
     const lowerBound = collisionProps[0] * (1 - 5 / 100);
 
-    const value = Math.abs(result.current[0].current);
+    expect(result.current[0].current).toBeDefined();
+    if (result.current[0].current !== undefined) {
+      const value = Math.abs(result.current[0].current);
 
-    expect(value).toBeLessThanOrEqual(upperBound);
-    expect(value).toBeGreaterThan(lowerBound);
+      expect(value).toBeLessThanOrEqual(upperBound);
+      expect(value).toBeGreaterThan(lowerBound);
+    }
   });
 });

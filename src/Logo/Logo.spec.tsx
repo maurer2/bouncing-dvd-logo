@@ -1,8 +1,8 @@
 import React, { type ComponentProps } from 'react';
 import { screen, within } from '@testing-library/react';
-import { render } from 'vitest-browser-react';
 
-import { colours } from '../Store/constants';
+import { accentColourNames as colours /* theme */ } from '../Theme';
+import { renderStyledComponents } from '../test-utilities';
 
 import Component from './Logo';
 
@@ -23,33 +23,33 @@ describe('Logo', () => {
   };
 
   it('should render ', () => {
-    render(<Component {...defaultProps} />);
+    renderStyledComponents(<Component {...defaultProps} />);
 
     expect(screen.getByRole('figure')).toBeInTheDocument();
   });
 
   it('should match snapshot', () => {
-    const { container } = render(<Component {...defaultProps} />);
+    const { container } = renderStyledComponents(<Component {...defaultProps} />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('should have the cat logo', () => {
-    render(<Component {...defaultProps} />);
+    renderStyledComponents(<Component {...defaultProps} />);
 
     const parent = within(screen.getByRole('figure'));
     expect(parent.getByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
   });
 
   it('should have the default colour', () => {
-    render(<Component {...defaultProps} />);
+    renderStyledComponents(<Component {...defaultProps} />);
 
-    // expect(screen.getByRole('figure')).toHaveStyle(`color: ${colours[0]}`);
-    expect(screen.getByRole('figure')).toHaveStyle(`color: rgb(255, 255, 255)`);
+    expect(screen.getByRole('figure')).toHaveStyle('color: oklch(100% 0 0)');
+    // expect(screen.getByRole('figure')).toHaveStyle(`color: ${theme.colors.accent.white}`);
   });
 
   it('should change colour', async () => {
-    const { rerender } = render(<Component {...defaultProps} />);
+    const { rerender } = renderStyledComponents(<Component {...defaultProps} />);
 
     const parent = screen.getByRole('figure');
     const startColour = parent.style.getPropertyValue('color');
@@ -64,13 +64,14 @@ describe('Logo', () => {
     const currentColour = parent.style.getPropertyValue('color');
 
     expect(currentColour).not.toEqual(startColour);
-    expect(parent).toHaveStyle(`color: rgb(255, 0, 0)`);
+    // expect(screen.getByRole('figure')).toHaveStyle(`color: ${theme.colors.accent.red}`);
+    expect(parent).toHaveStyle('color: oklch(0.63 0.25 25)');
   });
 
   it.each(colours.map((_, index) => index))(
-    'should have a new colour after rerender - Cycle %i',
+    'should have a new colour after rerenderStyledComponents - Cycle %i',
     () => {
-      const { rerender } = render(<Component {...defaultProps} />);
+      const { rerender } = renderStyledComponents(<Component {...defaultProps} />);
 
       const parent = screen.getByRole('figure');
       const startColour = parent.style.getPropertyValue('color');

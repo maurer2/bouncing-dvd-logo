@@ -2,16 +2,15 @@ import styled from 'styled-components';
 
 export const GameWrapper = styled.div`
   position: relative;
-  width: 100dvw;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
+  inline-size: 100dvi;
+  block-size: 100dvb;
+  overflow: clip;
 `;
 
 export const PauseButton = styled.button`
   all: unset;
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  overflow: clip;
   cursor: pointer;
 `;

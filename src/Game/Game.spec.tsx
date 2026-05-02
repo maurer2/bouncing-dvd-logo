@@ -1,8 +1,9 @@
 import React from 'react';
-import { screen, render, act } from '@testing-library/react';
+import { screen, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
 import { userEvent } from '@vitest/browser/context';
 
+import { renderStyledComponents } from '../test-utilities';
 import { useStore } from '../Store2';
 
 import Component from './Game';
@@ -26,19 +27,19 @@ describe('Game', () => {
   });
 
   it('should render', () => {
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     expect(screen.getByTestId('game')).toBeInTheDocument();
   });
 
   it('should match snapshot', () => {
-    const { container } = render(<Component />);
+    const { container } = renderStyledComponents(<Component />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('should have child elements', async () => {
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -56,7 +57,7 @@ describe('Game', () => {
   });
 
   it('should render the pause button as not-pressed with the "Pause button" label when sound is not enabled', async () => {
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -73,7 +74,7 @@ describe('Game', () => {
   });
 
   it('should set keyboard focus on pause button on load if supported by browser', () => {
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     expect(screen.getByRole('button', { name: 'Pause button' })).toEqual(document.activeElement);
   });
@@ -83,7 +84,7 @@ describe('Game', () => {
     useStore.setState({
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: true },
     });
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     await act(async () => {
       await user.click(screen.getByRole('button', { name: 'Pause button' }));
@@ -109,7 +110,7 @@ describe('Game', () => {
   });
 
   it('should be paused on load and then unpause when ready', async () => {
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     expect(useStore.getState().flags.isPaused).toBeTrue();
 
@@ -125,7 +126,7 @@ describe('Game', () => {
 
   it('should toggle pause mode when clicking on pause button', async () => {
     const user = userEvent.setup();
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -151,7 +152,7 @@ describe('Game', () => {
 
   it('should toggle pause mode when pressing space bar', async () => {
     const user = userEvent.setup();
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -177,7 +178,7 @@ describe('Game', () => {
 
   it('should toggle pause mode when pressing "k"-key', async () => {
     const user = userEvent.setup();
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
@@ -201,7 +202,7 @@ describe('Game', () => {
   });
 
   it('should pause when resizing', async () => {
-    render(<Component />);
+    renderStyledComponents(<Component />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },

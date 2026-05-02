@@ -3,10 +3,10 @@
 exports[`Logo > should match snapshot 1`] = `
 .c0 {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 100px;
+  block-size: 100px;
   margin: 0;
   will-change: translate;
   contain: strict;
@@ -14,7 +14,7 @@ exports[`Logo > should match snapshot 1`] = `
 
 <figure
   class="c0"
-  style="translate: 100px 100px; color: white;"
+  style="translate: 100px 100px; color: var(--sc-colors-accent-white, oklch(100% 0 0));"
 >
   <svg
     aria-label="Cat logo"

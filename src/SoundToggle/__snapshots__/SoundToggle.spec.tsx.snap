@@ -4,8 +4,8 @@ exports[`Components > should match snapshots > Sound is disabled 1`] = `
 .c0 {
   all: unset;
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.5em;
+  inset-block-end: 0.5rem;
+  inset-inline-end: 0.5em;
   cursor: pointer;
 }
 
@@ -56,8 +56,8 @@ exports[`Components > should match snapshots > Sound is enabled 1`] = `
 .c0 {
   all: unset;
   position: absolute;
-  bottom: 0.5rem;
-  right: 0.5em;
+  inset-block-end: 0.5rem;
+  inset-inline-end: 0.5em;
   cursor: pointer;
 }
 

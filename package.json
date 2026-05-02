@@ -12,8 +12,8 @@
     "predeploy": "vote build",
     "deploy": "gh-pages -d dist -m 'Deploying a new version'",
     "dev": "vite",
-    "lint": "eslint '**/*.{ts,tsx,js,jsx}' --ignore-pattern './src/Hooks/*'",
-    "lint:debug": "eslint --debug 'src/**/*.{ts,tsx,js,jsx}' --ignore-pattern './src/Hooks/*'",
+    "lint": "eslint '**/*.{ts,tsx,js,jsx}'",
+    "lint:debug": "eslint --debug 'src/**/*.{ts,tsx,js,jsx}'",
     "lint:styles": "stylelint 'src/**/*.{css,scss,js,ts,jsx,tsx}'; exit 0",
     "prettier": "npx prettier --write './src/**/*.{ts,tsx,js,jsx}'",
     "preview": "vite preview",
@@ -31,7 +31,6 @@
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
-    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.6.2",
@@ -91,12 +90,12 @@
   "pnpm": {
     "supportedArchitectures": {
       "cpu": [
-        "x64",
-        "arm64"
+        "arm64",
+        "x64"
       ],
       "os": [
-        "linux",
         "darwin",
+        "linux",
         "win32"
       ]
     }
