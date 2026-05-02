@@ -102,7 +102,6 @@ export default ({ mode }: { mode: string }) =>
       },
       exclude: [
         'node_modules',
-        'src/Hooks/useCollisionDetection/useCollisionDetection.spec.tsx',
         'src/Hooks/useColour/useColour.spec.tsx',
         'src/Hooks/useChangeDelta/useChangeDelta.spec.tsx',
       ],

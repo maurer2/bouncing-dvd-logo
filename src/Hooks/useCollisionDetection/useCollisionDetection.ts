@@ -11,21 +11,25 @@ export default function useCollisionDetection(
   const [hasCollidedWithEnd, setHasCollidedWithEnd] = useState(false);
 
   if (position !== null && typeof worldSize === 'number') {
-    // start stuff
-    const hasPositionSmallerThanStart = position <= 0;
+    // start
+    const hasPositionSmallerThanStart = position < 0;
+    // frame after collision
     if (hasCollidedWithStart && !hasPositionSmallerThanStart) {
       setHasCollidedWithStart(false);
     }
+    // frame during collision
     if (!hasCollidedWithStart && hasPositionSmallerThanStart) {
       setHasCollidedWithStart(true);
     }
 
-    // end stuff
+    // end
     const maxPositionNotColliding = worldSize - objectSize;
-    const hasPositionLargerThanEnd = position >= maxPositionNotColliding;
+    const hasPositionLargerThanEnd = position > maxPositionNotColliding;
+    // frame after collision
     if (hasCollidedWithEnd && !hasPositionLargerThanEnd) {
       setHasCollidedWithEnd(false);
     }
+    // frame during collision
     if (!hasCollidedWithEnd && hasPositionLargerThanEnd) {
       setHasCollidedWithEnd(true);
     }
