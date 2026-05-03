@@ -28,8 +28,8 @@ describe('Logo', () => {
     expect(screen.getByRole('figure')).toBeInTheDocument();
   });
 
-  it('should match snapshot', () => {
-    const { container } = renderStyledComponents(<Component {...defaultProps} />);
+  it('should match snapshot', async () => {
+    const { container } = await renderStyledComponents(<Component {...defaultProps} />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
@@ -49,7 +49,7 @@ describe('Logo', () => {
   });
 
   it('should change colour', async () => {
-    const { rerender } = renderStyledComponents(<Component {...defaultProps} />);
+    const { rerender } = await renderStyledComponents(<Component {...defaultProps} />);
 
     const parent = screen.getByRole('figure');
     const startColour = parent.style.getPropertyValue('color');
@@ -70,8 +70,8 @@ describe('Logo', () => {
 
   it.each(colours.map((_, index) => index))(
     'should have a new colour after rerenderStyledComponents - Cycle %i',
-    () => {
-      const { rerender } = renderStyledComponents(<Component {...defaultProps} />);
+    async () => {
+      const { rerender } = await renderStyledComponents(<Component {...defaultProps} />);
 
       const parent = screen.getByRole('figure');
       const startColour = parent.style.getPropertyValue('color');

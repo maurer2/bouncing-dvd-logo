@@ -52,7 +52,7 @@ describe('Playingfield', () => {
   });
 
   it('should match snapshot', async () => {
-    const { container, rerender } = renderStyledComponents(<Component {...defaultProps} />);
+    const { container, rerender } = await renderStyledComponents(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },

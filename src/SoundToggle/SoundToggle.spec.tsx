@@ -28,11 +28,11 @@ describe('Components', () => {
     expect(screen.getByRole('button', { name: 'Play sound' })).toBeInTheDocument();
   });
 
-  it('should match snapshots', () => {
+  it('should match snapshots', async () => {
     useStore.setState({
       flags: { isPaused: true, isPlayingSound: false, isSoundDisabled: true },
     });
-    const { container, rerender } = render(<Component />);
+    const { container, rerender } = await render(<Component />);
 
     expect(container.firstChild).toMatchSnapshot('Sound is disabled');
 
@@ -78,7 +78,7 @@ describe('Components', () => {
   it('should trigger sound toggle function on click', async () => {
     const user = userEvent.setup();
 
-    const { rerender } = render(<Component />);
+    const { rerender } = await render(<Component />);
 
     await user.click(screen.getByRole('button', { name: 'Play sound' }));
 

@@ -29,7 +29,7 @@ exports[`Playingfield > should match snapshot 1`] = `
 >
   <figure
     class="c1"
-    style="translate: 878px 471px; color: var(--sc-colors-accent-white, oklch(100% 0 0));"
+    style="translate: 885px 470.67px; color: var(--sc-colors-accent-white, oklch(100% 0 0));"
   >
     <svg
       aria-label="Cat logo"

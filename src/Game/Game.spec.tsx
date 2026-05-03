@@ -32,8 +32,8 @@ describe('Game', () => {
     expect(screen.getByTestId('game')).toBeInTheDocument();
   });
 
-  it('should match snapshot', () => {
-    const { container } = renderStyledComponents(<Component />);
+  it('should match snapshot', async () => {
+    const { container } = await renderStyledComponents(<Component />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
