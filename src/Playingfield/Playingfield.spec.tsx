@@ -45,8 +45,8 @@ describe('Playingfield', () => {
     ref: createRef(),
   };
 
-  it('should render', () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+  it('should render', async () => {
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     expect(screen.getByTestId('playingfield')).toBeInTheDocument();
   });
@@ -57,39 +57,33 @@ describe('Playingfield', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => {
-      resizeObserver.resize();
-    });
+    await act(async () => resizeObserver.resize());
 
-    rerender(<Component {...defaultProps} />);
+    await rerender(<Component {...defaultProps} />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('should not show the the logo on load until wrapper dimensions have been determined', async () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     expect(screen.queryByRole('img', { name: 'Cat logo' })).not.toBeInTheDocument();
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => {
-      resizeObserver.resize();
-    });
+    await act(async () => resizeObserver.resize());
 
     expect(await screen.findByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
   });
 
   it('should show logo be in the middle of the screen on load once the wrapper dimensions have been determined', async () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => {
-      resizeObserver.resize();
-    });
+    await act(async () => resizeObserver.resize());
 
     expect(await screen.findByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
     expect(await screen.findByRole('figure')).toBeInTheDocument();
@@ -98,14 +92,12 @@ describe('Playingfield', () => {
   });
 
   it('should call startGame action on start', async () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => {
-      resizeObserver.resize();
-    });
+    await act(async () => resizeObserver.resize());
 
     expect(storeDispatchSpy).toHaveBeenCalledWith({
       type: 'GAME_STARTED',
@@ -113,15 +105,12 @@ describe('Playingfield', () => {
   });
 
   it('should render the logo with default colour (white) on load', async () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-
-    await act(async () => {
-      resizeObserver.resize();
-    });
+    await act(async () => resizeObserver.resize());
 
     expect((await screen.findByRole('figure')).getAttribute('style')).toContain('white');
   });

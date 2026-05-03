@@ -22,8 +22,8 @@ describe('Logo', () => {
     currentColour: colours[1],
   };
 
-  it('should render ', () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+  it('should render ', async () => {
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     expect(screen.getByRole('figure')).toBeInTheDocument();
   });
@@ -34,15 +34,15 @@ describe('Logo', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it('should have the cat logo', () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+  it('should have the cat logo', async () => {
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     const parent = within(screen.getByRole('figure'));
     expect(parent.getByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
   });
 
-  it('should have the default colour', () => {
-    renderStyledComponents(<Component {...defaultProps} />);
+  it('should have the default colour', async () => {
+    await renderStyledComponents(<Component {...defaultProps} />);
 
     expect(screen.getByRole('figure')).toHaveStyle('color: oklch(100% 0 0)');
     // expect(screen.getByRole('figure')).toHaveStyle(`color: ${theme.colors.accent.white}`);
@@ -54,7 +54,7 @@ describe('Logo', () => {
     const parent = screen.getByRole('figure');
     const startColour = parent.style.getPropertyValue('color');
 
-    rerender(
+    await rerender(
       <Component
         {...defaultProps}
         {...triggerColourChangeProp}
@@ -76,7 +76,7 @@ describe('Logo', () => {
       const parent = screen.getByRole('figure');
       const startColour = parent.style.getPropertyValue('color');
 
-      rerender(
+      await rerender(
         <Component
           {...defaultProps}
           {...triggerColourChangeProp}

@@ -169,7 +169,7 @@ export default defineConfig([
   includeIgnoreFile(gitignorePath),
   // faux .eslintignore
   {
-    ignores: ['./vite.config.ts', './__mocks__/**', './src/Store'],
+    ignores: ['./vite.config.ts', './__mocks__/**', './src/Store', '.stylelintrc.js'],
   },
   // JavaScript config
   ...jsConfig,

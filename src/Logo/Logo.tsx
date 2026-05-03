@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactComponent as CatLogo } from '../assets/cat.svg';
+import CatLogo from '../assets/cat.svg?react';
 import type { accentColourNames } from '../Theme';
 
 // eslint-disable-next-line import-x/no-namespace
