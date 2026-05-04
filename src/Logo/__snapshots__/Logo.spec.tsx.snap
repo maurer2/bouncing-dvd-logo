@@ -8,8 +8,8 @@ exports[`Logo > should match snapshot 1`] = `
   inline-size: 100px;
   block-size: 100px;
   margin: 0;
-  will-change: translate;
   contain: strict;
+  will-change: translate;
 }
 
 <figure

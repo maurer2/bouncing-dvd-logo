@@ -9,6 +9,7 @@ import { rules as prettierConfigRules } from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
 import reactRedux from 'eslint-plugin-react-redux';
 import reactHooks from 'eslint-plugin-react-hooks';
+import globals from 'globals';
 
 // eslint-disable-next-line no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -60,6 +61,7 @@ const jsConfig = defineConfig([
         },
       ],
       'import-x/prefer-default-export': 'off',
+      'import-x/no-unresolved': ['error', { ignore: ['\\?react'] }], // svg as component via vite-plugin-svgr yields false positive
       // allow "export { default } from "
       // forbid renaming nonm default exports as default
       'no-restricted-exports': [
@@ -71,13 +73,6 @@ const jsConfig = defineConfig([
       ],
       // styled components
       // 'import-x/no-namespace': ['error', { ignore: ['**/*.styles.*'] }],
-    },
-  },
-  // Test files overrides
-  {
-    files: ['**/*.spec.ts', '**/*.spec.tsx'],
-    rules: {
-      'import-x/no-rename-default': 'off', // allow importing default components as "Component" in tests
     },
   },
 ]);
@@ -169,7 +164,27 @@ export default defineConfig([
   includeIgnoreFile(gitignorePath),
   // faux .eslintignore
   {
-    ignores: ['./vite.config.ts', './__mocks__/**', './src/Store', '.stylelintrc.js'],
+    ignores: [
+      './vite.config.ts',
+      './vitest.config.ts',
+      './__mocks__/**',
+      './src/Store',
+      '.stylelintrc.js',
+    ],
+  },
+  // enable globals for browser
+  {
+    files: ['src/**/*.{ts,tsx,js}'],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+  // enable globals for node
+  {
+    files: ['*.config.{ts,tsx,js}'],
+    languageOptions: {
+      globals: globals.node,
+    },
   },
   // JavaScript config
   ...jsConfig,
@@ -179,4 +194,12 @@ export default defineConfig([
   ...typescriptConfig,
   // Prettier config
   ...prettierConfig,
+  // Test files overrides
+  {
+    files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*/setup-tests.ts', '**/*/test-utilities.tsx'],
+    rules: {
+      'import-x/no-rename-default': 'off', // allow importing default components as "Component" in tests
+      'import-x/no-extraneous-dependencies': ['error', { devDependencies: true }], // allow importing dev dependencies
+    },
+  },
 ]);
