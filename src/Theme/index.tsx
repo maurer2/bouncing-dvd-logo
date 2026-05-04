@@ -26,7 +26,7 @@ declare module 'styled-components' {
 }
 
 export const GlobalStyles = createGlobalStyle`
-  // @layer base {
+  /* @layer base { */
     html {
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
@@ -36,8 +36,9 @@ export const GlobalStyles = createGlobalStyle`
       inline-size: 100dvi;
       block-size: 100dvb;
       overflow: clip;
-      background: ${({ theme }) => theme.colors.background};
       font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto, Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+      background: ${({ theme }) => theme.colors.background};
   }
-// }
+
+  /* } */
 `;

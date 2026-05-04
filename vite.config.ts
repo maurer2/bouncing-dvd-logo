@@ -1,10 +1,9 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import viteTsconfigPaths from 'vite-tsconfig-paths';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import svgrPlugin from 'vite-plugin-svgr'; // needed to import SVG as React components, e.g. import ReactComponent as X
 import { visualizer } from 'rollup-plugin-visualizer';
 import checker from 'vite-plugin-checker';
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import babel from '@rolldown/plugin-babel';
 import type { Logger } from 'babel-plugin-react-compiler';
 
 // https://vitejs.dev/config/
@@ -13,44 +12,53 @@ export default ({ mode }: { mode: string }) =>
     base: '', // "/" is default
     define: {
       'process.env.NODE_ENV': `"${mode}"`,
+      global: 'globalThis',
     },
     server: {
       open: false,
     },
+    resolve: {
+      tsconfigPaths: true,
+    },
     plugins: [
-      react({
-        babel: {
-          plugins: [
-            [
-              'babel-plugin-react-compiler',
-              {
-                logger: {
-                  logEvent(filename, event) {
-                    switch (event.kind) {
-                      case 'CompileSuccess': {
-                        console.log(`✅ Compiled: ${filename}`);
-                        break;
-                      }
-                      case 'CompileError': {
-                        console.log(`❌ Compiler Error: ${filename}`);
-                        console.error(`Reason: ${event.detail.reason}`);
-                        break;
-                      }
-                      default: {
-                        break; // eslint fix
-                      }
+      react(),
+      babel({
+        presets: [reactCompilerPreset()],
+        plugins: [
+          [
+            'babel-plugin-react-compiler',
+            {
+              logger: {
+                logEvent(filename, event) {
+                  switch (event.kind) {
+                    case 'CompileSuccess': {
+                      console.log(`✅ Compiled: ${filename}`);
+                      break;
                     }
-                  },
-                } satisfies Logger,
-              },
-            ],
+                    case 'CompileError': {
+                      console.log(`❌ Compiler Error: ${filename}`);
+                      console.error(`Reason: ${event.detail.reason}`);
+                      break;
+                    }
+                    default: {
+                      break; // eslint fix
+                    }
+                  }
+                },
+              } satisfies Logger,
+            },
           ],
-        },
+        ],
       }),
       checker({
         typescript: true,
+        eslint: {
+          lintCommand: 'eslint **/*.{ts,tsx,js}',
+        },
+        stylelint: {
+          lintCommand: 'stylelint src/**/*.{css,styles.ts}',
+        },
       }),
-      viteTsconfigPaths(),
       svgrPlugin(),
       visualizer({
         template: 'treemap',
@@ -60,47 +68,4 @@ export default ({ mode }: { mode: string }) =>
         open: true,
       }),
     ],
-    optimizeDeps: {
-      // https://github.com/vitest-dev/vitest/issues/6345
-      // snapshotSerializer
-      esbuildOptions: {
-        define: {
-          global: 'globalThis',
-        },
-        plugins: [
-          NodeGlobalsPolyfillPlugin({
-            buffer: true,
-          }),
-        ],
-      },
-    },
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: ['./src/setup-tests.ts'],
-      clearMocks: true,
-      browser: {
-        enabled: true,
-        provider: 'playwright',
-        screenshotFailures: false,
-        instances: [
-          {
-            browser: 'chromium',
-            headless: false,
-          },
-        ],
-      },
-      coverage: {
-        reporter: ['text', 'lcov'],
-        exclude: [
-          '**/*.spec.tsx',
-          '**/*.spec.ts',
-          '**/*.types.ts',
-          '**/*.styles.ts',
-          '**/setupTests.ts',
-        ],
-      },
-      include: ['src/**/*.test.tsx', 'src/**/*.spec.tsx'],
-      exclude: ['node_modules'],
-    },
   });

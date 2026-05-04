@@ -2,8 +2,10 @@
   "include": [
     "./src/**/*",
     "vite.config.ts",
+    "vitest.config.ts",
     "jest.config.ts",
-    ".eslint.config.mjs"
+    ".eslint.config.mjs",
+    "stylelint.config.ts"
   ],
   "exclude": [],
   "compilerOptions": {

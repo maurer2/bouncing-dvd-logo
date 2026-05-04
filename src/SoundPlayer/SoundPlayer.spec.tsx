@@ -1,6 +1,6 @@
 import React from 'react';
-import '@testing-library/jest-dom';
-import { screen, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from 'vitest-browser-react';
 
 import { useStore } from '../Store2';
 
@@ -15,31 +15,31 @@ describe('SoundPlayer', () => {
     useStore.setState(useStore.getInitialState(), true);
   });
 
-  it('should render ', () => {
-    render(<Component />);
+  it('should render ', async () => {
+    await render(<Component />);
 
     expect(screen.getByTestId('audio-tag')).toBeInTheDocument();
   });
 
-  it('should match snapshots', () => {
-    const { container } = render(<Component />);
+  it('should match snapshots', async () => {
+    const { container } = await render(<Component />);
 
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it('has child components', () => {
-    render(<Component />);
+  it('has child components', async () => {
+    await render(<Component />);
 
     expect(screen.queryByTestId('audio-tag')).toBeInTheDocument();
     expect(screen.queryByTestId('audio-file')).toBeInTheDocument();
   });
 
-  it('should play sound when isPlayingSound is set and sound is enabled', () => {
+  it('should play sound when isPlayingSound is set and sound is enabled', async () => {
     useStore.setState({
       flags: { isPaused: false, isPlayingSound: true, isSoundDisabled: false },
     });
 
-    render(<Component />);
+    await render(<Component />);
 
     expect(mockPlay).toHaveBeenCalled();
   });

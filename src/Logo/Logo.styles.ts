@@ -27,6 +27,6 @@ export const LogoElement = styled.figure.attrs<LogoStyleProps>(
   inline-size: ${(props) => `${props.$width}px`};
   block-size: ${(props) => `${props.$height}px`};
   margin: 0;
-  will-change: translate;
   contain: strict;
+  will-change: translate;
 `;

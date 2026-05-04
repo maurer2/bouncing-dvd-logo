@@ -21,10 +21,10 @@ exports[`Game > should match snapshot 1`] = `
   position: relative;
   inline-size: 100%;
   block-size: 100%;
+  contain: strict;
   pointer-events: none;
   filter: invert(50%) brightness(0.25);
   transition: filter 0.1s;
-  contain: strict;
   will-change: filter;
 }
 

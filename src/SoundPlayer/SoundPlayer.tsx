@@ -15,6 +15,7 @@ function SoundPlayer() {
   }, [isPlayingSound]);
 
   return (
+    // eslint-disable-next-line jsx-a11y/media-has-caption
     <audio
       data-testid="audio-tag"
       ref={audioDomElement}

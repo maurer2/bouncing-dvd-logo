@@ -8,18 +8,18 @@ exports[`Playingfield > should match snapshot 1`] = `
   inline-size: 150px;
   block-size: 138.66px;
   margin: 0;
-  will-change: translate;
   contain: strict;
+  will-change: translate;
 }
 
 .c0 {
   position: relative;
   inline-size: 100%;
   block-size: 100%;
+  contain: strict;
   pointer-events: none;
   filter: none;
   transition: filter 0.1s;
-  contain: strict;
   will-change: filter;
 }
 
