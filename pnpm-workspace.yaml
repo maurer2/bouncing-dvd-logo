@@ -1,0 +1,11 @@
+allowBuilds:
+  unrs-resolver: true # used by eslint-import-resolver-typescript and eslint-config-airbnb-extended
+
+supportedArchitectures:
+  cpu:
+    - arm64
+    - x64
+  os:
+    - darwin
+    - linux
+    - win32

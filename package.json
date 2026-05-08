@@ -7,6 +7,7 @@
   "repository": "https://github.com/maurer2/bouncing-dvd-logo",
   "license": "*",
   "author": "Martin",
+  "packageManager": "pnpm@11.0.6",
   "scripts": {
     "build": "vite build",
     "bundle-analyzer": "vite build",
@@ -81,6 +82,7 @@
     "stylelint-config-recess-order": "^7.7.0",
     "stylelint-config-standard": "^40.0.0",
     "stylelint-high-performance-animation": "^2.0.0",
+    "stylelint-order": "^8.1.1",
     "stylelint-plugin-defensive-css": "^2.9.1",
     "stylelint-plugin-logical-css": "^2.1.0",
     "stylelint-use-nesting": "^6.0.2",
@@ -90,18 +92,5 @@
     "vite-plugin-svgr": "^5.2.0",
     "vitest": "^4.1.5",
     "vitest-browser-react": "^2.2.0"
-  },
-  "pnpm": {
-    "supportedArchitectures": {
-      "cpu": [
-        "arm64",
-        "x64"
-      ],
-      "os": [
-        "darwin",
-        "linux",
-        "win32"
-      ]
-    }
   }
 }
