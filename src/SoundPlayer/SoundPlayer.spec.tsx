@@ -18,7 +18,7 @@ describe('SoundPlayer', () => {
   it('should render ', async () => {
     await render(<Component />);
 
-    expect(screen.getByTestId('audio-tag')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Meow sound')).toBeInTheDocument();
   });
 
   it('should match snapshots', async () => {
@@ -30,8 +30,9 @@ describe('SoundPlayer', () => {
   it('has child components', async () => {
     await render(<Component />);
 
-    expect(screen.queryByTestId('audio-tag')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Meow sound')).toBeInTheDocument();
     expect(screen.queryByTestId('audio-file')).toBeInTheDocument();
+    expect(screen.queryByTestId('subtitles-file')).toBeInTheDocument();
   });
 
   it('should play sound when isPlayingSound is set and sound is enabled', async () => {

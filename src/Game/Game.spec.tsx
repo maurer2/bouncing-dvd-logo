@@ -49,7 +49,7 @@ describe('Game', () => {
     expect(screen.getByTestId('playingfield')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Pause button' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
-    expect(screen.getByTestId('audio-tag')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Meow sound')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Play sound' })).toBeInTheDocument();
     expect(screen.getByTestId('soundtoggle-icon')).toBeInTheDocument();
   });

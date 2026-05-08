@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useIsPlayingSound } from '../Store2';
 import soundFile from '../assets/soundFile.wav';
+import soundFileCaptions from '../assets/soundFile.vtt';
 
 function SoundPlayer() {
   const isPlayingSound = useIsPlayingSound();
@@ -15,17 +16,21 @@ function SoundPlayer() {
   }, [isPlayingSound]);
 
   return (
-    // eslint-disable-next-line jsx-a11y/media-has-caption
     <audio
-      data-testid="audio-tag"
       ref={audioDomElement}
       preload="auto"
-      aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
+      aria-label="Meow sound"
     >
       <source
         src={soundFile}
         type="audio/wav"
         data-testid="audio-file"
+      />
+      <track
+        kind="captions"
+        src={soundFileCaptions}
+        data-testid="subtitles-file"
+        default
       />
     </audio>
   );

@@ -2,14 +2,19 @@
 
 exports[`SoundPlayer > should match snapshots 1`] = `
 <audio
-  aria-label="Sound signal emitted by the species Felis catus during interaction with Homo sapiens"
-  data-testid="audio-tag"
+  aria-label="Meow sound"
   preload="auto"
 >
   <source
     data-testid="audio-file"
     src="/src/assets/soundFile.wav"
     type="audio/wav"
+  />
+  <track
+    data-testid="subtitles-file"
+    default=""
+    kind="captions"
+    src="/src/assets/soundFile.vtt"
   />
 </audio>
 `;
