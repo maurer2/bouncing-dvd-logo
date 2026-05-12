@@ -7,7 +7,7 @@
   "repository": "https://github.com/maurer2/bouncing-dvd-logo",
   "license": "*",
   "author": "Martin",
-  "packageManager": "pnpm@11.0.6",
+  "packageManager": "pnpm@11.1.1",
   "scripts": {
     "build": "vite build",
     "bundle-analyzer": "vite build",

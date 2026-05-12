@@ -1,5 +1,7 @@
 allowBuilds:
   unrs-resolver: true # used by eslint-import-resolver-typescript and eslint-config-airbnb-extended
+minimumReleaseAge: 10080 # 7 days
+blockExoticSubdeps: true # no git branch as package url
 
 supportedArchitectures:
   cpu:
