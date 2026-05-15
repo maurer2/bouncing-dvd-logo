@@ -23,31 +23,28 @@ export default ({ mode }: { mode: string }) =>
     plugins: [
       react(),
       babel({
-        presets: [reactCompilerPreset()],
-        plugins: [
-          [
-            'babel-plugin-react-compiler',
-            {
-              logger: {
-                logEvent(filename, event) {
-                  switch (event.kind) {
-                    case 'CompileSuccess': {
-                      console.log(`✅ Compiled: ${filename}`);
-                      break;
-                    }
-                    case 'CompileError': {
-                      console.log(`❌ Compiler Error: ${filename}`);
-                      console.error(`Reason: ${event.detail.reason}`);
-                      break;
-                    }
-                    default: {
-                      break; // eslint fix
-                    }
+        presets: [
+          reactCompilerPreset({
+            // https://github.com/vitejs/vite-plugin-react/discussions/1208#discussioncomment-16922703
+            logger: {
+              logEvent(filename, event) {
+                switch (event.kind) {
+                  case 'CompileSuccess': {
+                    console.log(`✅ Compiled: ${filename}`);
+                    break;
                   }
-                },
-              } satisfies Logger,
-            },
-          ],
+                  case 'CompileError': {
+                    console.log(`❌ Compiler Error: ${filename}`);
+                    console.error(`Reason: ${event.detail.reason}`);
+                    break;
+                  }
+                  default: {
+                    break; // eslint fix
+                  }
+                }
+              },
+            } satisfies Logger,
+          }),
         ],
       }),
       checker({
