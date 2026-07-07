@@ -1,7 +1,7 @@
-import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import svgrPlugin from 'vite-plugin-svgr';
 import { playwright } from '@vitest/browser-playwright';
+import svgrPlugin from 'vite-plugin-svgr';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   define: {

@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": ["__mocks__/**", "index.html"],
+  "singleAttributePerLine": true,
+  "singleQuote": true,
+  "sortImports": {
+    // React imports first
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["react", "react/*", "react-dom", "react-dom/*"],
+      },
+    ],
+    "groups": [
+      "react",
+      {
+        "newlinesBetween": false,
+      }, // keep React in the same block
+      ["builtin", "external"],
+      ["subpath", "internal", "parent"],
+      ["sibling"],
+      ["index"],
+      "unknown",
+    ],
+    "newlinesBetween": true,
+  },
+  "sortPackageJson": {
+    "sortScripts": true,
+  },
+}

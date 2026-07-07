@@ -7,9 +7,7 @@
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [
-    3000
-  ],
+  "forwardPorts": [3000],
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "yarn install",
   // Configure tool-specific properties.
@@ -33,8 +31,6 @@
         "js/ts.inlayHints.parameterNames.enabled": "literals",
         "js/ts.inlayHints.propertyDeclarationTypes.enabled": true,
         "js/ts.inlayHints.variableTypes.suppressWhenTypeMatchesName": false, // show variable type hints even for primitives (e.g. strings, numbers, booleans)
-        // eslint
-        "eslint.useFlatConfig": true,
         // markdown
         "markdown.preview.scrollEditorWithPreview": true,
         "markdown.preview.scrollPreviewWithEditor": true,
@@ -54,11 +50,10 @@
         "christian-kohler.path-intellisense",
         "clinyong.vscode-css-modules",
         "DavidAnson.vscode-markdownlint",
-        "dbaeumer.vscode-eslint",
         "eamodio.gitlens",
         "EditorConfig.EditorConfig",
-        "esbenp.prettier-vscode",
         "fivepointseven.node-version",
+        "oxc.oxc-vscode",
         "ghmcadams.lintlens",
         "github.vscode-github-actions",
         "IBM.output-colorizer",

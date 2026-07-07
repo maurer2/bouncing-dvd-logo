@@ -2,8 +2,8 @@ import React, { createRef, type ComponentProps } from 'react';
 import { screen, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
 
-import { renderStyledComponents } from '../test-utilities';
 import { useStore } from '../Store';
+import { renderStyledComponents } from '../test-utilities';
 
 import Component from './Playingfield';
 
@@ -57,7 +57,9 @@ describe('Playingfield', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     await rerender(<Component {...defaultProps} />);
 
@@ -72,7 +74,9 @@ describe('Playingfield', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(await screen.findByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
   });
@@ -83,7 +87,9 @@ describe('Playingfield', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(await screen.findByRole('img', { name: 'Cat logo' })).toBeInTheDocument();
     expect(await screen.findByRole('figure')).toBeInTheDocument();
@@ -97,7 +103,9 @@ describe('Playingfield', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(storeDispatchSpy).toHaveBeenCalledWith({
       type: 'GAME_STARTED',
@@ -110,7 +118,9 @@ describe('Playingfield', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect((await screen.findByRole('figure')).getAttribute('style')).toContain('white');
   });

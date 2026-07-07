@@ -1,6 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Game > should match snapshot 1`] = `
+.c1 {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  contain: strict;
+  pointer-events: none;
+  filter: invert(50%) brightness(0.25);
+  transition: filter 0.1s;
+  will-change: filter;
+}
+
 .c3 {
   all: unset;
   position: absolute;
@@ -15,17 +26,6 @@ exports[`Game > should match snapshot 1`] = `
 
 .c4 .soundwaves {
   display: none;
-}
-
-.c1 {
-  position: relative;
-  inline-size: 100%;
-  block-size: 100%;
-  contain: strict;
-  pointer-events: none;
-  filter: invert(50%) brightness(0.25);
-  transition: filter 0.1s;
-  will-change: filter;
 }
 
 .c0 {

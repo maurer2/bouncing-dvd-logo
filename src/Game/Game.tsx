@@ -1,12 +1,11 @@
 import React, { useRef, useCallback, type KeyboardEvent, type ComponentProps } from 'react';
 import { StyleSheetManager } from 'styled-components';
 
-import SoundToggle from '../SoundToggle/SoundToggle';
 import PlayingField from '../Playingfield/Playingfield';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
+import SoundToggle from '../SoundToggle/SoundToggle';
 import { useIsPaused } from '../Store';
 
-// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Game.styles';
 
 // type GameProps = Record<string, never>;
@@ -40,6 +39,8 @@ function Game() {
           aria-pressed={isPaused}
           onClick={handleClick}
           onKeyUp={handleInput}
+          // todo: replace with callback ref
+          // oxlint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
         />
         <SoundToggle />

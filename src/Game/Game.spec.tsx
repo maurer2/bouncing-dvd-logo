@@ -3,8 +3,8 @@ import { screen, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
 import { userEvent } from 'vitest/browser';
 
-import { renderStyledComponents } from '../test-utilities';
 import { useStore } from '../Store';
+import { renderStyledComponents } from '../test-utilities';
 
 import Component from './Game';
 
@@ -44,7 +44,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(screen.getByTestId('playingfield')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Pause button' })).toBeInTheDocument();
@@ -60,7 +62,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(screen.getByRole('button', { name: 'Pause button' })).not.toHaveAttribute(
       'aria-pressed',
@@ -109,7 +113,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(useStore.getState().flags.isPaused).toBeFalse();
   });
@@ -121,7 +127,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(screen.getByRole('button', { name: 'Pause button' })).not.toBePressed();
 
@@ -141,7 +149,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(screen.getByLabelText('Pause button')).not.toBePressed();
 
@@ -161,7 +171,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(screen.getByLabelText('Pause button')).not.toBePressed();
 
@@ -179,7 +191,9 @@ describe('Game', () => {
     resizeObserver.mockElementSize(screen.getByTestId('playingfield'), {
       contentBoxSize: { inlineSize: 1920, blockSize: 1080 },
     });
-    await act(async () => resizeObserver.resize());
+    act(() => {
+      resizeObserver.resize();
+    });
 
     expect(storeDispatchSpy).toHaveBeenCalledWith({
       type: 'GAME_STARTED',

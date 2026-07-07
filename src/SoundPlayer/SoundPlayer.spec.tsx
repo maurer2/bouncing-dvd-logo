@@ -8,7 +8,9 @@ import Component from './SoundPlayer';
 
 const mockPlay = vi
   .spyOn(window.HTMLAudioElement.prototype, 'play')
-  .mockImplementation(async () => {});
+  .mockImplementation(async () => {
+    // Linter fix
+  });
 
 describe('SoundPlayer', () => {
   beforeEach(() => {

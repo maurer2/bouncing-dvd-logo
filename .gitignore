@@ -86,9 +86,6 @@ yarn-error.log*
 # phpstorm
 .idea/
 
-# vscode
-.vscode
-
 # vite
 /dist
 /statistics

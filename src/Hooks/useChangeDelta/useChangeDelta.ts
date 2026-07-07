@@ -18,7 +18,7 @@ export default function useChangeDelta(
 
   // init
   useEffect(() => {
-    changeDelta.current = random(1) === 0 ? changeDelta.current * -1 : changeDelta.current * +1;
+    changeDelta.current = random(1) === 0 ? changeDelta.current * -1 : changeDelta.current;
   }, []);
 
   useEffect(() => {

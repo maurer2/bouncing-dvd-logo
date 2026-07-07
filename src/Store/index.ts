@@ -1,8 +1,8 @@
-import { create } from 'zustand';
 import { sample } from 'es-toolkit';
+import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-import { accentColourNames as colours } from '../Theme';
+import { accentColourNames as colours } from '../Theme/tokens';
 
 type Position = [x: number, y: number];
 type Colour = (typeof colours)[number];
@@ -52,6 +52,14 @@ type Store = {
     collisionCount: number;
   };
   dispatch: (action: Action) => void;
+};
+
+type StoreActions = {
+  startGame: () => void;
+  stopGame: (position: Position) => void;
+  triggerCollision: () => void;
+  togglePlayState: (position: Position) => void;
+  toggleSoundState: () => void;
 };
 
 const reducers = (state: Store, action: Action): Store => {
@@ -161,22 +169,31 @@ export const useStore = create<Store>()(
       stats: {
         collisionCount: 0,
       },
-      dispatch: (action: Action) => set((state) => reducers(state, action), undefined, action), // last param for logging in dev tools
+      dispatch: (action: Action): void => {
+        set((state) => reducers(state, action), undefined, action); // last param for logging in dev tools
+      },
     }),
     { serialize: { options: true } }, // correctly display sets and maps in redux dev tools, https://github.com/reduxjs/redux-devtools/issues/496
   ),
 );
 
-export const useIsPaused = () => useStore((state) => state.flags.isPaused);
-export const useIsPlayingSound = () => useStore((state) => state.flags.isPlayingSound);
-export const useIsSoundDisabled = () => useStore((state) => state.flags.isSoundDisabled);
-export const useCurrentColour = () => useStore((state) => state.colours.current);
+export const useIsPaused = (): Store['flags']['isPaused'] =>
+  useStore((state) => state.flags.isPaused);
+export const useIsPlayingSound = (): Store['flags']['isPlayingSound'] =>
+  useStore((state) => state.flags.isPlayingSound);
+export const useIsSoundDisabled = (): Store['flags']['isSoundDisabled'] =>
+  useStore((state): boolean => state.flags.isSoundDisabled);
+export const useCurrentColour = (): Store['colours']['current'] =>
+  useStore((state) => state.colours.current);
 
-export const useStoreActions = () => ({
-  startGame: () => useStore.getState().dispatch({ type: 'GAME_STARTED' }),
-  stopGame: () => (position: Position) => () =>
-    useStore.getState().dispatch({ type: 'GAME_STOPPED', payload: position }),
-  triggerCollision: () => {
+export const useStoreActions = (): StoreActions => ({
+  startGame: (): void => {
+    useStore.getState().dispatch({ type: 'GAME_STARTED' });
+  },
+  stopGame: (position: Position): void => {
+    useStore.getState().dispatch({ type: 'GAME_STOPPED', payload: position });
+  },
+  triggerCollision: (): void => {
     const {
       colours: { list, current },
       flags: { isPlayingSound, isSoundDisabled },
@@ -194,7 +211,10 @@ export const useStoreActions = () => ({
       }, 750);
     }
   },
-  togglePlayState: (position: Position) =>
-    useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED', payload: position }),
-  toggleSoundState: () => useStore.getState().dispatch({ type: 'SOUND_STATE_TOGGLED' }),
+  togglePlayState: (position: Position): void => {
+    useStore.getState().dispatch({ type: 'PLAY_STATE_TOGGLED', payload: position });
+  },
+  toggleSoundState: (): void => {
+    useStore.getState().dispatch({ type: 'SOUND_STATE_TOGGLED' });
+  },
 });

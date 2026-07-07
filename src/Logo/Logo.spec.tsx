@@ -1,8 +1,8 @@
 import React, { type ComponentProps } from 'react';
 import { screen, within } from '@testing-library/react';
 
-import { accentColourNames as colours /* theme */ } from '../Theme';
 import { renderStyledComponents } from '../test-utilities';
+import { accentColourNames as colours /* theme */ } from '../Theme/tokens';
 
 import Component from './Logo';
 

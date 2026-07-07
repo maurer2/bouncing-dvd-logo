@@ -1,0 +1,100 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "import",
+    "jsx-a11y",
+    "oxc",
+    "react",
+    "typescript",
+    "unicorn",
+    "eslint",
+    "promise",
+    // "vitest",
+  ],
+  "options": {
+    "typeAware": true,
+    "reportUnusedDisableDirectives": "error",
+  },
+  "env": {
+    "browser": true,
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "pedantic": "error",
+    "perf": "warn",
+    "restriction": "warn",
+    "style": "off",
+    "nursery": "off",
+  },
+  "rules": {
+    // eslint
+    "eslint/no-console": "off",
+    "eslint/no-plusplus": "off",
+    "eslint/no-new": "off",
+    "eslint/no-inline-comments": "off",
+    "eslint/no-undefined": "off",
+    "eslint/no-warning-comments": "off",
+    "eslint/max-lines-per-function": [
+      "warn",
+      {
+        "skipComments": true,
+        "skipBlankLines": true,
+        "max": 150, // includes React components
+      },
+    ],
+    // react
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
+    "react/forbid-component-props": "off",
+    "react/jsx-no-literals": "off",
+    "react/react-compiler": "error",
+    // ts
+    "typescript/consistent-type-imports": "error",
+    "typescript/prefer-readonly-parameter-types": "off", // too complicated when deadling with types from dependencies
+    "typescript/promise-function-async": "off",
+    "typescript/strict-boolean-expressions": "off",
+    "typescript/no-deprecated": "warn",
+    "typescript/no-unnecessary-type-conversion": "warn",
+    "typescript/switch-exhaustiveness-check": [
+      "warn",
+      { "considerDefaultExhaustiveForUnions": true },
+    ],
+    // oxc
+    "oxc/no-optional-chaining": "off",
+    "oxc/no-async-await": "off",
+    "oxc/no-rest-spread-properties": "off",
+    // import
+    "import/no-default-export": "off",
+    "import/no-relative-parent-imports": "off",
+    "import/no-unassigned-import": "off", // needed for side effect imports like glonal CSS imports
+    "import/unambiguous": "off",
+    "import/max-dependencies": "off",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/consistent-type-specifier-style": "off", // doesn't support "prefer-top-level-if-only-type-imports" yet
+    // vitest,
+    // "vitest/require-test-timeout": "off",
+  },
+  "ignorePatterns": ["__mocks__/**", "dist/**", "statistics/**"],
+  "overrides": [
+    // disable mandatory return types for React components -> also disables it for functions inside React component files
+    {
+      "files": ["src/**/*.{tsx}", "src/**/*.styles.{ts}"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+      },
+    },
+    // vitest, jest
+    {
+      "files": ["**/*.spec.ts", "**/*.spec.tsx"],
+      "rules": {
+        "eslint/max-lines-per-function": "off",
+        "typescript/no-unsafe-type-assertion": "off",
+        "unicorn/consistent-function-scoping": "off", // allow "setup" functions that don't use any params inside describe blocks
+      },
+    },
+  ],
+}

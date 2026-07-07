@@ -2,7 +2,6 @@ import React from 'react';
 
 import { useStoreActions, useIsSoundDisabled } from '../Store';
 
-// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './SoundToggle.styles';
 
 function SoundToggle() {

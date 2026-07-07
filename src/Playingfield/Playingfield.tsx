@@ -10,11 +10,10 @@ import React, {
 } from 'react';
 import { random } from 'es-toolkit';
 
-import { useIsPaused, useStoreActions, useCurrentColour } from '../Store';
-import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
+import Logo from '../Logo/Logo';
+import { useIsPaused, useStoreActions, useCurrentColour } from '../Store';
 
-// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Playingfield.styles';
 import { reducers } from './reducers';
 
@@ -26,9 +25,9 @@ const logoSize: [width: number, height: number] = [150, 138.66];
 const speed = 7;
 
 const getInverseVelocity = (currentVelocity: number, maxRandomness = 10): number => {
-  // prettier-ignore
+  // oxfmt-ignore
   const upperRandomBound = 1.0 + ((maxRandomness / 2) / 100);
-  // prettier-ignore
+  // oxfmt-ignore
   const lowerRandomBound = 1.0 - ((maxRandomness / 2) / 100);
   const newInverseVelocity = currentVelocity * random(lowerRandomBound, upperRandomBound) * -1;
 

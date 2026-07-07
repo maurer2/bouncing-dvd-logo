@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 
-import { useIsPlayingSound } from '../Store';
-import soundFile from '../assets/soundFile.wav';
 import soundFileCaptions from '../assets/soundFile.vtt';
+import soundFile from '../assets/soundFile.wav';
+import { useIsPlayingSound } from '../Store';
 
 function SoundPlayer() {
   const isPlayingSound = useIsPlayingSound();
@@ -11,7 +11,9 @@ function SoundPlayer() {
   useEffect(() => {
     if (isPlayingSound && audioDomElement.current) {
       audioDomElement.current.currentTime = 0;
-      audioDomElement.current.play();
+      audioDomElement.current.play().catch((error: unknown) => {
+        console.error('Error playing sound', error);
+      });
     }
   }, [isPlayingSound]);
 

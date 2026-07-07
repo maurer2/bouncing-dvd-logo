@@ -1,9 +1,8 @@
 import React from 'react';
 
 import CatLogo from '../assets/cat.svg?react';
-import type { accentColourNames } from '../Theme';
+import type { accentColourNames } from '../Theme/tokens';
 
-// eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Logo.styles';
 
 type Colour = (typeof accentColourNames)[number];
@@ -26,6 +25,7 @@ function Logo({ positionX, positionY, width, height, currentColour }: LogoProps)
       $currentColour={currentColour}
     >
       <CatLogo
+        // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role - img can't be used as colour is supposed to be changed via CSS
         role="img"
         aria-label="Cat logo"
       />
