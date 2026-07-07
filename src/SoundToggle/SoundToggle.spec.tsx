@@ -4,7 +4,7 @@ import { render } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { beforeEach } from 'vitest';
 
-import { useStore } from '../Store2';
+import { useStore } from '../Store';
 
 import Component from './SoundToggle';
 

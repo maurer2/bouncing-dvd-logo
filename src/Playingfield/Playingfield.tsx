@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { random } from 'es-toolkit';
 
-import { useIsPaused, useStoreActions, useCurrentColour } from '../Store2';
+import { useIsPaused, useStoreActions, useCurrentColour } from '../Store';
 import Logo from '../Logo/Logo';
 import useCollisionDetection from '../Hooks/useCollisionDetection';
 

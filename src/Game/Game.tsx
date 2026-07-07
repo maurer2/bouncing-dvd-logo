@@ -4,7 +4,7 @@ import { StyleSheetManager } from 'styled-components';
 import SoundToggle from '../SoundToggle/SoundToggle';
 import PlayingField from '../Playingfield/Playingfield';
 import SoundPlayer from '../SoundPlayer/SoundPlayer';
-import { useIsPaused } from '../Store2';
+import { useIsPaused } from '../Store';
 
 // eslint-disable-next-line import-x/no-namespace
 import * as Styles from './Game.styles';

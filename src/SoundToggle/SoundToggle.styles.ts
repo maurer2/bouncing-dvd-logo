@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import SoundIcon from '../assets/sound.svg?react';
-import type { useIsSoundDisabled } from '../Store2';
+import type { useIsSoundDisabled } from '../Store';
 
 type SoundToggleStyleProps = {
   $isSoundDisabled: ReturnType<typeof useIsSoundDisabled>;

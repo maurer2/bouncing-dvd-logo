@@ -3,7 +3,7 @@ import { screen, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
 
 import { renderStyledComponents } from '../test-utilities';
-import { useStore } from '../Store2';
+import { useStore } from '../Store';
 
 import Component from './Playingfield';
 

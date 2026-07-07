@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { useIsPlayingSound } from '../Store2';
+import { useIsPlayingSound } from '../Store';
 import soundFile from '../assets/soundFile.wav';
 import soundFileCaptions from '../assets/soundFile.vtt';
 

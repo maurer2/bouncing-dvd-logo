@@ -4,7 +4,7 @@ import { mockResizeObserver } from 'jsdom-testing-mocks';
 import { userEvent } from 'vitest/browser';
 
 import { renderStyledComponents } from '../test-utilities';
-import { useStore } from '../Store2';
+import { useStore } from '../Store';
 
 import Component from './Game';
 
