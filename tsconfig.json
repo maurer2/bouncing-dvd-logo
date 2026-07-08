@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/node24/tsconfig.json",
   "include": [
     "./src/**/*",
     "vite.config.ts",
@@ -19,12 +20,7 @@
     "sourceMap": true,
     "outDir": "./dist",
     "isolatedModules": true,
-    "strict": true,
-    "noImplicitAny": true,
     "moduleResolution": "bundler",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "noEmit": true,
