@@ -8,8 +8,9 @@ import { useIsPaused } from '../Store';
 
 import * as Styles from './Game.styles';
 
-// type GameProps = Record<string, never>;
 type PlayingFieldProps = ComponentProps<typeof PlayingField>;
+
+const playPauseKeys = new Set([' ', 'k']); // " " === spacebar
 
 function Game() {
   const isPaused = useIsPaused();
@@ -22,9 +23,8 @@ function Game() {
 
   const handleInput = useCallback((event: KeyboardEvent<HTMLButtonElement>): void => {
     event.preventDefault();
-    const observedKeys = [' ', 'k']; // " " === spacebar
 
-    if (observedKeys.includes(event.key.toLowerCase())) {
+    if (playPauseKeys.has(event.key.toLowerCase())) {
       playingFieldRef.current?.togglePlayStateInChild();
     }
   }, []);
