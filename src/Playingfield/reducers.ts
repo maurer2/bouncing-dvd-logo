@@ -14,7 +14,7 @@ export type ReducerAction =
   | {
       type: 'TRIGGER_INITIAL_POSITION';
       payload: {
-        worldSize: Pick<DOMRectReadOnly, 'width' | 'height'>;
+        worldSize: { width: number; height: number };
         logoSize: [width: number, height: number];
         velocityX: number;
         velocityY: number;

@@ -48,26 +48,26 @@ function PlayingField({ ref }: PlayingFieldProps) {
       velocity: 0,
     },
   });
-  const [playingFieldBoundingBox, setPlayingFieldBoundingBox] = useState<DOMRectReadOnly | null>(
+  const [playingFieldBoundingBox, setPlayingFieldBoundingBox] = useState<ResizeObserverSize | null>(
     null,
   );
   const [isCollidingXStart, isCollidingXEnd] = useCollisionDetection(
     positions.positionX.value,
     logoSize[0],
-    playingFieldBoundingBox?.width,
+    playingFieldBoundingBox?.inlineSize,
   );
   const [isCollidingYStart, isCollidingYEnd] = useCollisionDetection(
     positions.positionY.value,
     logoSize[1],
-    playingFieldBoundingBox?.height,
+    playingFieldBoundingBox?.blockSize,
   );
 
   // https://tkdodo.eu/blog/ref-callbacks-react-19-and-the-compiler#react-19
   const playingFieldRefCB = useCallback((element: HTMLDivElement) => {
     const observer = new ResizeObserver((entries) => {
-      const { contentRect } = entries[0];
+      const contentBoxSize = entries[0].contentBoxSize[0];
 
-      setPlayingFieldBoundingBox(contentRect);
+      setPlayingFieldBoundingBox(contentBoxSize);
     });
 
     observer.observe(element);
@@ -141,8 +141,8 @@ function PlayingField({ ref }: PlayingFieldProps) {
 
   // init position and trigger start on load and on resize
   useEffect(() => {
-    const width = playingFieldBoundingBox?.width;
-    const height = playingFieldBoundingBox?.height;
+    const width = playingFieldBoundingBox?.inlineSize;
+    const height = playingFieldBoundingBox?.blockSize;
 
     // bounding box is null on initial load
     if (!width || !height) {
@@ -168,7 +168,7 @@ function PlayingField({ ref }: PlayingFieldProps) {
     });
 
     onStartGame();
-  }, [playingFieldBoundingBox?.width, playingFieldBoundingBox?.height]);
+  }, [playingFieldBoundingBox?.blockSize, playingFieldBoundingBox?.inlineSize]);
 
   return (
     <Styles.PlayingFieldWrapper
