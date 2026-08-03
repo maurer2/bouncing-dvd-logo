@@ -1,4 +1,3 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
   "name": "Node.js & TypeScript",
@@ -8,21 +7,99 @@
   // "features": {},
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [3000],
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
   // Use 'postCreateCommand' to run commands after the container is created.
   // "postCreateCommand": "yarn install",
-  // Configure tool-specific properties.
   "customizations": {
     "vscode": {
       "settings": {
         // general
-        "editor.guides.bracketPairs": true,
+        "editor.guides.bracketPairs": "active",
+        "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
         "editor.stickyScroll.enabled": true,
         "editor.inlayHints.enabled": "on",
+        "editor.inlayHints.padding": true,
+        "editor.renderWhitespace": "trailing",
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnType": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.oxc": "always",
+          "source.removeUnusedImports": "always"
+        },
+        // formatters
+        "[javascript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[javascriptreact]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[typescriptreact]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[json]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[jsonc]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[css]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[scss]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[html]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[markdown]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        "[yaml]": {
+          "editor.defaultFormatter": "oxc.oxc-vscode"
+          // "editor.defaultFormatter": "esbenp.prettier-vscode",
+        },
+        // jsonc: allow trailing commas without schema validation errors: https://github.com/microsoft/vscode/issues/237258#issuecomment-2574854653
+        "json.schemas": [
+          {
+            "fileMatch": ["*.jsonc"],
+            "schema": {
+              "allowTrailingCommas": true
+            }
+          }
+        ],
+        // workbench
+        "workbench.colorCustomizations": {
+          "editorBracketHighlight.foreground1": "#FFCB6B",
+          "editorBracketHighlight.foreground2": "#C792EA",
+          "editorBracketHighlight.foreground3": "#82AAFF",
+          "editorBracketHighlight.foreground4": "#F07178",
+          "editorBracketHighlight.foreground5": "#89DDFF",
+          "editorBracketHighlight.foreground6": "#FF5370"
+        },
+        // saving
+        "files.trimTrailingWhitespace": true,
         // terminal
         "terminal.integrated.defaultProfile.linux": "zsh",
+        // ts7
+        "js/ts.experimental.useTsgo": true,
+        "js/ts.tsdk.path": "node_modules/@typescript/native",
         // typescript & javascript
         "js/ts.preferences.importModuleSpecifier": "relative",
-        "js/ts.experimental.useTsgo": false,
         "js/ts.validate.enable": true,
         "js/ts.inlayHints.variableTypes.enabled": true,
         "js/ts.inlayHints.parameterTypes.enabled": true,
@@ -31,78 +108,93 @@
         "js/ts.inlayHints.parameterNames.enabled": "literals",
         "js/ts.inlayHints.propertyDeclarationTypes.enabled": true,
         "js/ts.inlayHints.variableTypes.suppressWhenTypeMatchesName": false, // show variable type hints even for primitives (e.g. strings, numbers, booleans)
+        // html
+        "html.highlightMatchingTag": true,
+        // eslint
+        "eslint.useFlatConfig": true,
         // markdown
         "markdown.preview.scrollEditorWithPreview": true,
         "markdown.preview.scrollPreviewWithEditor": true,
         // icons
         "vsicons.presets.jsOfficial": true,
+        // workbench
         "workbench.editorAssociations": {
           "*.svg": "default" // https://stackoverflow.com/questions/79363302/how-to-disable-svg-preview-in-vs-code-1-97/79427278#79427278
         },
+        "workbench.experimental.modernUI": true,
         // react-compiler-marker
         "reactCompilerMarker.successEmoji": "✅",
-        "reactCompilerMarker.errorEmoji": "🚫"
+        "reactCompilerMarker.errorEmoji": "🚫",
+        // gitlense
+        "gitlens.statusBar.enabled": true
       },
       "extensions": [
-        "aaron-bond.better-comments",
-        "ban.spellright",
-        "bradlc.vscode-tailwindcss",
-        "christian-kohler.path-intellisense",
-        "clinyong.vscode-css-modules",
-        "DavidAnson.vscode-markdownlint",
-        "eamodio.gitlens",
-        "EditorConfig.EditorConfig",
-        "fivepointseven.node-version",
-        "oxc.oxc-vscode",
-        "ghmcadams.lintlens",
-        "github.vscode-github-actions",
-        "IBM.output-colorizer",
-        "jock.svg",
-        "kisstkondoros.csstriggers",
-        "kisstkondoros.vscode-codemetrics",
-        "markis.code-coverage",
-        "me-dutour-mathieu.vscode-github-actions",
-        "meganrogge.template-string-converter",
-        "mervin.markdown-formatter",
-        "mkxml.vscode-filesize",
-        "ms-vscode-remote.remote-containers",
-        "ms-vscode.vscode-typescript-next",
-        "naumovs.color-highlight",
-        "oderwat.indent-rainbow",
-        "pflannery.vscode-versionlens",
-        "redhat.vscode-yaml",
-        "ricard.postcss",
-        "shardulm94.trailing-spaces",
-        "shd101wyy.markdown-preview-enhanced",
-        "streetsidesoftware.code-spell-checker",
-        "stylelint.vscode-stylelint",
-        "uctakeoff.vscode-counter",
-        "unifiedjs.vscode-mdx",
-        "vincaslt.highlight-matching-tag",
+        // linting & formatting
+        "dbaeumer.vscode-eslint", // ESLint integration in the editor
+        "ghmcadams.lintlens", // Displays ESLint rule docs inline
+        // "esbenp.prettier-vscode", // Prettier
+        "oxc.oxc-vscode", // Oxlint + Oxfmt
+        "stylelint.vscode-stylelint", // Stylelint CSS/SCSS linting integration
+        "DavidAnson.vscode-markdownlint", // Markdown linting & style enforcement
+        // typescript & javascript
+        "TypeScriptTeam.native-preview", // TypeScript 7
+        // "ms-vscode.vscode-typescript-next", // TS6 nightlies
+        "yoavbls.pretty-ts-errors", // Formats TypeScript errors to be human-readable
+        "mattpocock.twoslash-queries", // Inline resolved type at a `// ^?` marker
+        "mxsdev.typescript-explorer", // Browse/expand a type as a tree in the sidebar
+        "meganrogge.template-string-converter", // Auto-converts string literals to template strings
+        // testing & coverage
+        "vitest.explorer", // Vitest test runner & explorer UI
+        "markis.code-coverage", // Visualizes code coverage in the gutter
+        // "Orta.vscode-jest", // Jest test runner & explorer UI
+        // "ms-playwright.playwright", // Playwright end-to-end test runner & debugger
+        // css & styling
+        "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense & autocomplete
+        "clinyong.vscode-css-modules", // CSS Modules class name IntelliSense
+        "vunguyentuan.vscode-css-variables", // CSS custom property IntelliSense
+        "ricard.postcss", // PostCSS syntax highlighting
+        "naumovs.color-highlight", // Highlights CSS color values inline
+        "kisstkondoros.csstriggers", // Shows CSS property rendering cost (layout/paint/composite)
+        // frameworks
+        "blazejkustra.react-compiler-marker", // Shows React Compiler success/error markers per component
+        // "astro-build.astro-vscode", // Astro framework language support
+        // "attilabuti.vscode-mjml", // MJML email template preview & validation
+        // "svelte.svelte-vscode", // Svelte framework language support
+        // "biomejs.biome", // Biome all-in-one linter & formatter
+        // "oven.bun-vscode", // Bun runtime integration & debugger
+        // markup & languages
+        "jock.svg", // SVG preview, minimap & editing support
+        "redhat.vscode-yaml", // YAML language support & validation
+        "tamasfe.even-better-toml", // TOML language support with validation
+        "mikestead.dotenv", // .env file syntax highlighting
+        "shd101wyy.markdown-preview-enhanced", // Markdown preview with diagrams etc.
+        // "unifiedjs.vscode-mdx", // MDX (Markdown + JSX) language support
+        // git
+        "eamodio.gitlens", // Advanced git blame, history & code authorship
+        "github.vscode-github-actions", // GitHub Actions workflow syntax & runner support
+        "GitHub.vscode-pull-request-github", // GitHub PRs & issues directly in VS Code
+        "github.copilot", // GitHub Copilot AI code completions
+        "anthropic.claude-code", // Claude Code AI agent
+        // editor & productivity
+        "aaron-bond.better-comments", // Colorizes comments by type (!, ?, TODO, *)
+        "christian-kohler.path-intellisense", // Autocompletes file paths in imports
+        "oderwat.indent-rainbow", // Colorizes indentation levels for readability
+        "wmaurer.change-case", // change casing to camelCase, snake_case, PascalCase, kebab-case, CONSTANT_CASE
+        "yatki.vscode-surround", // Wraps selections with snippets (try/catch, if, etc.)
         "vscode-icons-team.vscode-icons",
-        "waderyan.gitblame",
-        "wix.vscode-import-cost",
-        "wmaurer.change-case",
-        "yatki.vscode-surround",
-        // "Orta.vscode-jest", // jest
-        "vitest.explorer", // vitest
-        // "ms-playwright.playwright"
-        "yoavbls.pretty-ts-errors",
-        "mikestead.dotenv",
-        "vunguyentuan/vscode-css-variables",
-        "qcz/vscode-restart-ts-server-button",
-        "microsoft/vscode-pull-request-github",
-        "github.copilot",
-        "vincaslt.highlight-matching-tag",
-        // "oven.bun-vscode",
-        // "biomejs.biome"
-        // astro-build.astro-vscode",
-        "tamasfe.even-better-toml",
-        // "attilabuti.vscode-mjml",
-        "blazejkustra.react-compiler-marker"
+        "EditorConfig.EditorConfig", // Applies .editorconfig rules to the editor
+        // packages & metrics
+        "fivepointseven.node-version", // Shows active Node version in the status bar
+        "pflannery.vscode-versionlens", // Shows latest package versions in package.json
+        "wix.vscode-import-cost", // Shows bundle size of imported packages inline
+        "kisstkondoros.vscode-codemetrics", // Inline cyclomatic complexity scores
+        "uctakeoff.vscode-counter", // Counts lines/files/chars across the project
+        "mkxml.vscode-filesize", // Shows current file size in the status bar
+        // others
+        "ms-vscode-remote.remote-containers", // Dev Containers
+        "streetsidesoftware.code-spell-checker", // Spell checking for source code & comments
+        "IBM.output-colorizer" // add syntax highlighting to output panel
       ]
     }
   }
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
 }
