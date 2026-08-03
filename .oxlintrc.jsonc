@@ -73,7 +73,10 @@
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
-    "import/consistent-type-specifier-style": "off", // doesn't support "prefer-top-level-if-only-type-imports" yet
+    "import/consistent-type-specifier-style": [
+      "error",
+      "prefer-top-level-if-only-type-imports"
+    ],
     // vitest,
     // "vitest/require-test-timeout": "off",
   },
