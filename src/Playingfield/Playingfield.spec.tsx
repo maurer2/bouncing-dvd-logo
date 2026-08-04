@@ -17,7 +17,7 @@ vi.mock('es-toolkit', async () => {
 
   return {
     ...originalModule,
-    random: vi.fn().mockImplementation(() => mockRandom),
+    random: vi.fn<() => typeof mockRandom>().mockImplementation(() => mockRandom),
   };
 });
 

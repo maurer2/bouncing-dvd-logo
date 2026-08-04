@@ -22,7 +22,7 @@ describe('Logo', () => {
     currentColour: colours[1],
   };
 
-  it('should render ', async () => {
+  it('should render', async () => {
     await renderStyledComponents(<Component {...defaultProps} />);
 
     expect(screen.getByRole('figure')).toBeInTheDocument();

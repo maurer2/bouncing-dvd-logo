@@ -17,7 +17,7 @@ describe('SoundPlayer', () => {
     useStore.setState(useStore.getInitialState(), true);
   });
 
-  it('should render ', async () => {
+  it('should render', async () => {
     await render(<Component />);
 
     expect(screen.queryByLabelText('Meow sound')).toBeInTheDocument();

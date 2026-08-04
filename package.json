@@ -19,7 +19,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:headless": "vitest --browser.headless -w",
-    "test:types": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "es-toolkit": "^1.46.1",
@@ -41,6 +41,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/styled-components": "^5.1.36",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@vitejs/plugin-react": "^6.0.2",
     "@vitest/browser": "^4.1.5",
     "@vitest/browser-playwright": "^4.1.5",
@@ -67,7 +68,6 @@
     "stylelint-plugin-logical-css": "^2.1.0",
     "stylelint-use-nesting": "^6.0.2",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
-    "typescript-7": "npm:typescript@^7.0.2",
     "vite": "^8.0.10",
     "vite-plugin-checker": "^0.13.0",
     "vite-plugin-svgr": "^5.2.0",

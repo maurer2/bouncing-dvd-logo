@@ -9,7 +9,7 @@
     "unicorn",
     "eslint",
     "promise",
-    // "vitest",
+    "vitest",
   ],
   "options": {
     "typeAware": true,
@@ -58,7 +58,9 @@
     "typescript/no-unnecessary-type-conversion": "warn",
     "typescript/switch-exhaustiveness-check": [
       "warn",
-      { "considerDefaultExhaustiveForUnions": true },
+      {
+        "considerDefaultExhaustiveForUnions": true,
+      },
     ],
     // oxc
     "oxc/no-optional-chaining": "off",
@@ -73,12 +75,7 @@
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
-    "import/consistent-type-specifier-style": [
-      "error",
-      "prefer-top-level-if-only-type-imports"
-    ],
-    // vitest,
-    // "vitest/require-test-timeout": "off",
+    "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
   },
   "ignorePatterns": ["__mocks__/**", "dist/**", "statistics/**"],
   "overrides": [
@@ -97,6 +94,7 @@
         "eslint/max-lines-per-function": "off",
         "typescript/no-unsafe-type-assertion": "off",
         "unicorn/consistent-function-scoping": "off", // allow "setup" functions that don't use any params inside describe blocks
+        "vitest/require-test-timeout": "off",
       },
     },
   ],
