@@ -1,11 +1,5 @@
 minimumReleaseAge: 10080 # 7 days
 blockExoticSubdeps: true # no git branch as package url
-minimumReleaseAgeExclude:
-  - '@vitejs/plugin-react@6.0.2'
-  - 'typescript@7.0.2' # used by tsc
-  - '@typescript/typescript-*'
-resolutionMode: highest
-
 supportedArchitectures:
   cpu:
     - arm64

@@ -10,7 +10,6 @@
   "scripts": {
     "build": "vite build",
     "bundle-analyzer": "vite build",
-    "deploy": "gh-pages -d dist -m 'Deploying a new version'",
     "dev": "vite",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
@@ -48,7 +47,6 @@
     "@vitest/browser-preview": "^4.1.5",
     "@vitest/coverage-v8": "^4.1.5",
     "babel-plugin-react-compiler": "1.0.0",
-    "gh-pages": "^6.3.0",
     "jest-extended": "^7.0.0",
     "jest-styled-components": "^7.4.0",
     "jsdom": "^29.1.1",
@@ -74,5 +72,5 @@
     "vitest": "^4.1.5",
     "vitest-browser-react": "^2.2.0"
   },
-  "packageManager": "pnpm@11.1.1"
+  "packageManager": "pnpm@11.20.0"
 }
