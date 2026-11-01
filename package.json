@@ -21,6 +21,7 @@
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
+    "@tanstack/react-hotkeys": "^0.17.0",
     "es-toolkit": "^1.46.1",
     "immer": "^11.1.4",
     "meow": "^9.0.0",

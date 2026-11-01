@@ -166,6 +166,9 @@ importers:
 
   .:
     dependencies:
+      '@tanstack/react-hotkeys':
+        specifier: ^0.17.0
+        version: 0.17.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       es-toolkit:
         specifier: ^1.46.1
         version: 1.46.1
@@ -189,7 +192,7 @@ importers:
         version: 6.4.1(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       zustand:
         specifier: ^5.0.12
-        version: 5.0.13(@types/react@19.2.14)(immer@11.1.7)(react@19.2.6)
+        version: 5.0.13(@types/react@19.2.14)(immer@11.1.7)(react@19.2.6)(use-sync-external-store@1.7.0(react@19.2.6))
     devDependencies:
       '@rolldown/plugin-babel':
         specifier: ^0.2.3
@@ -1042,6 +1045,23 @@ packages:
     peerDependencies:
       '@svgr/core': '*'
 
+  '@tanstack/hotkeys@0.18.0':
+    resolution: {integrity: sha512-QQjRgnpz0xrTbhKiuia+ACGzO4PsxEsTVH2ls01fM2LJ8uISrWVq/9ILB3bd4eFdWzj9I6K7qZM6swoDDiKcRQ==}
+    engines: {node: '>=20'}
+
+  '@tanstack/react-hotkeys@0.17.0':
+    resolution: {integrity: sha512-uuWyA+2cNe4hGPFVbsP36pwguuW7eR1PfAaw+ClygOHxo9I2A3vRGGRB1PfxwH/FEtgsJC+hV3AHvgvEeiz0pg==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+
+  '@tanstack/react-store@0.11.2':
+    resolution: {integrity: sha512-oj5O5DmiMWE+ih+SioX2ayC1kbK7d3fpLx0B75fPJr9nY3zU+hoW010yr64qXsY/9fyiLVE2bn5mGNV3owm8RQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   '@tanstack/redact@0.2.3':
     resolution: {integrity: sha512-a+KRpHdWPDfM9tOci9k8Oxm3YlEC8thBac8nxN5k7tzLWM6hagz+hZr0A0ZLjRcpHMOEHVxASx33WyUVvfpffw==}
     peerDependencies:
@@ -1058,6 +1078,9 @@ packages:
         optional: true
       vite:
         optional: true
+
+  '@tanstack/store@0.11.2':
+    resolution: {integrity: sha512-sJ4mjol8uQsHV0gOJzzjwXfh2Fwm+Sz0+8deqiTm4jGbMdjzNSW+xZCFm0kUa870uhd8yi+DpKnZb5Kc4apa0Q==}
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -2608,6 +2631,11 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
+  use-sync-external-store@1.7.0:
+    resolution: {integrity: sha512-6L+EeigHMQhdaIPNIFUKwfWJSwWFQ8gJbJ2DLOs5sDIegTwR9fRxvnM3uciHKjIZhFz+KAv2emhWMRvDmMcY8A==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -3394,11 +3422,31 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@tanstack/hotkeys@0.18.0':
+    dependencies:
+      '@tanstack/store': 0.11.2
+
+  '@tanstack/react-hotkeys@0.17.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      '@tanstack/hotkeys': 0.18.0
+      '@tanstack/react-store': 0.11.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+
+  '@tanstack/react-store@0.11.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+    dependencies:
+      '@tanstack/store': 0.11.2
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+      use-sync-external-store: 1.7.0(react@19.2.6)
+
   '@tanstack/redact@0.2.3(vite@8.0.11(@types/node@25.6.2))':
     dependencies:
       magic-string: 0.30.21
     optionalDependencies:
       vite: 8.0.11(@types/node@25.6.2)
+
+  '@tanstack/store@0.11.2': {}
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -4849,6 +4897,10 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
+  use-sync-external-store@1.7.0(react@19.2.6):
+    dependencies:
+      react: 19.2.6
+
   util-deprecate@1.0.2: {}
 
   validate-npm-package-license@3.0.4:
@@ -5003,8 +5055,9 @@ snapshots:
       y18n: 5.0.8
       yargs-parser: 22.0.0
 
-  zustand@5.0.13(@types/react@19.2.14)(immer@11.1.7)(react@19.2.6):
+  zustand@5.0.13(@types/react@19.2.14)(immer@11.1.7)(react@19.2.6)(use-sync-external-store@1.7.0(react@19.2.6)):
     optionalDependencies:
       '@types/react': 19.2.14
       immer: 11.1.7
       react: 19.2.6
+      use-sync-external-store: 1.7.0(react@19.2.6)

@@ -1,4 +1,5 @@
-import React, { useRef, useCallback, type KeyboardEvent, type ComponentProps } from 'react';
+import React, { useRef, useCallback, type ComponentProps } from 'react';
+import { useHotkeys } from '@tanstack/react-hotkeys';
 import { StyleSheetManager } from 'styled-components';
 
 import PlayingField from '../Playingfield/Playingfield';
@@ -10,23 +11,27 @@ import * as Styles from './Game.styles';
 
 type PlayingFieldProps = ComponentProps<typeof PlayingField>;
 
-const playPauseKeys = new Set([' ', 'k']); // " " === spacebar
-
 function Game() {
   const isPaused = useIsPaused();
   const pauseButtonDomElement = useRef<HTMLButtonElement | null>(null);
   const playingFieldRef = useRef<PlayingFieldProps['ref']['current']>(null);
+  useHotkeys([
+    {
+      // not triggered while a button is focused as spacebar toggles a focused button and the library ignores spacebar and enter in this case
+      // would only be triggered if autofocus fails or autofocus is added to non-button element
+      // https://tanstack.com/hotkeys/latest/docs/guides/sensible-defaults#focused-controls-keep-their-own-keys
+      hotkey: 'Space',
+      callback: () => playingFieldRef.current?.togglePlayStateInChild(),
+    },
+    // triggered regardless of button focus
+    {
+      hotkey: 'K',
+      callback: () => playingFieldRef.current?.togglePlayStateInChild(),
+    },
+  ]);
 
   const handleClick = useCallback(() => {
     playingFieldRef.current?.togglePlayStateInChild();
-  }, []);
-
-  const handleInput = useCallback((event: KeyboardEvent<HTMLButtonElement>): void => {
-    event.preventDefault();
-
-    if (playPauseKeys.has(event.key.toLowerCase())) {
-      playingFieldRef.current?.togglePlayStateInChild();
-    }
   }, []);
 
   return (
@@ -37,8 +42,7 @@ function Game() {
           ref={pauseButtonDomElement}
           aria-label="Pause button"
           aria-pressed={isPaused}
-          onClick={handleClick}
-          onKeyUp={handleInput}
+          onClick={handleClick} // also called when spacebar is pressed while button is focused
           // todo: replace with callback ref
           // oxlint-disable-next-line jsx-a11y/no-autofocus
           autoFocus
