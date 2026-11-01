@@ -1,5 +1,8 @@
 minimumReleaseAge: 10080 # 7 days
+minimumReleaseAgeExcludePrune: true # drop entries from minimumReleaseAgeExclude upon install if they are old enough
 blockExoticSubdeps: true # no git branch as package url
+minimumReleaseAgeExclude:
+  - "@tanstack/redact@0.2.3"
 supportedArchitectures:
   cpu:
     - arm64
