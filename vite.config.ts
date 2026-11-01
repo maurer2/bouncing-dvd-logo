@@ -1,11 +1,11 @@
 import babel from '@rolldown/plugin-babel';
+import { redact } from '@tanstack/redact/vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import type { Logger } from 'babel-plugin-react-compiler';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
 import svgrPlugin from 'vite-plugin-svgr'; // needed to import SVG as React components, e.g. import ReactComponent as X
-import { redact } from '@tanstack/redact/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -13,6 +13,9 @@ export default defineConfig(({ mode }) => ({
   define: {
     'process.env.NODE_ENV': `"${mode}"`,
     global: 'globalThis',
+  },
+  build: {
+    sourcemap: true,
   },
   server: {
     open: false,
@@ -23,20 +26,20 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     redact({
-      preset: 'nano',
-      // features: {
-      //   activity: false,
-      //   fragmentRefs: false,
-      //   viewTransitions: false,
-      //   portal: false,
-      //   context: false,
-      //   suspense: false,
-      //   memo: false,
-      //   forwardRef: false,
-      //   lazy: false,
-      //   classComponents: false,
-      //   hydration: false,
-      // },
+      preset: 'full',
+      features: {
+        activity: false,
+        fragmentRefs: false,
+        viewTransitions: false,
+        portal: false,
+        // context: true,
+        suspense: false,
+        memo: false,
+        forwardRef: false,
+        lazy: false,
+        classComponents: false,
+        hydration: false,
+      },
     }),
     babel({
       presets: [
