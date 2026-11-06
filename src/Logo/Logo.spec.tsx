@@ -1,4 +1,4 @@
-import React, { type ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 import { screen, within } from '@testing-library/react';
 
 import { renderStyledComponents } from '../test-utilities';

@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { render } from 'vitest-browser-react';
 

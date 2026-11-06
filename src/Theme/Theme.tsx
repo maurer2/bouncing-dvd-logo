@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 
 import { theme } from './tokens';

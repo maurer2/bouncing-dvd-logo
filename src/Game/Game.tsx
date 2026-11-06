@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, type ComponentProps } from 'react';
+import { useRef, useCallback, type ComponentProps } from 'react';
 import { useHotkeys } from '@tanstack/react-hotkeys';
 import { StyleSheetManager } from 'styled-components';
 

@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import 'modern-normalize/modern-normalize.css'; // todo: move to global CSS in correct layer
 

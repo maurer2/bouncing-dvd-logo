@@ -120,6 +120,19 @@
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
     "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          // don't allow default React import
+          {
+            "name": "react",
+            "importNames": ["default"],
+            "message": "Use named imports instead."
+          }
+        ]
+      }
+    ],
     // needed for side-effect imports: global CSS, test setup, module augmentation.
     "import/no-unassigned-import": "off",
     // unicorn

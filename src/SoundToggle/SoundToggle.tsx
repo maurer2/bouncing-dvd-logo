@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { useStoreActions, useIsSoundDisabled } from '../Store';
 
 import * as Styles from './SoundToggle.styles';

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import soundFileCaptions from '../assets/soundFile.vtt';
 import soundFile from '../assets/soundFile.wav';

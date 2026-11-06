@@ -1,4 +1,4 @@
-import React, { createRef, type ComponentProps } from 'react';
+import { createRef, type ComponentProps } from 'react';
 import { screen, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
 

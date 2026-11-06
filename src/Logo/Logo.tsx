@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CatLogo from '../assets/cat.svg?react';
 import type { accentColourNames } from '../Theme/tokens';
 

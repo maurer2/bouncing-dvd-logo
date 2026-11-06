@@ -1,4 +1,3 @@
-import React from 'react';
 import { screen, act } from '@testing-library/react';
 import { mockResizeObserver } from 'jsdom-testing-mocks';
 import { userEvent } from 'vitest/browser';
