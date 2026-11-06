@@ -3,7 +3,7 @@ name: Deploy React app to GH pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ['main']
+    branches: ['main', 'master']
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,7 +20,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
@@ -30,11 +29,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
       # https://github.com/pnpm/action-setup#migrating-to-pnpmsetup
-      - uses: pnpm/setup@v2
+      - uses: pnpm/setup@v3
         with:
-          runtime: node@24 # doesn't read .nvmrc https://github.com/pnpm/setup/issues/6
           cache: true
-          install: true
       - name: Build
         run: pnpm run build
       - name: Setup Pages
