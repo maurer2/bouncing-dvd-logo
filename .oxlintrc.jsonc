@@ -1,22 +1,33 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": [
+    "eslint",
     "import",
     "jsx-a11y",
     "oxc",
+    "promise",
     "react",
+    // "react-perf",
     "typescript",
     "unicorn",
-    "eslint",
-    "promise",
-    "vitest",
+    "vitest"
+    // "nextjs",
+    // "node"
   ],
   "options": {
     "typeAware": true,
     "reportUnusedDisableDirectives": "error",
+    "typeCheck": true,
+    "denyWarnings": false // don't fail build on warnings
   },
   "env": {
     "browser": true,
+    "builtin": true
+  },
+  "settings": {
+    "react": {
+      "version": "19"
+    }
   },
   "categories": {
     "correctness": "error",
@@ -25,7 +36,7 @@
     "perf": "warn",
     "restriction": "warn",
     "style": "off",
-    "nursery": "off",
+    "nursery": "off"
   },
   "rules": {
     // eslint
@@ -40,15 +51,24 @@
       {
         "skipComments": true,
         "skipBlankLines": true,
-        "max": 150, // includes React components
-      },
+        "max": 150 // includes React components
+      }
+    ],
+    "eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
     ],
     // react
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": "off",
     "react/forbid-component-props": "off",
     "react/jsx-no-literals": "off",
-    // correctness
+    "react/rules-of-hooks": "error",
+    // React Compiler - correctness
     "react/error-boundaries": "error",
     "react/globals": "error",
     "react/immutability": "error",
@@ -61,22 +81,22 @@
     "react/static-components": "error",
     "react/use-memo": "error",
     "react/void-use-memo": "error",
-    // suspicious
+    // React Compiler - suspicious
     "react/capitalized-calls": "error",
     "react/memo-dependencies": "error",
     "react/hooks": "error",
     "react/exhaustive-effect-dependencies": "error",
-    // perf
+    // React Compiler - performance
     "react/no-deriving-state-in-effects": "warn",
-    // restriction
+    // React Compiler - restrictions
     "react/invariant": "warn",
     "react/rule-suppression": "warn",
     "react/syntax": "warn",
     "react/todo": "warn",
     "react/unsupported-syntax": "warn",
-    // ts
+    // typescript
     "typescript/consistent-type-imports": "error",
-    "typescript/prefer-readonly-parameter-types": "off", // too complicated when deadling with types from dependencies
+    "typescript/prefer-readonly-parameter-types": "off",
     "typescript/promise-function-async": "off",
     "typescript/strict-boolean-expressions": "off",
     "typescript/no-deprecated": "warn",
@@ -84,8 +104,8 @@
     "typescript/switch-exhaustiveness-check": [
       "warn",
       {
-        "considerDefaultExhaustiveForUnions": true,
-      },
+        "considerDefaultExhaustiveForUnions": true
+      }
     ],
     // oxc
     "oxc/no-optional-chaining": "off",
@@ -94,33 +114,47 @@
     // import
     "import/no-default-export": "off",
     "import/no-relative-parent-imports": "off",
-    "import/no-unassigned-import": "off", // needed for side effect imports like glonal CSS imports
     "import/unambiguous": "off",
     "import/max-dependencies": "off",
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
     "import/consistent-type-specifier-style": ["error", "prefer-top-level-if-only-type-imports"],
+    // needed for side-effect imports: global CSS, test setup, module augmentation.
+    "import/no-unassigned-import": "off",
+    // unicorn
+    "unicorn/prefer-query-selector": "off"
   },
-  "ignorePatterns": ["__mocks__/**", "dist/**", "statistics/**"],
+  "ignorePatterns": ["__mocks__/**", "coverage/**", "statistics/**", "dist/**", "**/*.gen.ts"],
   "overrides": [
-    // disable mandatory return types for React components -> also disables it for functions inside React component files
+    // React components and CSS in JS
     {
-      "files": ["src/**/*.{tsx}", "src/**/*.styles.{ts}"],
+      "files": ["src/**/*.tsx", "src/**/*.styles.ts"],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-      },
+        "typescript/explicit-function-return-type": "off",
+        "typescript/explicit-module-boundary-types": "off"
+      }
     },
-    // vitest, jest
+    // TanStack Router routes
     {
-      "files": ["**/*.spec.ts", "**/*.spec.tsx"],
+      "files": ["src/routes/**/*.tsx"],
+      "rules": {
+        "react/only-export-components": "off",
+        "react/no-multi-comp": "off",
+        "eslint/no-use-before-define": "off"
+      }
+    },
+    // tests
+    {
+      "files": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.test.ts", "**/*.test.tsx"],
       "rules": {
         "eslint/max-lines-per-function": "off",
         "typescript/no-unsafe-type-assertion": "off",
-        "unicorn/consistent-function-scoping": "off", // allow "setup" functions that don't use any params inside describe blocks
-        "vitest/require-test-timeout": "off",
-      },
-    },
-  ],
+        "unicorn/consistent-function-scoping": "off", // allow setup helpers inside describe blocks
+        "vitest/consistent-test-it": ["error", { "fn": "it" }],
+        "vitest/require-top-level-describe": "error",
+        "vitest/require-test-timeout": "off"
+      }
+    }
+  ]
 }

@@ -1,30 +1,74 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["__mocks__/**", "index.html"],
-  "singleAttributePerLine": true,
   "singleQuote": true,
+  "jsxSingleQuote": false,
+  "singleAttributePerLine": true,
+  // "svelte": true,
   "sortImports": {
-    // React imports first
     "customGroups": [
       {
         "groupName": "react",
-        "elementNamePattern": ["react", "react/*", "react-dom", "react-dom/*"],
+        "elementNamePattern": ["react", "react/*", "react-dom", "react-dom/*"]
       },
+      {
+        "groupName": "tanStack",
+        "elementNamePattern": ["@tanstack", "@tanstack/*"]
+      },
+      {
+        "groupName": "next",
+        "elementNamePattern": ["next", "next/*"]
+      }
     ],
     "groups": [
       "react",
       {
-        "newlinesBetween": false,
-      }, // keep React in the same block
+        "newlinesBetween": false
+      },
+      "tanStack",
+      {
+        "newlinesBetween": false
+      },
+      "next",
+      {
+        "newlinesBetween": false
+      },
       ["builtin", "external"],
       ["subpath", "internal", "parent"],
       ["sibling"],
       ["index"],
-      "unknown",
+      "unknown"
     ],
     "newlinesBetween": true,
+    "partitionByComment": true,
+    "partitionByNewline": false,
+    "sortSideEffects": false
   },
   "sortPackageJson": {
-    "sortScripts": true,
+    "sortScripts": true
   },
+  // "sortTailwindcss": {
+  //   "stylesheet": "./src/styles.css",
+  //   "functions": ["clsx"],
+  //   "attributes": ["className"],
+  //   "preserveWhitespace": false,
+  // },
+  "ignorePatterns": [
+    "__mocks__/**",
+    "coverage/**",
+    "dist/**",
+    "**/*.gen.ts",
+    "index.html",
+    "public/**",
+    "pnpm-lock.yaml",
+    "README.md"
+  ],
+  // Workaround for the JSON formatting mismatch between the VS Code extension and the npm script: https://github.com/oxc-project/oxc-vscode/issues/140
+  "overrides": [
+    {
+      "files": ["**/*.json", "**/*.jsonc"],
+      "options": {
+        "trailingComma": "none"
+      }
+    }
+  ]
 }
