@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 
 import SoundIcon from '../assets/sound.svg?react';
 import type { useIsSoundDisabled } from '../Store';

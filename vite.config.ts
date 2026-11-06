@@ -1,7 +1,5 @@
-import babel from '@rolldown/plugin-babel';
 import { redact } from '@tanstack/redact/vite';
-import react, { reactCompilerPreset } from '@vitejs/plugin-react';
-import type { Logger } from 'babel-plugin-react-compiler';
+import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
@@ -24,7 +22,32 @@ export default defineConfig(({ mode }) => ({
     tsconfigPaths: true,
   },
   plugins: [
-    react(),
+    react({ compiler: { logDiagnostics: true } }),
+    // babel({
+    //   presets: [
+    //     reactCompilerPreset({
+    //       // https://github.com/vitejs/vite-plugin-react/discussions/1208#discussioncomment-16922703
+    //       logger: {
+    //         logEvent(filename, event): void {
+    //           switch (event.kind) {
+    //             case 'CompileSuccess': {
+    //               console.log(`✅ Compiled: ${filename}`);
+    //               break;
+    //             }
+    //             case 'CompileError': {
+    //               console.log(`❌ Compiler Error: ${filename}`);
+    //               console.error(`Reason: ${event.detail.reason}`);
+    //               break;
+    //             }
+    //             default: {
+    //               break; // eslint fix
+    //             }
+    //           }
+    //         },
+    //       } satisfies Logger,
+    //     }),
+    //   ],
+    // }),
     redact({
       preset: 'full',
       features: {
@@ -40,31 +63,6 @@ export default defineConfig(({ mode }) => ({
         classComponents: false,
         hydration: false,
       },
-    }),
-    babel({
-      presets: [
-        reactCompilerPreset({
-          // https://github.com/vitejs/vite-plugin-react/discussions/1208#discussioncomment-16922703
-          logger: {
-            logEvent(filename, event): void {
-              switch (event.kind) {
-                case 'CompileSuccess': {
-                  console.log(`✅ Compiled: ${filename}`);
-                  break;
-                }
-                case 'CompileError': {
-                  console.log(`❌ Compiler Error: ${filename}`);
-                  console.error(`Reason: ${event.detail.reason}`);
-                  break;
-                }
-                default: {
-                  break; // eslint fix
-                }
-              }
-            },
-          } satisfies Logger,
-        }),
-      ],
     }),
     checker({
       typescript: true,
