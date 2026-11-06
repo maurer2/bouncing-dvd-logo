@@ -2,7 +2,7 @@
 {
   "name": "Node.js & TypeScript",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:26-trixie",
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -21,11 +21,14 @@
         "editor.inlayHints.enabled": "on",
         "editor.inlayHints.padding": true,
         "editor.renderWhitespace": "trailing",
+        "editor.formatOnSaveMode": "file",
         "editor.formatOnSave": true,
         "editor.formatOnPaste": true,
         "editor.formatOnType": true,
         "editor.codeActionsOnSave": {
+          "source.format.oxc": "always",
           "source.fixAll.oxc": "always",
+          // "source.fixAll.stylelint": "explicit",
           "source.removeUnusedImports": "always"
         },
         // formatters
@@ -99,7 +102,7 @@
         "js/ts.experimental.useTsgo": true,
         "js/ts.tsdk.path": "node_modules/@typescript/native",
         // typescript & javascript
-        "js/ts.preferences.importModuleSpecifier": "relative",
+        "js/ts.preferences.importModuleSpecifier": "non-relative",
         "js/ts.validate.enable": true,
         "js/ts.inlayHints.variableTypes.enabled": true,
         "js/ts.inlayHints.parameterTypes.enabled": true,
@@ -130,19 +133,19 @@
       },
       "extensions": [
         // linting & formatting
-        "dbaeumer.vscode-eslint", // ESLint integration in the editor
-        "ghmcadams.lintlens", // Displays ESLint rule docs inline
+        // "dbaeumer.vscode-eslint", // ESLint integration in the editor
+        // "ghmcadams.lintlens", // Displays ESLint rule docs inline
         // "esbenp.prettier-vscode", // Prettier
         "oxc.oxc-vscode", // Oxlint + Oxfmt
         "stylelint.vscode-stylelint", // Stylelint CSS/SCSS linting integration
         "DavidAnson.vscode-markdownlint", // Markdown linting & style enforcement
+        // "usernamehw/vscode-error-lens", // Highlights errors/warnings inline & in the gutter
         // typescript & javascript
         "TypeScriptTeam.native-preview", // TypeScript 7
         // "ms-vscode.vscode-typescript-next", // TS6 nightlies
         "yoavbls.pretty-ts-errors", // Formats TypeScript errors to be human-readable
         "mattpocock.twoslash-queries", // Inline resolved type at a `// ^?` marker
         // "mxsdev.typescript-explorer", // Browse/expand a type as a tree in the sidebar -> doesn't currently work with TS7
-        "meganrogge.template-string-converter", // Auto-converts string literals to template strings
         // testing & coverage
         "vitest.explorer", // Vitest test runner & explorer UI
         "markis.code-coverage", // Visualizes code coverage in the gutter
@@ -155,14 +158,17 @@
         "ricard.postcss", // PostCSS syntax highlighting
         "naumovs.color-highlight", // Highlights CSS color values inline
         "kisstkondoros.csstriggers", // Shows CSS property rendering cost (layout/paint/composite)
+        "styled-components.vscode-styled-components", // CSS highlighting & IntelliSense inside `css` tagged template literals
         // frameworks
         "blazejkustra.react-compiler-marker", // Shows React Compiler success/error markers per component
         // "astro-build.astro-vscode", // Astro framework language support
         // "attilabuti.vscode-mjml", // MJML email template preview & validation
         // "svelte.svelte-vscode", // Svelte framework language support
+        // "Vue.volar", // Vue framework language support
         // "biomejs.biome", // Biome all-in-one linter & formatter
         // "oven.bun-vscode", // Bun runtime integration & debugger
         // markup & languages
+        "bierner.lit-html", // HTML highlighting & IntelliSense inside `html` tagged template literals
         "jock.svg", // SVG preview, minimap & editing support
         "redhat.vscode-yaml", // YAML language support & validation
         "tamasfe.even-better-toml", // TOML language support with validation
@@ -172,7 +178,7 @@
         // git
         "eamodio.gitlens", // Advanced git blame, history & code authorship
         "github.vscode-github-actions", // GitHub Actions workflow syntax & runner support
-        "GitHub.vscode-pull-request-github", // GitHub PRs & issues directly in VS Code
+        // "GitHub.vscode-pull-request-github", // GitHub PRs & issues directly in VS Code
         "github.copilot", // GitHub Copilot AI code completions
         "anthropic.claude-code", // Claude Code AI agent
         // editor & productivity
@@ -181,8 +187,11 @@
         "oderwat.indent-rainbow", // Colorizes indentation levels for readability
         "wmaurer.change-case", // change casing to camelCase, snake_case, PascalCase, kebab-case, CONSTANT_CASE
         "yatki.vscode-surround", // Wraps selections with snippets (try/catch, if, etc.)
-        "vscode-icons-team.vscode-icons",
+        "vscode-icons-team.vscode-icons", // Adds better file icons
         "EditorConfig.EditorConfig", // Applies .editorconfig rules to the editor
+        "johnpapa/vscode-peacock", // Colorizes the VS Code workspace to differentiate between projects
+        "Chakroun-Anas/turbo-console-log", // Auto-generates console.log statements for debugging
+        "meganrogge.template-string-converter", // Auto-converts string literals to template strings
         // packages & metrics
         "fivepointseven.node-version", // Shows active Node version in the status bar
         "pflannery.vscode-versionlens", // Shows latest package versions in package.json
