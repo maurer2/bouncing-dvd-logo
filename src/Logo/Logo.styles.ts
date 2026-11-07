@@ -7,10 +7,12 @@ type LogoProps = ComponentProps<typeof Logo>;
 
 type LogoStyleProps = {
   // prefix style props with $ so that they are not added to dom element as attribute
-  [K in keyof Pick<
-    LogoProps,
-    'positionX' | 'positionY' | 'width' | 'height' | 'currentColour'
-  > as `$${K}`]: LogoProps[K];
+  [
+    K in keyof Pick<
+      LogoProps,
+      'positionX' | 'positionY' | 'width' | 'height' | 'currentColour'
+    > as `$${K}`
+  ]: LogoProps[K];
 };
 
 export const LogoElement = styled.figure.attrs<LogoStyleProps>(

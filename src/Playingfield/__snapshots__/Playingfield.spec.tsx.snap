@@ -3,11 +3,11 @@
 exports[`Playingfield > should match snapshot 1`] = `
 .c1 {
   position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  inset-block-start: 0px;
+  inset-inline-start: 0px;
   inline-size: 150px;
   block-size: 138.66px;
-  margin: 0;
+  margin: 0px;
   contain: strict;
   will-change: translate;
 }
@@ -29,7 +29,7 @@ exports[`Playingfield > should match snapshot 1`] = `
 >
   <figure
     class="c1"
-    style="translate: 885px 470.67px; color: var(--sc-colors-accent-white, oklch(100% 0 0));"
+    style="translate: 871px 471px; color: var(--sc-colors-accent-white, oklch(100% 0 0));"
   >
     <svg
       aria-label="Cat logo"

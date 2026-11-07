@@ -3,11 +3,11 @@
 exports[`Logo > should match snapshot 1`] = `
 .c0 {
   position: absolute;
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  inset-block-start: 0px;
+  inset-inline-start: 0px;
   inline-size: 100px;
   block-size: 100px;
-  margin: 0;
+  margin: 0px;
   contain: strict;
   will-change: translate;
 }

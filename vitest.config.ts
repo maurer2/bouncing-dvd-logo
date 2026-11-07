@@ -10,17 +10,16 @@ export default defineConfig({
   plugins: [react(), svgrPlugin()],
   test: {
     globals: true,
-    environment: 'jsdom',
     setupFiles: ['./src/setup-tests.ts'],
-    clearMocks: true,
     browser: {
       enabled: true,
       provider: playwright(),
       screenshotFailures: false,
+      traceView: true,
+      headless: true,
       instances: [
         {
           browser: 'chromium',
-          headless: false,
         },
       ],
     },
