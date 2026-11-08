@@ -11,4 +11,5 @@ expect.addSnapshotSerializer(styleSheetSerializer);
 vi.mock('zustand'); // to make it work like Jest (auto-mocking)
 
 // https://github.com/jest-community/jest-extended/issues/983
+// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 expect.extend(matchers as unknown as MatchersObject);
