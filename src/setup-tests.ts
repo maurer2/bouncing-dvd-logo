@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom/vitest';
 import * as matchers from 'jest-extended';
-// https://brightinventions.pl/blog/snapshot-testing-styled-components-with-vitest/
 import { styleSheetSerializer } from 'jest-styled-components/serializer';
 import { expect } from 'vitest';
 import type { MatchersObject } from 'vitest';
